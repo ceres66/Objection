@@ -1,0 +1,20 @@
+{
+    "name": "oktopost/objection",
+    "description": "Objects in PHP",
+    "type": "library",
+    "license": "MIT",
+	
+    "authors": [
+        {
+            "name": "Alexey Puchkov",
+            "email": "alexey@oktopost.com",
+			"role": "Developer"
+        }
+    ],
+	
+    "minimum-stability": "dev",
+	
+    "require": {
+		"php" : ">=5.5"
+	}
+}

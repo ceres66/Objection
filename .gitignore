@@ -6,3 +6,6 @@
 
 # OS Folders
 .DS_Store
+
+# Composer
+/vendor/
