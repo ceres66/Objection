@@ -3,6 +3,7 @@
     "description": "Objects in PHP",
     "type": "library",
     "license": "MIT",
+	"homepage": "https://github.com/Oktopost/Objection",
 	
     "authors": [
         {
@@ -16,5 +17,11 @@
 	
     "require": {
 		"php" : ">=5.5"
-	}
+	},
+	
+	"autoload": {
+        "psr-0": {
+            "Objection": "src"
+        }
+    }
 }
