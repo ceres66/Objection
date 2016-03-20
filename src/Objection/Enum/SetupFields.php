@@ -2,7 +2,7 @@
 namespace Objection\Enum;
 
 
-class LiteFields {
+class SetupFields {
 	use \Objection\TConstsClass;
 	
 	

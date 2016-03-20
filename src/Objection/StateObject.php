@@ -4,7 +4,6 @@ namespace Objection;
 
 abstract class StateObject extends LiteObject {
 	
-	/** @var array|null Null value is used during construction only */
 	private $modified = [];
 	
 	

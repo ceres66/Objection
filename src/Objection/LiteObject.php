@@ -2,11 +2,10 @@
 namespace Objection;
 
 
-use \Objection\Enum\LiteFields;
+use \Objection\Enum\SetupFields;
 
 
 abstract class LiteObject {
-	
 	
 	/** @var array Store all of the object fields' data and there values. */
 	private $data;
@@ -58,7 +57,7 @@ abstract class LiteObject {
 			}
 		} else {
 			foreach ($this->data as $property => $data) {
-				$result[$property] = $data[LiteFields::VALUE];
+				$result[$property] = $data[SetupFields::VALUE];
 			}
 		}
 		
@@ -83,7 +82,7 @@ abstract class LiteObject {
 			$this->throwNoProperty($name);
 		}
 		
-		return $this->data[$name][LiteFields::VALUE];
+		return $this->data[$name][SetupFields::VALUE];
 	}
 	
 	/**
@@ -96,7 +95,7 @@ abstract class LiteObject {
 		}
 		
 		$value = LiteValues::fixValue($this->data[$name], $value);
-		$this->data[$name][LiteFields::VALUE] = $value;
+		$this->data[$name][SetupFields::VALUE] = $value;
 		
 		$this->invokeOnSet($name, $value);
 	}
@@ -118,7 +117,7 @@ abstract class LiteObject {
 	
 	/**
 	 * @param string $property
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	private function throwNoProperty($property) {
 		$className = get_class($this);

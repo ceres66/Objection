@@ -1,9 +1,9 @@
 <?php
-namespace Oktopost;
+namespace Objection;
 
 
 use \Objection\Enum\VarType;
-use \Objection\Enum\LiteFields;
+use \Objection\Enum\SetupFields;
 
 
 class LiteValues {
@@ -11,16 +11,16 @@ class LiteValues {
 	
 	
 	/**
-	 * @param $fieldData
+	 * @param array $fieldData
 	 * @param string $value
 	 * @return bool|float|int|mixed|string
 	 */
 	public static function fixValue($fieldData, $value) {
-		if (is_null($value) && isset($fieldData[LiteFields::IS_NULL])) {
+		if (is_null($value) && isset($fieldData[SetupFields::IS_NULL])) {
 			return null;
 		}
 		
-		switch ($fieldData[LiteFields::TYPE]) {
+		switch ($fieldData[SetupFields::TYPE]) {
 			case VarType::MIXED:
 				break;
 			
@@ -48,14 +48,14 @@ class LiteValues {
 				break;
 			
 			case VarType::ENUM:
-				if (!isset($fieldData[LiteFields::VALUES_SET][$value])) {
+				if (!isset($fieldData[SetupFields::VALUES_SET][$value])) {
 					throw new \Exception("Invalid value '$value' for field");
 				}
 				
 				break;
 			
 			default:
-				throw new \Exception("Invalid property type " . $fieldData[LiteFields::TYPE]);
+				throw new \Exception("Invalid property type " . $fieldData[SetupFields::TYPE]);
 		}
 		
 		return $value;
