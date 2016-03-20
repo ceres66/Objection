@@ -1,12 +1,12 @@
 <?php
-namespace Objection;
+namespace Objection\Setup;
 
 
 use \Objection\Enum\VarType;
 use \Objection\Enum\SetupFields;
 
 
-class LiteValues {
+class ValueValidation {
 	use \Objection\TStaticClass;
 	
 	

@@ -3,6 +3,8 @@ namespace Objection;
 
 
 use \Objection\Enum\SetupFields;
+use \Objection\Setup\Container;
+use \Objection\Setup\ValueValidation;
 
 
 abstract class LiteObject {
@@ -15,11 +17,14 @@ abstract class LiteObject {
 	 * @param array $values Values to give to a new object.
 	 */
 	public function __construct(array $values = []) {
-		if (!LiteSetup::instance()->has(get_class($this))) {
-			LiteSetup::instance()->set(get_class($this), $this->_setup());
+		if (!Container::instance()->has(get_class($this))) {
+			$this->data = $this->_setup();
+			Container::instance()->set(get_class($this), $this->data);
+		} else {
+			$this->data = Container::instance()->get(get_class($this));
 		}
 		
-		$this->data = LiteSetup::instance()->get(get_class($this));
+		$this->data = array_keys($this->data);
 		
 		if ($values) {
 			$this->fromArray($values);
@@ -94,7 +99,7 @@ abstract class LiteObject {
 			$this->throwNoProperty($name);
 		}
 		
-		$value = LiteValues::fixValue($this->data[$name], $value);
+		$value = ValueValidation::fixValue($this->data[$name], $value);
 		$this->data[$name][SetupFields::VALUE] = $value;
 		
 		$this->invokeOnSet($name, $value);

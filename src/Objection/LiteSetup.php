@@ -18,35 +18,6 @@ class LiteSetup {
 	private static $NULL_ARRAY	= [SetupFields::TYPE => VarType::ARR, SetupFields::VALUE => null, SetupFields::IS_NULL => true];
 	
 	
-	/** @var array[] */
-	private $setup = [];
-	
-	
-	/**
-	 * @param string $className
-	 * @return bool
-	 */
-	public function has($className) {
-		return isset($this->setup[$className]);
-	}
-	
-	/**
-	 * @param string $className
-	 * @return array
-	 */
-	public function get($className) {
-		return $this->setup[$className];
-	}
-	
-	/**
-	 * @param string $className
-	 * @param array $setup
-	 */
-	public function set($className, array $setup) {
-		$this->setup[$className] = $setup;
-	}
-	
-	
 	public static function createInt($default = 0) {
 		return (is_null($default) ?
 			self::$NULL_INT :
