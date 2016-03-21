@@ -6,74 +6,73 @@ use \Objection\Enum\VarType;
 use \Objection\Enum\SetupFields;
 
 
-class LiteSetup {
+class LiteSetup 
+{
 	use \Objection\TSingleton;
 	
 	
-	private static $NULL_INT	= [SetupFields::TYPE => VarType::INT, SetupFields::VALUE => null, SetupFields::IS_NULL => true];
-	private static $NULL_STRING	= [SetupFields::TYPE => VarType::STRING, SetupFields::VALUE => null, SetupFields::IS_NULL => true];
-	private static $NULL_DOUBLE	= [SetupFields::TYPE => VarType::DOUBLE, SetupFields::VALUE => null, SetupFields::IS_NULL => true];
-	private static $NULL_BOOL	= [SetupFields::TYPE => VarType::BOOL, SetupFields::VALUE => null, SetupFields::IS_NULL => true];
-	private static $NULL_MIXED	= [SetupFields::TYPE => VarType::MIXED, SetupFields::VALUE => null, SetupFields::IS_NULL => true];
-	private static $NULL_ARRAY	= [SetupFields::TYPE => VarType::ARR, SetupFields::VALUE => null, SetupFields::IS_NULL => true];
-	
-	
-	public static function createInt($default = 0) {
-		return (is_null($default) ?
-			self::$NULL_INT :
-			[SetupFields::TYPE => VarType::INT, SetupFields::VALUE => $default]
-		);
-	}
-	
-	public static function createString($default = '') {
-		return (is_null($default) ?
-			self::$NULL_STRING :
-			[SetupFields::TYPE => VarType::STRING, SetupFields::VALUE => $default]
-		);
-	}
-	
-	public static function createDouble($default = 0.0) {
-		return (is_null($default) ?
-			self::$NULL_DOUBLE :
-			[SetupFields::TYPE => VarType::DOUBLE, SetupFields::VALUE => $default]
-		);
-	}
-	
-	public static function createBool($default = false) {
-		return (is_null($default) ?
-			self::$NULL_BOOL :
-			[SetupFields::TYPE => VarType::BOOL, SetupFields::VALUE => $default]
-		);
-	}
-	
-	public static function createArray($default = []) {
-		return (is_null($default) ?
-			self::$NULL_ARRAY :
-			[SetupFields::TYPE => VarType::ARR, SetupFields::VALUE => is_array($default) ? $default : [$default]]
-		);
-	}
-	
 	/**
-	 * @param bool $default
+	 * @param string $type
+	 * @param mixed $default
+	 * @param bool $isNull
 	 * @return array
 	 */
-	public static function createMixed($default = false) {
-		return (is_null($default) ?
-			self::$NULL_MIXED :
-			[SetupFields::TYPE => VarType::MIXED, SetupFields::VALUE => $default]
-		);
+	public static function create($type, $default, $isNull = false)
+	{
+		$data = [
+			SetupFields::TYPE => $type, 
+			SetupFields::VALUE => $default
+		];
+		
+		if (is_null($default) || $isNull)
+		{
+			$data[SetupFields::IS_NULL] = true;
+		}
+		
+		return $data;
+	}
+	
+	public static function createInt($default = 0) 
+	{
+		return self::create(VarType::INT, $default);
+	}
+	
+	public static function createString($default = '')
+	{
+		return self::create(VarType::STRING, $default);
+	}
+	
+	public static function createDouble($default = 0.0)
+	{
+		return self::create(VarType::DOUBLE, $default);
+	}
+	
+	public static function createBool($default = false) 
+	{
+		return self::create(VarType::BOOL, $default);
+	}
+	
+	public static function createArray($default = [])
+	{
+		if (!is_null($default) && !is_array($default)) $default = [$default];
+		
+		return self::create(VarType::ARR, $default);
+	}
+	
+	public static function createMixed($default = false)
+	{
+		return self::create(VarType::MIXED, $default);
 	}
 	
 	/**
 	 * @param array $set All possible values for this field.
-	 * @param string|bool $default
+	 * @param string|null|bool $default
 	 * @param bool $isNull
 	 * @return array
 	 */
-	public static function createEnum(array $set, $default = false, $isNull = false) {
-		if (!$default) {
-			$default = $set[0];
-		}
+	public static function createEnum(array $set, $default = false, $isNull = false)
+	{
+		if ($default === false) $default = $set[0];
 		
 		$set = array_flip($set);
 		
@@ -83,7 +82,8 @@ class LiteSetup {
 			SetupFields::VALUES_SET		=> $set,
 		];
 		
-		if ($isNull) {
+		if (is_null($default) || $isNull) 
+		{
 			$data[SetupFields::IS_NULL] = true;
 		}
 		
