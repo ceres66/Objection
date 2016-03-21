@@ -2,7 +2,8 @@
 namespace Objection\Enum;
 
 
-class VarType {
+class VarType 
+{
 	use \Objection\TConstsClass;
 	
 	

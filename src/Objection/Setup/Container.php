@@ -2,7 +2,8 @@
 namespace Objection\Setup;
 
 
-class Container {
+class Container 
+{
 	use \Objection\TSingleton;
 	
 	
@@ -14,7 +15,8 @@ class Container {
 	 * @param string $className
 	 * @return bool
 	 */
-	public function has($className) {
+	public function has($className) 
+	{
 		return isset($this->setup[$className]);
 	}
 	
@@ -22,10 +24,10 @@ class Container {
 	 * @param string $className
 	 * @param array $setup
 	 */
-	public function set($className, array $setup) {
-		if (isset($this->setup[$className])) {
+	public function set($className, array $setup) 
+	{
+		if (isset($this->setup[$className]))
 			throw new \Exception("The class [$className] is already defined!");
-		}
 		
 		$this->setup[$className] = $setup;
 	}
@@ -34,7 +36,10 @@ class Container {
 	 * @param string $className
 	 * @return array
 	 */
-	public function get($className) {
+	public function get($className) 
+	{
+		if (!isset($this->setup[$className])) return null;
+		
 		return $this->setup[$className];
 	}
 }

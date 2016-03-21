@@ -49,8 +49,7 @@ trait TConstsClass
 	
 	private static function loadConsts()
 	{
-		if (!self::$constsCollection) {
+		if (!self::$constsCollection)
 			self::$constsCollection = (new \ReflectionClass(__CLASS__))->getConstants();
-		}
 	}
 }

@@ -6,7 +6,8 @@ use \Objection\Enum\VarType;
 use \Objection\Enum\SetupFields;
 
 
-class ValueValidation {
+class ValueValidation 
+{
 	use \Objection\TStaticClass;
 	
 	
@@ -15,12 +16,13 @@ class ValueValidation {
 	 * @param string $value
 	 * @return bool|float|int|mixed|string
 	 */
-	public static function fixValue($fieldData, $value) {
-		if (is_null($value) && isset($fieldData[SetupFields::IS_NULL])) {
+	public static function fixValue($fieldData, $value) 
+	{
+		if (is_null($value) && isset($fieldData[SetupFields::IS_NULL]))
 			return null;
-		}
 		
-		switch ($fieldData[SetupFields::TYPE]) {
+		switch ($fieldData[SetupFields::TYPE]) 
+		{
 			case VarType::MIXED:
 				break;
 			
@@ -41,16 +43,14 @@ class ValueValidation {
 				break;
 			
 			case VarType::ARR:
-				if (!is_array($value)) {
+				if (!is_array($value))
 					$value = [$value];
-				}
 				
 				break;
 			
 			case VarType::ENUM:
-				if (!isset($fieldData[SetupFields::VALUES_SET][$value])) {
+				if (!isset($fieldData[SetupFields::VALUES_SET][$value]))
 					throw new \Exception("Invalid value '$value' for field");
-				}
 				
 				break;
 			
