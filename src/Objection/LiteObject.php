@@ -9,7 +9,7 @@ use \Objection\Setup\ValueValidation;
 
 abstract class LiteObject {
 	
-	/** @var array Store all of the object fields' data and there values. */
+	/** @var array */
 	private $data;
 	
 	
@@ -23,8 +23,6 @@ abstract class LiteObject {
 		} else {
 			$this->data = Container::instance()->get(get_class($this));
 		}
-		
-		$this->data = array_keys($this->data);
 		
 		if ($values) {
 			$this->fromArray($values);
