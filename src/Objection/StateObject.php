@@ -8,6 +8,29 @@ abstract class StateObject extends LiteObject
 	
 	
 	/**
+	 * @param array|string|bool $filter
+	 * @param array|string|bool $exclude
+	 * @return array|null
+	 */
+	private function getPropertyNamesFilter($filter, $exclude) 
+	{
+		if ($exclude) 
+		{
+			if (!is_array($exclude))
+				$exclude = [$exclude];
+			
+			return $this->getPropertyNames($exclude);
+		} 
+		else if ($filter) 
+		{
+			return (is_string($filter) ? [$filter] : $filter);
+		}
+		
+		return null;
+	}
+	
+	
+	/**
 	 * @param array $values
 	 */
 	public function __construct(array $values = []) 
@@ -155,28 +178,5 @@ abstract class StateObject extends LiteObject
 		{
 			unset($this->modified[$name]);
 		}
-	}
-	
-	
-	/**
-	 * @param array|string|bool $filter
-	 * @param array|string|bool $exclude
-	 * @return array|null
-	 */
-	private function getPropertyNamesFilter($filter, $exclude) 
-	{
-		if ($exclude) 
-		{
-			if (!is_array($exclude))
-				$exclude = [$exclude];
-			
-			return $this->getPropertyNames($exclude);
-		} 
-		else if ($filter) 
-		{
-			return (is_string($filter) ? [$filter] : $filter);
-		}
-		
-		return null;
 	}
 }

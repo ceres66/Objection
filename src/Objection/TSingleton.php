@@ -11,8 +11,14 @@ trait TSingleton
 	 * @var static
 	 */
 	private static $instance = null;
-
-
+	
+	
+	/**
+	 * @param static $instance
+	 */
+	protected static function initialize($instance) {}
+	
+	
 	/**
 	 * @return static
 	 */
@@ -26,10 +32,4 @@ trait TSingleton
 
 		return self::$instance;
 	}
-	
-	
-	/**
-	 * @param static $instance
-	 */
-	protected static function initialize($instance) {}
 }

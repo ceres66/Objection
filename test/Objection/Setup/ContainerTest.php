@@ -48,6 +48,4 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($data, Container::instance()->get('b'));
 		$this->assertEquals(null, Container::instance()->get('c'));
 	}
-	
-	
 }

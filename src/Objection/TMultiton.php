@@ -10,7 +10,14 @@ trait TMultiton
 	/** @var static[] */
 	private static $instances = [];
 
-
+	
+	/**
+	 * @param TMultiton $instance
+	 * @param string|int $key
+	 */
+	protected static function initialize($instance, $key) {}
+	
+	
 	/**
 	 * @param string|int $key
 	 * @return static
@@ -26,11 +33,4 @@ trait TMultiton
 
 		return self::$instances[$key];
 	}
-	
-	
-	/**
-	 * @param TMultiton $instance
-	 * @param string|int $key
-	 */
-	protected static function initialize($instance, $key) {}
 }

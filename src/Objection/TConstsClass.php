@@ -7,7 +7,15 @@ trait TConstsClass
 	use TStaticClass;
 	
 	
+	/** @var array */
 	private static $constsCollection = false;
+	
+	
+	private static function loadConsts()
+	{
+		if (!self::$constsCollection)
+			self::$constsCollection = (new \ReflectionClass(__CLASS__))->getConstants();
+	}
 	
 	
 	public static function getConstsAsArray() 
@@ -44,12 +52,5 @@ trait TConstsClass
 	{
 		self::loadConsts();
 		return in_array($value, self::$constsCollection, true);
-	}
-	
-	
-	private static function loadConsts()
-	{
-		if (!self::$constsCollection)
-			self::$constsCollection = (new \ReflectionClass(__CLASS__))->getConstants();
 	}
 }
