@@ -46,6 +46,21 @@ abstract class LiteObject {
 	
 	
 	/**
+	 * @param string $name
+	 * @param mixed $value
+	 */
+	protected function forceSet($name, $value)
+	{
+		$value = ValueValidation::fixValue($this->data[$name], $value);
+		
+		if (!isset($this->data[$name][SetupFields::ACCESS]))
+			$this->data[$name][SetupFields::VALUE] = $value;
+		
+		$this->invokeOnSet($name, $value);
+	}
+	
+	
+	/**
 	 * @return array
 	 */
 	protected abstract function _setup();
@@ -55,19 +70,16 @@ abstract class LiteObject {
 	 * @param array $values Values to give to a new object.
 	 */
 	public function __construct(array $values = []) {
-		if (!Container::instance()->has(get_class($this))) 
-		{
-			$this->data = $this->_setup();
-			Container::instance()->set(get_class($this), $this->data);
-		} 
-		else 
-		{
-			$this->data = Container::instance()->get(get_class($this));
-		}
+		if (Container::instance()->has(get_class($this)))
+			Container::instance()->set(get_class($this), $this->_setup());
 		
-		if ($values) 
+		$this->data = Container::instance()->get(get_class($this));
+		
+		if (!$values) return; 
+		
+		foreach ($values as $property => $value) 
 		{
-			$this->fromArray($values);
+			$this->forceSet($property, $value);
 		}
 	}
 	
@@ -142,6 +154,13 @@ abstract class LiteObject {
 	public function &__get($name) 
 	{
 		$this->validateFieldAccess($name, AccessRestriction::NO_GET);
+		
+		// Prevent modification of parameters when returned by reference.
+		if (!isset($this->data[SetupFields::ACCESS][AccessRestriction::NO_SET])) {
+			$data = $this->data[$name][SetupFields::VALUE];
+			return $data;
+		}
+		
 		return $this->data[$name][SetupFields::VALUE];
 	}
 	
@@ -152,13 +171,7 @@ abstract class LiteObject {
 	public function __set($name, $value) 
 	{
 		$this->validateFieldAccess($name, AccessRestriction::NO_SET);
-		
-		$value = ValueValidation::fixValue($this->data[$name], $value);
-		
-		if (!isset($this->data[$name][SetupFields::ACCESS]))
-			$this->data[$name][SetupFields::VALUE] = $value;
-		
-		$this->invokeOnSet($name, $value);
+		$this->forceSet($name, $value);
 	}
 	
 	/**
