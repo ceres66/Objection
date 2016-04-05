@@ -66,6 +66,19 @@ class LiteSetup
 		return self::create(VarType::MIXED, $default, false, $access);
 	}
 	
+	public static function createInstanceOf($class, $access = false)
+	{
+		$default = null;
+		
+		if (!is_string($class))
+		{
+			$default = $class;
+			$class = get_class($class);
+		}
+		
+		return self::create($class, $default, true, $access);
+	}
+	
 	/**
 	 * @param array $set All possible values for this field.
 	 * @param string|null|bool $default

@@ -92,6 +92,16 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 			LiteSetup::createMixed(null, AccessRestriction::NO_GET));
 	}
 	
+	public function test_createInstanceOf()
+	{
+		$this->assertCreateOfType(\stdClass::class, null, true, LiteSetup::createInstanceOf(\stdClass::class));
+		$this->assertCreateOfType(get_class($this), $this, true, LiteSetup::createInstanceOf($this));
+		
+		$this->assertHasAccessRestriction(
+			AccessRestriction::NO_GET, 
+			LiteSetup::createInstanceOf($this, AccessRestriction::NO_GET));
+	}
+	
 	public function test_create()
 	{
 		$this->assertCreateOfType(VarType::BOOL, 12, false, LiteSetup::create(VarType::BOOL, 12, false));
