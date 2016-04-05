@@ -154,7 +154,9 @@ abstract class LiteObject {
 		$this->validateFieldAccess($name, AccessRestriction::NO_SET);
 		
 		$value = ValueValidation::fixValue($this->data[$name], $value);
-		$this->data[$name][SetupFields::VALUE] = $value;
+		
+		if (!isset($this->data[$name][SetupFields::ACCESS]))
+			$this->data[$name][SetupFields::VALUE] = $value;
 		
 		$this->invokeOnSet($name, $value);
 	}

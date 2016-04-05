@@ -55,7 +55,16 @@ class ValueValidation
 				break;
 			
 			default:
-				throw new \Exception("Invalid property type " . $fieldData[SetupFields::TYPE]);
+				if (!$value instanceof $fieldData[SetupFields::TYPE]) 
+				{
+					$type = (is_object($value) ? get_class($fieldData) : gettype($value));
+					
+					throw new \Exception(
+						"Value must be of type {$fieldData[SetupFields::TYPE]}. " . 
+						"Got {$type} instead");
+				}
+				
+				break;
 		}
 		
 		return $value;
