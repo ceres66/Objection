@@ -59,6 +59,14 @@ abstract class LiteObject {
 		$this->invokeOnSet($name, $value);
 	}
 	
+	/**
+	 * @param string $name
+	 */
+	protected function &forceGet($name)
+	{
+		return $this->data[$name][SetupFields::VALUE];
+	}
+	
 	
 	/**
 	 * @return array
