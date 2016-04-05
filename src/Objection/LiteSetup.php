@@ -34,45 +34,46 @@ class LiteSetup
 		return $data;
 	}
 	
-	public static function createInt($default = 0) 
+	public static function createInt($default = 0, $access = false) 
 	{
-		return self::create(VarType::INT, $default);
+		return self::create(VarType::INT, $default, false, $access);
 	}
 	
-	public static function createString($default = '')
+	public static function createString($default = '', $access = false)
 	{
-		return self::create(VarType::STRING, $default);
+		return self::create(VarType::STRING, $default, false, $access);
 	}
 	
-	public static function createDouble($default = 0.0)
+	public static function createDouble($default = 0.0, $access = false)
 	{
-		return self::create(VarType::DOUBLE, $default);
+		return self::create(VarType::DOUBLE, $default, false, $access);
 	}
 	
-	public static function createBool($default = false) 
+	public static function createBool($default = false, $access = false) 
 	{
-		return self::create(VarType::BOOL, $default);
+		return self::create(VarType::BOOL, $default, false, $access);
 	}
 	
-	public static function createArray($default = [])
+	public static function createArray($default = [], $access = false)
 	{
 		if (!is_null($default) && !is_array($default)) $default = [$default];
 		
-		return self::create(VarType::ARR, $default);
+		return self::create(VarType::ARR, $default, false, $access);
 	}
 	
-	public static function createMixed($default = false)
+	public static function createMixed($default = false, $access = false)
 	{
-		return self::create(VarType::MIXED, $default);
+		return self::create(VarType::MIXED, $default, false, $access);
 	}
 	
 	/**
 	 * @param array $set All possible values for this field.
 	 * @param string|null|bool $default
 	 * @param bool $isNull
+	 * @param int|bool $access
 	 * @return array
 	 */
-	public static function createEnum(array $set, $default = false, $isNull = false)
+	public static function createEnum(array $set, $default = false, $isNull = false, $access = false)
 	{
 		if ($default === false) $default = $set[0];
 		
@@ -84,10 +85,11 @@ class LiteSetup
 			SetupFields::VALUES_SET		=> $set,
 		];
 		
-		if (is_null($default) || $isNull) 
-		{
+		if (is_null($default) || $isNull)
 			$data[SetupFields::IS_NULL] = true;
-		}
+		
+		if ($access !== false)
+			$data[SetupFields::ACCESS] = [$access => true];
 		
 		return $data;
 	}

@@ -29,6 +29,10 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 		$this->assertCreateOfType(VarType::INT, 0, false, LiteSetup::createInt());
 		$this->assertCreateOfType(VarType::INT, -123, false, LiteSetup::createInt(-123));
 		$this->assertCreateOfType(VarType::INT, null, true, LiteSetup::createInt(null));
+		
+		$this->assertHasAccessRestriction(
+			AccessRestriction::NO_GET, 
+			LiteSetup::createInt(null, AccessRestriction::NO_GET));
 	}
 	
 	public function test_createString()
@@ -36,6 +40,10 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 		$this->assertCreateOfType(VarType::STRING, '', false, LiteSetup::createString());
 		$this->assertCreateOfType(VarType::STRING, 'Hello World', false, LiteSetup::createString('Hello World'));
 		$this->assertCreateOfType(VarType::STRING, null, true, LiteSetup::createString(null));
+		
+		$this->assertHasAccessRestriction(
+			AccessRestriction::NO_GET, 
+			LiteSetup::createString(null, AccessRestriction::NO_GET));
 	}
 	
 	public function test_createDouble()
@@ -43,6 +51,10 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 		$this->assertCreateOfType(VarType::DOUBLE, 0.0, false, LiteSetup::createDouble());
 		$this->assertCreateOfType(VarType::DOUBLE, 12.23, false, LiteSetup::createDouble(12.23));
 		$this->assertCreateOfType(VarType::DOUBLE, null, true, LiteSetup::createDouble(null));
+		
+		$this->assertHasAccessRestriction(
+			AccessRestriction::NO_GET, 
+			LiteSetup::createDouble(null, AccessRestriction::NO_GET));
 	}
 	
 	public function test_createBool()
@@ -50,6 +62,10 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 		$this->assertCreateOfType(VarType::BOOL, false, false, LiteSetup::createBool());
 		$this->assertCreateOfType(VarType::BOOL, 12.23, false, LiteSetup::createBool(true));
 		$this->assertCreateOfType(VarType::BOOL, null, true, LiteSetup::createBool(null));
+		
+		$this->assertHasAccessRestriction(
+			AccessRestriction::NO_GET, 
+			LiteSetup::createBool(null, AccessRestriction::NO_GET));
 	}
 	
 	public function test_createArray()
@@ -58,6 +74,10 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 		$this->assertCreateOfType(VarType::ARR, ['a', 'b'], false, LiteSetup::createArray(['a', 'b']));
 		$this->assertCreateOfType(VarType::ARR, ['element'], false, LiteSetup::createArray('element'));
 		$this->assertCreateOfType(VarType::ARR, null, true, LiteSetup::createArray(null));
+		
+		$this->assertHasAccessRestriction(
+			AccessRestriction::NO_GET, 
+			LiteSetup::createArray(null, AccessRestriction::NO_GET));
 	}
 	
 	public function test_createMixed()
@@ -65,6 +85,11 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 		$this->assertCreateOfType(VarType::MIXED, null, false, LiteSetup::createMixed());
 		$this->assertCreateOfType(VarType::MIXED, $this, false, LiteSetup::createMixed($this));
 		$this->assertCreateOfType(VarType::MIXED, null, true, LiteSetup::createMixed(null));
+		$this->assertCreateOfType(VarType::MIXED, null, true, LiteSetup::createMixed(null));
+		
+		$this->assertHasAccessRestriction(
+			AccessRestriction::NO_GET, 
+			LiteSetup::createMixed(null, AccessRestriction::NO_GET));
 	}
 	
 	public function test_create()
@@ -136,5 +161,20 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 				SetupFields::IS_NULL		=> true
 			],
 			LiteSetup::createEnum($enum, null));
+	}
+	
+	public function test_createEnum_WithoutAccessRestriction()
+	{
+		$result = LiteSetup::createEnum(['a', 'b', 'c']);
+		$this->assertTrue(!isset($result[SetupFields::ACCESS]));
+	}
+	
+	public function test_createEnum_WithAccessRestriction()
+	{
+		$result = LiteSetup::createEnum(['a', 'b', 'c'], null, false, AccessRestriction::NO_GET);
+		$this->assertTrue(isset($result[SetupFields::ACCESS][AccessRestriction::NO_GET]));
+		
+		$result = LiteSetup::createEnum(['a', 'b', 'c'], null, false, AccessRestriction::NO_SET);
+		$this->assertTrue(isset($result[SetupFields::ACCESS][AccessRestriction::NO_SET]));
 	}
 }
