@@ -30,6 +30,20 @@ abstract class LiteObject {
 		}
 	}
 	
+	/**
+	 * @param string $field
+	 * @param int $accessRestriction
+	 * @throws \Exception
+	 */
+	private function validateFieldAccess($field, $accessRestriction)
+	{
+		if (!isset($this->data[$field]))
+			Exceptions::throwNoProperty($this, $field);
+		
+		if (isset($this->data[SetupFields::ACCESS][$accessRestriction]))
+			Exceptions::throwNotGetProperty($this, $field);
+	}
+	
 	
 	/**
 	 * @return array
@@ -117,12 +131,7 @@ abstract class LiteObject {
 	 */
 	public function &__get($name) 
 	{
-		if (!isset($this->data[$name]))
-			Exceptions::throwNoProperty($this, $name);
-		
-		if (isset($this->data[SetupFields::ACCESS][AccessRestriction::NO_GET]))
-			Exceptions::throwNotGetProperty($this, $name);
-		
+		$this->validateFieldAccess($name, AccessRestriction::NO_GET);
 		return $this->data[$name][SetupFields::VALUE];
 	}
 	
@@ -132,11 +141,7 @@ abstract class LiteObject {
 	 */
 	public function __set($name, $value) 
 	{
-		if (!isset($this->data[$name]))
-			Exceptions::throwNoProperty($this, $name);
-		
-		if (isset($this->data[SetupFields::ACCESS][AccessRestriction::NO_SET])) 
-			Exceptions::throwNotSetProperty($this, $name);
+		$this->validateFieldAccess($name, AccessRestriction::NO_SET);
 		
 		$value = ValueValidation::fixValue($this->data[$name], $value);
 		$this->data[$name][SetupFields::VALUE] = $value;
