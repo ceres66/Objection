@@ -4,6 +4,7 @@ namespace Objection;
 
 use Objection\Enum\SetupFields;
 use Objection\Enum\AccessRestriction;
+use Objection\Utils\Exceptions;
 use Objection\Setup\Container;
 use Objection\Setup\ValueValidation;
 
@@ -13,36 +14,6 @@ abstract class LiteObject {
 	/** @var array */
 	private $data;
 	
-	
-	/**
-	 * @param string $property
-	 * @throws \Exception
-	 */
-	private function throwNoProperty($property) 
-	{
-		$className = get_class($this);
-		throw new \Exception("No such property '$className->$property'");
-	}
-	
-	/**
-	 * @param string $property
-	 * @throws \Exception
-	 */
-	private function throwNotSetProperty($property) 
-	{
-		$className = get_class($this);
-		throw new \Exception("Trying to modify read only property '$className->$property'");
-	}
-	
-	/**
-	 * @param string $property
-	 * @throws \Exception
-	 */
-	private function throwNotGetProperty($property)
-	{
-		$className = get_class($this);
-		throw new \Exception("Trying to get write only property '$className->$property'");
-	}
 	
 	/**
 	 * @param string $field
@@ -147,10 +118,10 @@ abstract class LiteObject {
 	public function &__get($name) 
 	{
 		if (!isset($this->data[$name]))
-			$this->throwNoProperty($name);
+			Exceptions::throwNoProperty($this, $name);
 		
-		if (isset($this->data[SetupFields::ACCESS][AccessRestriction::NO_GET])) 
-			$this->throwNotGetProperty($name);
+		if (isset($this->data[SetupFields::ACCESS][AccessRestriction::NO_GET]))
+			Exceptions::throwNotGetProperty($this, $name);
 		
 		return $this->data[$name][SetupFields::VALUE];
 	}
@@ -162,10 +133,10 @@ abstract class LiteObject {
 	public function __set($name, $value) 
 	{
 		if (!isset($this->data[$name]))
-			$this->throwNoProperty($name);
+			Exceptions::throwNoProperty($this, $name);
 		
 		if (isset($this->data[SetupFields::ACCESS][AccessRestriction::NO_SET])) 
-			$this->throwNotSetProperty($name);
+			Exceptions::throwNotSetProperty($this, $name);
 		
 		$value = ValueValidation::fixValue($this->data[$name], $value);
 		$this->data[$name][SetupFields::VALUE] = $value;
