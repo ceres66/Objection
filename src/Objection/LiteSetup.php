@@ -2,8 +2,8 @@
 namespace Objection;
 
 
-use \Objection\Enum\VarType;
-use \Objection\Enum\SetupFields;
+use Objection\Enum\VarType;
+use Objection\Enum\SetupFields;
 
 
 class LiteSetup 
@@ -15,9 +15,10 @@ class LiteSetup
 	 * @param string $type
 	 * @param mixed $default
 	 * @param bool $isNull
+	 * @param int|bool $access
 	 * @return array
 	 */
-	public static function create($type, $default, $isNull = false)
+	public static function create($type, $default, $isNull = false, $access = false)
 	{
 		$data = [
 			SetupFields::TYPE => $type, 
@@ -25,9 +26,10 @@ class LiteSetup
 		];
 		
 		if (is_null($default) || $isNull)
-		{
 			$data[SetupFields::IS_NULL] = true;
-		}
+		
+		if ($access !== false) 
+			$data[SetupFields::ACCESS] = [$access => true];
 		
 		return $data;
 	}

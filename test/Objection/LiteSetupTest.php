@@ -2,8 +2,9 @@
 namespace Objection;
 
 
-use \Objection\Enum\VarType;
-use \Objection\Enum\SetupFields;
+use Objection\Enum\AccessRestriction;
+use Objection\Enum\VarType;
+use Objection\Enum\SetupFields;
 
 
 class LiteSetupTest extends \PHPUnit_Framework_TestCase
@@ -15,6 +16,11 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 		if ($isNull) $expected[SetupFields::IS_NULL] = true;
 		
 		$this->assertEquals($expected, $actual);
+	}
+	
+	private function assertHasAccessRestriction($expectedRestriction, $data)
+	{
+		$this->assertTrue($data[SetupFields::ACCESS][$expectedRestriction]);
 	}
 	
 	
@@ -70,6 +76,27 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 		
 		$this->assertCreateOfType(VarType::STRING, null, true, LiteSetup::create(VarType::STRING, null));
 	}
+	
+	
+	public function test_create_WithoutAccess()
+	{
+		$without = LiteSetup::create(VarType::BOOL, 12, false, false);
+		$this->assertTrue(!isset($without[SetupFields::ACCESS]));
+	}
+	
+	public function test_create_WithAccess()
+	{
+		$this->assertHasAccessRestriction(
+			AccessRestriction::NO_SET,
+			LiteSetup::create(VarType::BOOL, 12, false, AccessRestriction::NO_SET)
+		);
+		
+		$this->assertHasAccessRestriction(
+			AccessRestriction::NO_SET,
+			LiteSetup::create(VarType::BOOL, 12, false, AccessRestriction::NO_SET)
+		);
+	}
+	
 	
 	public function test_createEnum()
 	{

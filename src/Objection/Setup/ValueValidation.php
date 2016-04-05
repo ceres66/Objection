@@ -2,8 +2,8 @@
 namespace Objection\Setup;
 
 
-use \Objection\Enum\VarType;
-use \Objection\Enum\SetupFields;
+use Objection\Enum\VarType;
+use Objection\Enum\SetupFields;
 
 
 class ValueValidation 

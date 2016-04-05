@@ -2,15 +2,68 @@
 namespace Objection;
 
 
-use \Objection\Enum\SetupFields;
-use \Objection\Setup\Container;
-use \Objection\Setup\ValueValidation;
+use Objection\Enum\SetupFields;
+use Objection\Enum\AccessRestriction;
+use Objection\Setup\Container;
+use Objection\Setup\ValueValidation;
 
 
 abstract class LiteObject {
 	
 	/** @var array */
 	private $data;
+	
+	
+	/**
+	 * @param string $property
+	 * @throws \Exception
+	 */
+	private function throwNoProperty($property) 
+	{
+		$className = get_class($this);
+		throw new \Exception("No such property '$className->$property'");
+	}
+	
+	/**
+	 * @param string $property
+	 * @throws \Exception
+	 */
+	private function throwNotSetProperty($property) 
+	{
+		$className = get_class($this);
+		throw new \Exception("Trying to modify read only property '$className->$property'");
+	}
+	
+	/**
+	 * @param string $property
+	 * @throws \Exception
+	 */
+	private function throwNotGetProperty($property)
+	{
+		$className = get_class($this);
+		throw new \Exception("Trying to get write only property '$className->$property'");
+	}
+	
+	/**
+	 * @param string $field
+	 * @param mixed $value
+	 */
+	private function invokeOnSet($field, $value) 
+	{
+		$field = ucfirst($field);
+		$method = [$this, "onSet$field"];
+		
+		if (is_callable($method)) 
+		{
+			$method($value);
+		}
+	}
+	
+	
+	/**
+	 * @return array
+	 */
+	protected abstract function _setup();
 	
 	
 	/**
@@ -69,7 +122,8 @@ abstract class LiteObject {
 		{
 			foreach ($this->data as $property => $data) 
 			{
-				$result[$property] = $data[SetupFields::VALUE];
+				if (!isset($this->data[SetupFields::ACCESS][AccessRestriction::NO_GET]))
+					$result[$property] = $data[SetupFields::VALUE];
 			}
 		}
 		
@@ -95,6 +149,9 @@ abstract class LiteObject {
 		if (!isset($this->data[$name]))
 			$this->throwNoProperty($name);
 		
+		if (isset($this->data[SetupFields::ACCESS][AccessRestriction::NO_GET])) 
+			$this->throwNotGetProperty($name);
+		
 		return $this->data[$name][SetupFields::VALUE];
 	}
 	
@@ -106,6 +163,9 @@ abstract class LiteObject {
 	{
 		if (!isset($this->data[$name]))
 			$this->throwNoProperty($name);
+		
+		if (isset($this->data[SetupFields::ACCESS][AccessRestriction::NO_SET])) 
+			$this->throwNotSetProperty($name);
 		
 		$value = ValueValidation::fixValue($this->data[$name], $value);
 		$this->data[$name][SetupFields::VALUE] = $value;
@@ -120,37 +180,5 @@ abstract class LiteObject {
 	public function __isset($name) 
 	{
 		return isset($this->data[$name]);
-	}
-	
-	
-	/**
-	 * @return array
-	 */
-	protected abstract function _setup();
-	
-	
-	/**
-	 * @param string $property
-	 * @throws \Exception
-	 */
-	private function throwNoProperty($property) 
-	{
-		$className = get_class($this);
-		throw new \Exception("No such property '$className->$property'");
-	}
-	
-	/**
-	 * @param string $field
-	 * @param mixed $value
-	 */
-	private function invokeOnSet($field, $value) 
-	{
-		$field = ucfirst($field);
-		$method = [$this, "onSet$field"];
-		
-		if (is_callable($method)) 
-		{
-			$method($value);
-		}
 	}
 }

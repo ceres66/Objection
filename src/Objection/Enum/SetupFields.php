@@ -11,4 +11,5 @@ class SetupFields
 	const IS_NULL		= 'isNull';
 	const TYPE			= 'type';
 	const VALUES_SET	= 'values_set';
+	const ACCESS		= 'access';
 }
