@@ -32,15 +32,15 @@ abstract class LiteObject {
 	
 	/**
 	 * @param string $field
-	 * @param int $accessRestriction
+	 * @param int|bool $accessRestriction
 	 * @throws \Exception
 	 */
-	private function validateFieldAccess($field, $accessRestriction)
+	private function validateFieldAccess($field, $accessRestriction = false)
 	{
 		if (!isset($this->data[$field]))
 			Exceptions::throwNoProperty($this, $field);
 		
-		if (isset($this->data[SetupFields::ACCESS][$accessRestriction]))
+		if ($accessRestriction != false && isset($this->data[SetupFields::ACCESS][$accessRestriction]))
 			Exceptions::throwNotGetProperty($this, $field);
 	}
 	
@@ -113,6 +113,16 @@ abstract class LiteObject {
 		}
 		
 		return $result;
+	}
+	
+	/**
+	 * @param string $field
+	 * @return bool
+	 */
+	public function isRestricted($field)
+	{
+		$this->validateFieldAccess($field);
+		return isset($this->data[$field][SetupFields::ACCESS]);
 	}
 	
 	/**

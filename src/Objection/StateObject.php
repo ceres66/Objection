@@ -159,6 +159,12 @@ abstract class StateObject extends LiteObject
 	 */
 	public function __set($name, $value) 
 	{
+		if ($this->isRestricted($name))
+		{
+			parent::__set($name, $value);
+			return;
+		}
+		
 		if (!isset($this->modified[$name])) 
 		{
 			$oldValue = $this->$name;
