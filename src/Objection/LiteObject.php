@@ -7,12 +7,17 @@ use Objection\Enum\AccessRestriction;
 use Objection\Utils\Exceptions;
 use Objection\Setup\Container;
 use Objection\Setup\ValueValidation;
+use Objection\Utils\PrivateFields;
 
 
 abstract class LiteObject {
 	
 	/** @var array */
 	private $data;
+	
+	
+	/** @var static */
+	protected $_p;
 	
 	
 	/**
@@ -46,29 +51,6 @@ abstract class LiteObject {
 	
 	
 	/**
-	 * @param string $name
-	 * @param mixed $value
-	 */
-	protected function forceSet($name, $value)
-	{
-		$value = ValueValidation::fixValue($this->data[$name], $value);
-		
-		if (!isset($this->data[$name][SetupFields::ACCESS]))
-			$this->data[$name][SetupFields::VALUE] = $value;
-		
-		$this->invokeOnSet($name, $value);
-	}
-	
-	/**
-	 * @param string $name
-	 */
-	protected function &forceGet($name)
-	{
-		return $this->data[$name][SetupFields::VALUE];
-	}
-	
-	
-	/**
 	 * @return array
 	 */
 	protected abstract function _setup();
@@ -82,12 +64,11 @@ abstract class LiteObject {
 			Container::instance()->set(get_class($this), $this->_setup());
 		
 		$this->data = Container::instance()->get(get_class($this));
-		
-		if (!$values) return; 
+		$this->_p = new PrivateFields($this->data, $this);
 		
 		foreach ($values as $property => $value) 
 		{
-			$this->forceSet($property, $value);
+			$this->_p->$property = $value;
 		}
 	}
 	
@@ -120,7 +101,8 @@ abstract class LiteObject {
 		{
 			foreach ($filter as $property) 
 			{
-				$result[$property] = $this->$property;
+				if (!isset($this->data[SetupFields::ACCESS][AccessRestriction::NO_GET]))
+					$result[$property] = $this->$property;
 			}
 		} 
 		else 
@@ -163,7 +145,7 @@ abstract class LiteObject {
 	{
 		$this->validateFieldAccess($name, AccessRestriction::NO_GET);
 		
-		// Prevent modification of parameters when returned by reference.
+		// Prevent returning parameter by reference
 		if (!isset($this->data[SetupFields::ACCESS][AccessRestriction::NO_SET])) {
 			$data = $this->data[$name][SetupFields::VALUE];
 			return $data;
@@ -179,7 +161,11 @@ abstract class LiteObject {
 	public function __set($name, $value) 
 	{
 		$this->validateFieldAccess($name, AccessRestriction::NO_SET);
-		$this->forceSet($name, $value);
+		
+		$value = ValueValidation::fixValue($this->data[$name], $value);
+		$this->data[$name][SetupFields::VALUE] = $value;
+		
+		$this->invokeOnSet($name, $value);
 	}
 	
 	/**
