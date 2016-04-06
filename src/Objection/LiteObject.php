@@ -60,7 +60,7 @@ abstract class LiteObject {
 	 * @param array $values Values to give to a new object.
 	 */
 	public function __construct(array $values = []) {
-		if (Container::instance()->has(get_class($this)))
+		if (!Container::instance()->has(get_class($this)))
 			Container::instance()->set(get_class($this), $this->_setup());
 		
 		$this->data = Container::instance()->get(get_class($this));
