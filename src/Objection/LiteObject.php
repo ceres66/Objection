@@ -45,7 +45,7 @@ abstract class LiteObject {
 		if (!isset($this->data[$field]))
 			Exceptions::throwNoProperty($this, $field);
 		
-		if ($accessRestriction != false && isset($this->data[SetupFields::ACCESS][$accessRestriction]))
+		if ($accessRestriction !== false && isset($this->data[$field][SetupFields::ACCESS][$accessRestriction]))
 			Exceptions::throwNotGetProperty($this, $field);
 	}
 	
@@ -101,7 +101,7 @@ abstract class LiteObject {
 		{
 			foreach ($filter as $property) 
 			{
-				if (!isset($this->data[SetupFields::ACCESS][AccessRestriction::NO_GET]))
+				if (!isset($this->data[$property][SetupFields::ACCESS][AccessRestriction::NO_GET]))
 					$result[$property] = $this->$property;
 			}
 		} 
@@ -109,7 +109,7 @@ abstract class LiteObject {
 		{
 			foreach ($this->data as $property => $data) 
 			{
-				if (!isset($this->data[SetupFields::ACCESS][AccessRestriction::NO_GET]))
+				if (!isset($this->data[$property][SetupFields::ACCESS][AccessRestriction::NO_GET]))
 					$result[$property] = $data[SetupFields::VALUE];
 			}
 		}
@@ -133,7 +133,9 @@ abstract class LiteObject {
 	 */
 	public function getPropertyNames(array $exclude = [])
 	{
-		return array_diff(array_keys($this->data), $exclude);
+		if (!$exclude) return array_keys($this->data);
+		
+		return array_values(array_diff(array_keys($this->data), $exclude));
 	}
 	
 	
@@ -146,7 +148,7 @@ abstract class LiteObject {
 		$this->validateFieldAccess($name, AccessRestriction::NO_GET);
 		
 		// Prevent returning parameter by reference
-		if (!isset($this->data[SetupFields::ACCESS][AccessRestriction::NO_SET])) {
+		if (isset($this->data[$name][SetupFields::ACCESS][AccessRestriction::NO_SET])) {
 			$data = $this->data[$name][SetupFields::VALUE];
 			return $data;
 		}
