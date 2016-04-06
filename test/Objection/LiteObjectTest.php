@@ -63,9 +63,9 @@ class LiteObjectTest extends \PHPUnit_Framework_TestCase
 	public function test_PropertyExists_PropertyModified() 
 	{
 		$o = new TestObject_LiteObject();
-		$o->PropString = "adasd";
+		$o->PropString = "abc";
 		
-		$this->assertEquals("adasd", $o->PropString);
+		$this->assertEquals("abc", $o->PropString);
 	}
 	
 	public function test_PropertyExists_PropertyTypeFixed() 
@@ -214,7 +214,7 @@ class LiteObjectTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @expectedException \Exception
 	 */
-	public function test_toArray_FilterForInvalidPoperty_ErrorThrown() 
+	public function test_toArray_FilterForInvalidProperty_ErrorThrown() 
 	{
 		$o = new TestObject_LiteObject();
 		$o->toArray(['a']);

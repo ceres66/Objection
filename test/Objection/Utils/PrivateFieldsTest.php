@@ -16,6 +16,8 @@ class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
 	{
 		$data = [];
 		$p = new PrivateFields($data, $this);
+		
+		/** @noinspection PhpUnusedLocalVariableInspection */
 		$a = $p->n;
 	}
 	
@@ -39,7 +41,7 @@ class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(13, $p->n);
 	}
 	
-	public function test_get_ProperyIsGetOnly_PropertyStillCanBeAccessed() 
+	public function test_get_PropertyIsGetOnly_PropertyStillCanBeAccessed() 
 	{
 		$data = ['n' => [SetupFields::VALUE => 13, SetupFields::ACCESS => AccessRestriction::NO_GET]];
 		$p = new PrivateFields($data, $this);
@@ -57,7 +59,7 @@ class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
 		$p->n = 5;
 	}
 	
-	public function test_get_PropertyExists_PropertyModifed() 
+	public function test_get_PropertyExists_PropertyModified() 
 	{
 		$data = [
 			'n' => LiteSetup::createInt(12), 
