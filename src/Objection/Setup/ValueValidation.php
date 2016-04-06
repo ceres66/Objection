@@ -13,8 +13,8 @@ class ValueValidation
 	
 	/**
 	 * @param array $fieldData
-	 * @param string $value
-	 * @return bool|float|int|mixed|string
+	 * @param mixed $value
+	 * @return mixed
 	 */
 	public static function fixValue($fieldData, $value) 
 	{
@@ -57,7 +57,7 @@ class ValueValidation
 			default:
 				if (!$value instanceof $fieldData[SetupFields::TYPE]) 
 				{
-					$type = (is_object($value) ? get_class($fieldData) : gettype($value));
+					$type = (is_object($value) ? get_class($value) : gettype($value));
 					
 					throw new \Exception(
 						"Value must be of type {$fieldData[SetupFields::TYPE]}. " . 
