@@ -37,9 +37,10 @@ abstract class StateObject extends LiteObject
 	{
 		parent::__construct();
 		
+		// Constructor values should not be marked as modified.
 		foreach ($values as $property => $value) 
 		{
-			parent::__set($property, $value);
+			$this->_p->$property = $value;
 		}
 	}
 	
@@ -165,10 +166,8 @@ abstract class StateObject extends LiteObject
 			return;
 		}
 		
-		if (!isset($this->modified[$name])) 
-		{
+		if (!isset($this->modified[$name]))
 			$oldValue = $this->$name;
-		}
 		
 		parent::__set($name, $value);
 		$newValue = $this->$name;

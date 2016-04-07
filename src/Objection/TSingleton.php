@@ -14,7 +14,7 @@ trait TSingleton
 	
 	
 	/**
-	 * @param static $instance
+	 * @param static|TSingleton $instance
 	 */
 	protected static function initialize($instance) {}
 	
