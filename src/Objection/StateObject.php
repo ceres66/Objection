@@ -2,6 +2,9 @@
 namespace Objection;
 
 
+use Objection\Utils\Exceptions;
+
+
 abstract class StateObject extends LiteObject 
 {
 	private $modified = [];
@@ -51,6 +54,9 @@ abstract class StateObject extends LiteObject
 	 */
 	public function isModified($field) 
 	{
+		if (!isset($this->$field))
+			Exceptions::throwNoProperty($this, $field);
+		
 		return isset($this->modified[$field]);
 	}
 	
@@ -65,16 +71,32 @@ abstract class StateObject extends LiteObject
 	/**
 	 * @param array|string|bool $filter
 	 * @param array|string|bool $exclude
-	 * @return array
+	 * @return array Only the modified property names 
 	 */
-	public function getModified($filter = false, $exclude = false) 
+	public function getModifiedProperties($filter = false, $exclude = false) 
 	{
 		$filter = $this->getPropertyNamesFilter($filter, $exclude);
 		
-		return ($filter ? 
+		$modified = ($filter ? 
 			array_intersect_key($this->modified, array_flip($filter)) :
 			$this->modified
 		);
+		
+		return array_keys($modified);
+	}
+	
+	/**
+	 * @param array|string|bool $filter
+	 * @param array|string|bool $exclude
+	 * @return array Array were key is property name and value is it's new value.  
+	 */
+	public function getModified($filter = false, $exclude = false) 
+	{
+		$modified = $this->getModifiedProperties($filter, $exclude);
+		
+		if (!$modified) return [];
+		
+		return $this->toArray($this->getModifiedProperties($filter, $exclude));
 	}
 	
 	/**
@@ -85,7 +107,7 @@ abstract class StateObject extends LiteObject
 	{
 		$filter = $this->getPropertyNamesFilter($filter, $exclude);
 		
-		if (!$filter)
+		if ($filter)
 		{
 			foreach ($filter as $field)
 			{
@@ -121,7 +143,7 @@ abstract class StateObject extends LiteObject
 			{
 				if (isset($this->modified[$field])) 
 				{
-					parent::__set($this->$field, $this->modified[$field]);
+					parent::__set($field, $this->modified[$field]);
 					unset($this->modified[$field]);
 				}
 			}
@@ -174,10 +196,8 @@ abstract class StateObject extends LiteObject
 		
 		if (isset($oldValue)) 
 		{
-			if ($oldValue !== $newValue) 
-			{
+			if ($oldValue !== $newValue)
 				$this->modified[$name] = $oldValue;
-			}
 		}
 		else if ($newValue === $this->modified[$name])
 		{
