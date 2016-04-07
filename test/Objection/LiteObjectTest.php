@@ -35,15 +35,6 @@ class TestObject_LiteObject extends LiteObject
 	
 	
 	/**
-	 * @param array $values
-	 */
-	public function __construct(array $values = [])
-	{
-		parent::__construct($values);
-	}
-	
-	
-	/**
 	 * @return static
 	 */
 	public function getPrivateAccess() 
