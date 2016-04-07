@@ -13,10 +13,10 @@
         }
     ],
 	
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
 	
     "require": {
-		"php" : ">=5.5"
+		"php" : ">=5.5-stable"
 	},
 	
 	"autoload": {
