@@ -19,7 +19,10 @@ class TestObject_TPrivateCallbackTest
 		return $this->createCallback('callMe');
 	}
 	
-	
+	/** @noinspection PhpUnusedPrivateMethodInspection
+	 * @param $a
+	 * @param $b
+	 */
 	private function callMe($a, $b)
 	{
 		$this->params = [$a, $b];
