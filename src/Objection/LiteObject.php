@@ -5,13 +5,13 @@ namespace Objection;
 use Objection\Enum\SetupFields;
 use Objection\Enum\AccessRestriction;
 use Objection\Utils\Exceptions;
+use Objection\Utils\PrivateFields;
 use Objection\Setup\Container;
 use Objection\Setup\ValueValidation;
-use Objection\Utils\PrivateFields;
 
 
-abstract class LiteObject {
-	
+abstract class LiteObject
+{
 	/** @var array */
 	private $data;
 	
@@ -59,7 +59,8 @@ abstract class LiteObject {
 	/**
 	 * @param array $values Values to give to a new object.
 	 */
-	public function __construct(array $values = []) {
+	public function __construct(array $values = []) 
+	{
 		if (!Container::instance()->has(get_class($this)))
 			Container::instance()->set(get_class($this), $this->_setup());
 		
@@ -77,7 +78,8 @@ abstract class LiteObject {
 	 * @param array $map
 	 * @return static
 	 */
-	public function fromArray(array $map) {
+	public function fromArray(array $map)
+	{
 		foreach ($map as $property => $value) 
 		{
 			$this->$property = $value;
@@ -86,7 +88,7 @@ abstract class LiteObject {
 		return $this;
 	}
 	
-	/**	 
+	/**
 	 * @param array $filter
 	 * @param array $exclude If set, $filter is ignored
 	 * @return array
@@ -148,7 +150,8 @@ abstract class LiteObject {
 		$this->validateFieldAccess($name, AccessRestriction::NO_GET);
 		
 		// Prevent returning parameter by reference
-		if (isset($this->data[$name][SetupFields::ACCESS][AccessRestriction::NO_SET])) {
+		if (isset($this->data[$name][SetupFields::ACCESS][AccessRestriction::NO_SET]))
+		{
 			$data = $this->data[$name][SetupFields::VALUE];
 			return $data;
 		}
@@ -177,5 +180,41 @@ abstract class LiteObject {
 	public function __isset($name) 
 	{
 		return isset($this->data[$name]);
+	}
+	
+	
+	/**
+	 * @param LiteObject[] $objects
+	 * @param array $filter
+	 * @param array $exclude If set, $filter is ignored
+	 * @return array
+	 */
+	public static function allToArray(array $objects, array $filter = [], array $exclude = [])
+	{
+		array_walk($objects,
+			function(&$object)
+				use ($filter, $exclude)
+			{ 
+				/** @var LiteObject $object */
+				$object = $object->toArray($filter, $exclude);
+			});
+		
+		return $objects;
+	}
+	
+	/**
+	 * Need to be called using the class name that is expected.
+	 * @param array $mapsSet
+	 * @return LiteObject[]
+	 */
+	public static function allFromArray(array $mapsSet)
+	{
+		array_walk($mapsSet,
+			function(&$map)
+			{
+				$map = (new static())->fromArray($map);
+			});
+		
+		return $mapsSet;
 	}
 }

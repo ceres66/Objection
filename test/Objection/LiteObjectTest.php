@@ -299,4 +299,70 @@ class LiteObjectTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue(isset($o->PropGetOnly));
 		$this->assertFalse(isset($o->NotFound));
 	}
+	
+	
+	public function test_allToArray()
+	{
+		$data = [
+			new TestObject_LiteObject([
+				'PropString'	=> 'str1'
+			]),
+			new TestObject_LiteObject([
+				'PropString'	=> 'str2'
+			])
+		];
+		
+		$result = LiteObject::allToArray($data);
+		
+		$this->assertCount(2, $result);
+		$this->assertEquals([$data[0]->toArray(), $data[1]->toArray()], $result);
+	}
+	
+	public function test_allToArray_WithFilters()
+	{
+		$data = [
+			new TestObject_LiteObject([
+				'PropString'	=> 'str1'
+			]),
+			new TestObject_LiteObject([
+				'PropString'	=> 'str2'
+			])
+		];
+		
+		$result = LiteObject::allToArray($data, ['PropString']);
+		
+		$this->assertCount(2, $result);
+		$this->assertEquals([$data[0]->toArray(['PropString']), $data[1]->toArray(['PropString'])], $result);
+	}
+	
+	public function test_allToArray_WithExclude()
+	{
+		$data = [
+			new TestObject_LiteObject([
+				'PropString'	=> 'str1'
+			]),
+			new TestObject_LiteObject([
+				'PropString'	=> 'str2'
+			])
+		];
+		
+		$result = LiteObject::allToArray($data, [], ['PropString']);
+		
+		$this->assertCount(2, $result);
+		$this->assertEquals([$data[0]->toArray([], ['PropString']), $data[1]->toArray([], ['PropString'])], $result);
+	}
+	
+	public function test_allFromArray()
+	{
+		$a = new TestObject_LiteObject(['PropString' => 'str1']);
+		$b = new TestObject_LiteObject(['PropString' => 'str2']);
+		
+		$data = [$a->toArray([], ['PropGetOnly']), $b->toArray([], ['PropInt', 'PropGetOnly'])];
+		
+		$result = TestObject_LiteObject::allFromArray($data);
+		
+		$this->assertCount(2, $result);
+		$this->assertEquals($a->toArray(), $result[0]->toArray());
+		$this->assertEquals($b->toArray(), $result[1]->toArray());
+	}
 }
