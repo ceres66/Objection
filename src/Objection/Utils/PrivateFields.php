@@ -4,6 +4,7 @@ namespace Objection\Utils;
 
 use Objection\Enum\SetupFields;
 use Objection\Setup\ValueValidation;
+use Objection\Exceptions\PropertyNotFoundException;
 
 
 class PrivateFields
@@ -29,7 +30,7 @@ class PrivateFields
 	public function &__get($field) 
 	{
 		if (!isset($this->ref_data[$field]))
-			Exceptions::throwNoProperty($this->parent, $field);
+			throw new PropertyNotFoundException($this->parent, $field);
 		
 		return $this->ref_data[$field][SetupFields::VALUE];
 	}
@@ -41,7 +42,7 @@ class PrivateFields
 	public function __set($field, $value) 
 	{
 		if (!isset($this->ref_data[$field]))
-			Exceptions::throwNoProperty($this->parent, $field);
+			throw new PropertyNotFoundException($this->parent, $field);
 		
 		$value = ValueValidation::fixValue($this->ref_data[$field], $value);
 		$this->ref_data[$field][SetupFields::VALUE] = $value;

@@ -2,9 +2,9 @@
 namespace Objection;
 
 
+use Objection\Exceptions;
 use Objection\Enum\SetupFields;
 use Objection\Enum\AccessRestriction;
-use Objection\Utils\Exceptions;
 use Objection\Utils\PrivateFields;
 use Objection\Setup\Container;
 use Objection\Setup\ValueValidation;
@@ -43,10 +43,19 @@ abstract class LiteObject
 	private function validateFieldAccess($field, $accessRestriction = false)
 	{
 		if (!isset($this->data[$field]))
-			Exceptions::throwNoProperty($this, $field);
+			throw new Exceptions\PropertyNotFoundException($this, $field);
 		
 		if ($accessRestriction !== false && isset($this->data[$field][SetupFields::ACCESS][$accessRestriction]))
-			Exceptions::throwNotGetProperty($this, $field);
+		{
+			if ($accessRestriction == AccessRestriction::NO_GET)
+			{
+				throw new Exceptions\WriteOnlyPropertyException($this, $field);
+			}
+			else
+			{
+				throw new Exceptions\ReadOnlyPropertyException($this, $field);
+			}
+		}
 	}
 	
 	
@@ -76,12 +85,16 @@ abstract class LiteObject
 	
 	/**
 	 * @param array $map
+	 * @param bool $ignoreGetOnly Don't thrown an exception if Get only property found in the array
 	 * @return static
 	 */
-	public function fromArray(array $map)
+	public function fromArray(array $map, $ignoreGetOnly = true)
 	{
 		foreach ($map as $property => $value) 
 		{
+			if ($ignoreGetOnly && isset($this->data[$property][SetupFields::ACCESS][AccessRestriction::NO_SET]))
+				continue;
+			
 			$this->$property = $value;
 		}
 		

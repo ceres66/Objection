@@ -71,7 +71,7 @@ class StateObjectTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	/**
-	 * @expectedException \Exception
+	 * @expectedException \Objection\Exceptions\PropertyNotFoundException
 	 */
 	public function test_isModified_PropertyNotFound_ErrorThrown() 
 	{

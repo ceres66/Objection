@@ -68,7 +68,7 @@ class LiteObjectTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	/**
-	 * @expectedException \Exception 
+	 * @expectedException \Objection\Exceptions\PropertyNotFoundException 
 	 */
 	public function test_PropertyDoesNotExits_ErrorThrown() 
 	{
@@ -80,7 +80,7 @@ class LiteObjectTest extends \PHPUnit_Framework_TestCase
 	
 	
 	/**
-	 * @expectedException \Exception 
+	 * @expectedException \Objection\Exceptions\ReadOnlyPropertyException 
 	 */
 	public function test_SetGetOnlyProperty_ErrorThrown() 
 	{
@@ -96,7 +96,7 @@ class LiteObjectTest extends \PHPUnit_Framework_TestCase
 	
 	
 	/**
-	 * @expectedException \Exception 
+	 * @expectedException \Objection\Exceptions\WriteOnlyPropertyException
 	 */
 	public function test_GetSetOnlyProperty_ErrorThrown() 
 	{
@@ -203,7 +203,7 @@ class LiteObjectTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	/**
-	 * @expectedException \Exception
+	 * @expectedException \Objection\Exceptions\PropertyNotFoundException
 	 */
 	public function test_toArray_FilterForInvalidProperty_ErrorThrown() 
 	{
@@ -229,7 +229,7 @@ class LiteObjectTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	/**
-	 * @expectedException \Exception
+	 * @expectedException \Objection\Exceptions\PropertyNotFoundException
 	 */
 	public function test_fromArray_DoesNotExists_ErrorThrown() 
 	{
@@ -237,13 +237,19 @@ class LiteObjectTest extends \PHPUnit_Framework_TestCase
 		$o->fromArray(['dd' => "5"]);
 	}
 	
-	/**
-	 * @expectedException \Exception
-	 */
 	public function test_fromArray_GetOnlyPropertyIgnored() 
 	{
 		$o = new TestObject_LiteObject();
 		$o->fromArray(['PropGetOnly' => "5"]);
+	}
+	
+	/**
+	 * @expectedException \Objection\Exceptions\ReadOnlyPropertyException
+	 */
+	public function test_fromArray_IgnoreFlagIsFalse_GetOnlyPropertyNotIgnored()
+	{
+		$o = new TestObject_LiteObject();
+		$o->fromArray(['PropGetOnly' => "5"], false);
 	}
 	
 	

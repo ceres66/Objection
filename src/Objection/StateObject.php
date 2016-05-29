@@ -2,7 +2,7 @@
 namespace Objection;
 
 
-use Objection\Utils\Exceptions;
+use Objection\Exceptions\PropertyNotFoundException;
 
 
 abstract class StateObject extends LiteObject 
@@ -55,7 +55,7 @@ abstract class StateObject extends LiteObject
 	public function isModified($field) 
 	{
 		if (!isset($this->$field))
-			Exceptions::throwNoProperty($this, $field);
+			throw new PropertyNotFoundException($this, $field);
 		
 		return isset($this->modified[$field]);
 	}
