@@ -40,7 +40,7 @@ class ValueValidationTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	/**
-	 * @expectedException \Exception
+	 * @expectedException \Objection\Exceptions\InvalidEnumValueTypeException
 	 */
 	public function test_fixValue_InvalidEnumValue_ThrowException() 
 	{
@@ -62,7 +62,7 @@ class ValueValidationTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	/**
-	 * @expectedException \Exception
+	 * @expectedException \Objection\Exceptions\InvalidValueTypeException
 	 */
 	public function test_fixValue_InvalidInstanceType_ExceptionThrown() 
 	{

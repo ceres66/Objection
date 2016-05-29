@@ -18,6 +18,6 @@ class ReadOnlyPropertyException extends LiteObjectException
 			$object = get_class($object);
 		}
 		
-		parent::__construct("Trying to write to a read-only property '$object->$property'");
+		parent::__construct("Trying to read, write-only property '$object->$property'");
 	}
 }

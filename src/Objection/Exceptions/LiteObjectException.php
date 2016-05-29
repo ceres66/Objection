@@ -2,4 +2,4 @@
 namespace Objection\Exceptions;
 
 
-abstract class LiteObjectException extends \Exception {}
+class LiteObjectException extends \Exception {}

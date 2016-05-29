@@ -2,6 +2,7 @@
 namespace Objection\Setup;
 
 
+use Objection\Exceptions;
 use Objection\Enum\VarType;
 use Objection\Enum\SetupFields;
 
@@ -50,19 +51,13 @@ class ValueValidation
 			
 			case VarType::ENUM:
 				if (!isset($fieldData[SetupFields::VALUES_SET][$value]))
-					throw new \Exception("Invalid value '$value' for field");
+					throw new Exceptions\InvalidEnumValueTypeException($fieldData[SetupFields::VALUES_SET], $value);
 				
 				break;
 			
 			default:
-				if (!$value instanceof $fieldData[SetupFields::TYPE]) 
-				{
-					$type = (is_object($value) ? get_class($value) : gettype($value));
-					
-					throw new \Exception(
-						"Value must be of type {$fieldData[SetupFields::TYPE]}. " . 
-						"Got {$type} instead");
-				}
+				if (!$value instanceof $fieldData[SetupFields::TYPE])
+					throw new Exceptions\InvalidValueTypeException($fieldData[SetupFields::TYPE], $value);
 				
 				break;
 		}

@@ -18,6 +18,6 @@ class PropertyNotFoundException extends LiteObjectException
 			$object = get_class($object);
 		}
 		
-		parent::__construct("No such property exists '$object->$property'", 0, null);
+		parent::__construct("No such property exists '$object->$property'");
 	}
 }

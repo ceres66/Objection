@@ -2,6 +2,9 @@
 namespace Objection\Setup;
 
 
+use Objection\Exceptions\LiteObjectException;
+
+
 class Container 
 {
 	use \Objection\TSingleton;
@@ -27,7 +30,7 @@ class Container
 	public function set($className, array $setup) 
 	{
 		if (isset($this->setup[$className]))
-			throw new \Exception("The class [$className] is already defined!");
+			throw new LiteObjectException("The class [$className] is already defined!");
 		
 		$this->setup[$className] = $setup;
 	}

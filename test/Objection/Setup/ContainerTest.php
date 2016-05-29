@@ -29,7 +29,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 	
 	/**
      * @runInSeparateProcess
-	 * @expectedException \Exception
+	 * @expectedException \Objection\Exceptions\LiteObjectException
      */
 	public function test_set_ClassAlreadyDefined_ErrorThrown()
 	{
