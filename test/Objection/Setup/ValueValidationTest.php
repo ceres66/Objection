@@ -14,12 +14,6 @@ class ValueValidationTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame(23, ValueValidation::fixValue(LiteSetup::createInt(), "23"));
 		$this->assertSame("1", ValueValidation::fixValue(LiteSetup::createString(), 1));
 		$this->assertSame(false, ValueValidation::fixValue(LiteSetup::createBool(), []));
-			
-		/* $this->assertSame(1.0, ValueValidation::fixValue(LiteSetup::createDouble(), 1));
-		$this->assertSame(1.0, ValueValidation::fixValue(LiteSetup::createDouble(), 1));
-		$this->assertSame(1.0, ValueValidation::fixValue(LiteSetup::createDouble(), 1));
-		$this->assertSame(1.0, ValueValidation::fixValue(LiteSetup::createDouble(), 1));
-		$this->assertSame(1.0, ValueValidation::fixValue(LiteSetup::createDouble(), 1)); */
 	}
 	
 	public function test_fixValue_Array() 
