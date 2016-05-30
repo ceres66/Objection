@@ -228,6 +228,15 @@ class LiteObjectTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame("A", $o->PropString);
 	}
 	
+	public function test_fromArray_ParameterIsObject()
+	{
+		$o = new TestObject_LiteObject();
+		$o->fromArray((object)['PropInt' => "5", 'PropString' => "A"]);
+		
+		$this->assertSame(5, $o->PropInt);
+		$this->assertSame("A", $o->PropString);
+	}
+	
 	/**
 	 * @expectedException \Objection\Exceptions\PropertyNotFoundException
 	 */

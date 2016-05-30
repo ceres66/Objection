@@ -84,11 +84,11 @@ abstract class LiteObject
 	
 	
 	/**
-	 * @param array $map
+	 * @param array|\stdClass $map
 	 * @param bool $ignoreGetOnly Don't thrown an exception if Get only property found in the array
 	 * @return static
 	 */
-	public function fromArray(array $map, $ignoreGetOnly = true)
+	public function fromArray($map, $ignoreGetOnly = true)
 	{
 		foreach ($map as $property => $value) 
 		{
