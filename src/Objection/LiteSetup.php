@@ -4,6 +4,7 @@ namespace Objection;
 
 use Objection\Enum\VarType;
 use Objection\Enum\SetupFields;
+use Objection\Exceptions\InvalidPropertySetupException;
 
 
 class LiteSetup 
@@ -93,7 +94,7 @@ class LiteSetup
 			if (is_string($set) && class_exists($set) && in_array(TConstsClass::class, class_uses($set)))
 				$set = $set::getConstValues();
 			else
-				throw new \Exception('$set must be array or TConstsClass name.');
+				throw new InvalidPropertySetupException("createEnum accepts only array of values or TConstsClass cass.");
 		}
 
 		if ($default === false)
