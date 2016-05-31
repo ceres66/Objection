@@ -212,7 +212,7 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @expectedException \Objection\Exceptions\InvalidPropertySetupException
 	 */
-	public function test_createEnum_CreateUsingNotAClassString()
+	public function test_createEnum_InvalidClassNamePassed()
 	{
 		LiteSetup::createEnum('not_a_class');
 	}
