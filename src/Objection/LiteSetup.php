@@ -94,7 +94,7 @@ class LiteSetup
 			if (is_string($set) && class_exists($set) && in_array(TConstsClass::class, class_uses($set)))
 				$set = $set::getConstValues();
 			else
-				throw new InvalidPropertySetupException("createEnum accepts only array of values or TConstsClass cass.");
+				throw new InvalidPropertySetupException("createEnum accepts only array of values or TConstsClass class");
 		}
 
 		if ($default === false)
