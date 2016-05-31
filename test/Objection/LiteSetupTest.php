@@ -6,6 +6,13 @@ use Objection\Enum\AccessRestriction;
 use Objection\Enum\VarType;
 use Objection\Enum\SetupFields;
 
+class Test_LiteSetup_CreateEnum_Class
+{
+	use TConstsClass;
+
+	const A = 'a';
+	const B = 'b';
+}
 
 class LiteSetupTest extends \PHPUnit_Framework_TestCase
 {
@@ -186,5 +193,19 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 		
 		$result = LiteSetup::createEnum(['a', 'b', 'c'], null, false, AccessRestriction::NO_SET);
 		$this->assertTrue(isset($result[SetupFields::ACCESS][AccessRestriction::NO_SET]));
+	}
+
+	public function test_createEnum_CreateUsingTConstsClass()
+	{
+		$enum = ['a', 'b'];
+		$flipped = array_flip($enum);
+
+		$this->assertEquals(
+			[
+				SetupFields::TYPE			=> VarType::ENUM,
+				SetupFields::VALUE			=> 'a',
+				SetupFields::VALUES_SET		=> $flipped,
+			],
+			LiteSetup::createEnum(Test_LiteSetup_CreateEnum_Class::class));
 	}
 }

@@ -80,14 +80,19 @@ class LiteSetup
 	}
 	
 	/**
-	 * @param array $set All possible values for this field.
+	 * @param array|string $set All possible values for this field.
 	 * @param string|null|bool $default
 	 * @param bool $isNull
 	 * @param int|bool $access
 	 * @return array
+	 * @throws \Exception
 	 */
-	public static function createEnum(array $set, $default = false, $isNull = false, $access = false)
+	public static function createEnum($set, $default = false, $isNull = false, $access = false)
 	{
+		if (!is_string($set) && !is_array($set)) throw new \Exception('$set must be array or class name.');
+
+		if (is_string($set) && class_exists($set) && in_array(TConstsClass::class, class_uses($set))) $set = $set::getConstValues();
+
 		if ($default === false) $default = $set[0];
 		
 		$set = array_flip($set);
