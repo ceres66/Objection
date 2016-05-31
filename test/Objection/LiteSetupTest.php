@@ -208,4 +208,20 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 			],
 			LiteSetup::createEnum(Test_LiteSetup_CreateEnum_Class::class));
 	}
+
+	/**
+	 * @expectedException \Exception
+	 */
+	public function test_createEnum_CreateUsingNotAClassString()
+	{
+		LiteSetup::createEnum('not_a_class');
+	}
+
+	/**
+	 * @expectedException \Exception
+	 */
+	public function test_createEnum_CreateUsingNotTConstsClass()
+	{
+		LiteSetup::createEnum(\stdClass::class);
+	}
 }
