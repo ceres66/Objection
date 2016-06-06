@@ -12,14 +12,23 @@ class PrivateFields
 	/** @var array */
 	private $ref_data;
 	
+	/** @var array */
+	private $setup;
+	
 	/** @var mixed */
 	private $parent;
 	
 	
-	public function __construct(&$ref_data, $parent)
+	/**
+	 * @param array $ref_data
+	 * @param array $setup
+	 * @param mixed $parent
+	 */
+	public function __construct(array &$ref_data, array $setup, $parent)
 	{
-		$this->ref_data = &$ref_data;
-		$this->parent = $parent;
+		$this->ref_data =& $ref_data;
+		$this->setup	= $setup;
+		$this->parent	= $parent;
 	}
 	
 	
@@ -32,7 +41,7 @@ class PrivateFields
 		if (!isset($this->ref_data[$field]))
 			throw new PropertyNotFoundException($this->parent, $field);
 		
-		return $this->ref_data[$field][SetupFields::VALUE];
+		return $this->ref_data[$field];
 	}
 	
 	/**
@@ -44,8 +53,8 @@ class PrivateFields
 		if (!isset($this->ref_data[$field]))
 			throw new PropertyNotFoundException($this->parent, $field);
 		
-		$value = ValueValidation::fixValue($this->ref_data[$field], $value);
-		$this->ref_data[$field][SetupFields::VALUE] = $value;
+		$value = ValueValidation::fixValue($this->setup[$field], $value);
+		$this->ref_data[$field] = $value;
 	}
 	
 	/**
@@ -54,6 +63,6 @@ class PrivateFields
 	 */
 	public function __isset($name) 
 	{
-		return isset($this->ref_data[$name]);
+		return isset($this->setup[$name]);
 	}
 }

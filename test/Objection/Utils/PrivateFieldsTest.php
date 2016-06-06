@@ -15,7 +15,8 @@ class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
 	public function test_get_NoProperty_ErrorThrown() 
 	{
 		$data = [];
-		$p = new PrivateFields($data, $this);
+		$values = [];
+		$p = new PrivateFields($values, $data, $this);
 		
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$a = $p->n;
@@ -23,8 +24,9 @@ class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
 	
 	public function test_get_PropertyExists_PropertyReturned() 
 	{
-		$data = ['n' => [SetupFields::VALUE => 12], 'a' => [SetupFields::VALUE => 13]];
-		$p = new PrivateFields($data, $this);
+		$data = ['n' => [], 'a' => []];
+		$values = ['n' => 12, 'a' => 13];
+		$p = new PrivateFields($values, $data, $this);
 		
 		$this->assertEquals(12, $p->n);
 		$this->assertEquals(13, $p->a);
@@ -32,8 +34,9 @@ class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
 	
 	public function test_get_PropertyReturnedByReference() 
 	{
-		$data = ['n' => [SetupFields::VALUE => 12]];
-		$p = new PrivateFields($data, $this);
+		$data = ['n' => []];
+		$values = ['n' => 12];
+		$p = new PrivateFields($values, $data, $this);
 		
 		$val =& $p->n;
 		$val = 13;
@@ -43,8 +46,10 @@ class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
 	
 	public function test_get_PropertyIsGetOnly_PropertyStillCanBeAccessed() 
 	{
-		$data = ['n' => [SetupFields::VALUE => 13, SetupFields::ACCESS => AccessRestriction::NO_GET]];
-		$p = new PrivateFields($data, $this);
+		$data = ['n' => [SetupFields::ACCESS => AccessRestriction::NO_GET]];
+		$values = ['n' => 13];
+		
+		$p = new PrivateFields($values, $data, $this);
 		$this->assertEquals(13, $p->n);
 	}
 	
@@ -54,8 +59,8 @@ class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function test_set_NoProperty_ErrorThrown() 
 	{
-		$data = [];
-		$p = new PrivateFields($data, $this);
+		$values = [];
+		$p = new PrivateFields($values, [], $this);
 		$p->n = 5;
 	}
 	
@@ -65,7 +70,13 @@ class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
 			'n' => LiteSetup::createInt(12), 
 			'a' => LiteSetup::createInt(13)
 		];
-		$p = new PrivateFields($data, $this);
+		
+		unset($data['n'][SetupFields::VALUE]);
+		unset($data['a'][SetupFields::VALUE]);
+		
+		$values = ['n' => 12, 'a' => 12];
+		
+		$p = new PrivateFields($values, $data, $this);
 		
 		$p->n = 24;
 		$p->a = 25;
@@ -81,7 +92,12 @@ class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
 			'a' => LiteSetup::createArray([])
 		];
 		
-		$p = new PrivateFields($data, $this);
+		unset($data['n'][SetupFields::VALUE]);
+		unset($data['a'][SetupFields::VALUE]);
+		
+		$values = ['n' => 12, 'a' => []];
+		
+		$p = new PrivateFields($values, $data, $this);
 		
 		$p->n = "24";
 		$p->a = 25;
@@ -91,11 +107,12 @@ class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	
-	public function test_isset() 
+	public function test_isset_ValidatedUsingData() 
 	{
 		$data = ['n' => []];
+		$values = [];
 		
-		$p = new PrivateFields($data, $this);
+		$p = new PrivateFields($values, $data, $this);
 		
 		$this->assertTrue(isset($p->n));
 		$this->assertFalse(isset($p->a));

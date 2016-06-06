@@ -15,6 +15,9 @@ abstract class LiteObject
 	/** @var array */
 	private $data;
 	
+	/** @var array */
+	private $values;
+	
 	
 	/** @var static */
 	protected $_p;
@@ -70,11 +73,15 @@ abstract class LiteObject
 	 */
 	public function __construct(array $values = []) 
 	{
-		if (!Container::instance()->has(get_class($this)))
-			Container::instance()->set(get_class($this), $this->_setup());
+		$className = get_class($this);
 		
-		$this->data = Container::instance()->get(get_class($this));
-		$this->_p = new PrivateFields($this->data, $this);
+		if (!Container::instance()->has($className))
+			Container::instance()->set($className, $this->_setup());
+		
+		$this->data = Container::instance()->get($className);
+		$this->values = Container::instance()->getValues($className);
+		
+		$this->_p = new PrivateFields($this->values, $this->data, $this);
 		
 		foreach ($values as $property => $value) 
 		{
@@ -125,7 +132,7 @@ abstract class LiteObject
 			foreach ($this->data as $property => $data) 
 			{
 				if (!isset($this->data[$property][SetupFields::ACCESS][AccessRestriction::NO_GET]))
-					$result[$property] = $data[SetupFields::VALUE];
+					$result[$property] = $this->values[$property];
 			}
 		}
 		
@@ -165,11 +172,11 @@ abstract class LiteObject
 		// Prevent returning parameter by reference
 		if (isset($this->data[$name][SetupFields::ACCESS][AccessRestriction::NO_SET]))
 		{
-			$data = $this->data[$name][SetupFields::VALUE];
+			$data = $this->values[$name];
 			return $data;
 		}
 		
-		return $this->data[$name][SetupFields::VALUE];
+		return $this->values[$name];
 	}
 	
 	/**
@@ -181,7 +188,7 @@ abstract class LiteObject
 		$this->validateFieldAccess($name, AccessRestriction::NO_SET);
 		
 		$value = ValueValidation::fixValue($this->data[$name], $value);
-		$this->data[$name][SetupFields::VALUE] = $value;
+		$this->values[$name] = $value;
 		
 		$this->invokeOnSet($name, $value);
 	}

@@ -2,6 +2,9 @@
 namespace Objection\Setup;
 
 
+use Objection\Enum\SetupFields;
+
+
 class ContainerTest extends \PHPUnit_Framework_TestCase 
 {
 	/**
@@ -46,6 +49,52 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 		Container::instance()->set('b', $data);
 		
 		$this->assertSame($data, Container::instance()->get('b'));
+	}
+	
+	/**
+	 * @runInSeparateProcess
+	 */
+	public function test_get_UnExistingProperty_ReturnNull()
+	{
+		$data = ['a', 'b'];
+		Container::instance()->set('b', $data);
+		
 		$this->assertEquals(null, Container::instance()->get('c'));
+	}
+	
+	/**
+	 * @runInSeparateProcess
+	 */
+	public function test_get_ValueFieldsAreNotReturned()
+	{
+		$data = ['a' => [SetupFields::VALUE => 1, SetupFields::ACCESS => 2], 'b'];
+		Container::instance()->set('b', $data);
+		
+		unset($data['a'][SetupFields::VALUE]);
+		
+		$this->assertSame($data, Container::instance()->get('b'));
+	}
+	
+	
+	/**
+	 * @runInSeparateProcess
+	 */
+	public function test_getValues()
+	{
+		$data = ['a' => [SetupFields::VALUE => 1], 'b' => [SetupFields::VALUE => 2]];
+		Container::instance()->set('b', $data);
+		
+		$this->assertEquals(['a' => 1, 'b' => 2], Container::instance()->getValues('b'));
+	}
+	
+	/**
+	 * @runInSeparateProcess
+	 */
+	public function test_getValues_FieldWithoutValueNotReturned()
+	{
+		$data = ['a' => [], 'b' => [SetupFields::VALUE => 2]];
+		Container::instance()->set('b', $data);
+		
+		$this->assertEquals(['b' => 2], Container::instance()->getValues('b'));
 	}
 }

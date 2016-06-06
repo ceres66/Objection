@@ -2,6 +2,7 @@
 namespace Objection\Setup;
 
 
+use Objection\Enum\SetupFields;
 use Objection\Exceptions\LiteObjectException;
 
 
@@ -12,6 +13,27 @@ class Container
 	
 	/** @var array[] */
 	private $setup = [];
+	
+	/** @var array */
+	private $values = [];
+	
+	
+	/**
+	 * @param string $className
+	 */
+	private function extractValues($className)
+	{
+		$this->values[$className] = [];
+		
+		foreach ($this->setup[$className] as $propertyName => $propertySetup)
+		{
+			if (isset($propertySetup[SetupFields::VALUE]))
+			{
+				$this->values[$className][$propertyName] = $propertySetup[SetupFields::VALUE];
+				unset($this->setup[$className][$propertyName][SetupFields::VALUE]);
+			}
+		}
+	}
 	
 	
 	/**
@@ -33,6 +55,8 @@ class Container
 			throw new LiteObjectException("The class [$className] is already defined!");
 		
 		$this->setup[$className] = $setup;
+		
+		$this->extractValues($className);
 	}
 	
 	/**
@@ -44,5 +68,16 @@ class Container
 		if (!isset($this->setup[$className])) return null;
 		
 		return $this->setup[$className];
+	}
+	
+	/**
+	 * @param string $className
+	 * @return array
+	 */
+	public function getValues($className)
+	{
+		if (!isset($this->values[$className])) return null;
+		
+		return $this->values[$className];
 	}
 }
