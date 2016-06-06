@@ -87,7 +87,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(['a' => 1, 'b' => 2], Container::instance()->getValues('b'));
 	}
 	
-	
 	/**
 	 * @runInSeparateProcess
 	 */
