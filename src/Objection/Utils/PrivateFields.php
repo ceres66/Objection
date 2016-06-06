@@ -38,7 +38,7 @@ class PrivateFields
 	 */
 	public function &__get($field) 
 	{
-		if (!isset($this->ref_data[$field]))
+		if (!isset($this->setup[$field]))
 			throw new PropertyNotFoundException($this->parent, $field);
 		
 		return $this->ref_data[$field];
@@ -50,7 +50,7 @@ class PrivateFields
 	 */
 	public function __set($field, $value) 
 	{
-		if (!isset($this->ref_data[$field]))
+		if (!isset($this->setup[$field]))
 			throw new PropertyNotFoundException($this->parent, $field);
 		
 		$value = ValueValidation::fixValue($this->setup[$field], $value);

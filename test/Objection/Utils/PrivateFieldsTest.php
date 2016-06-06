@@ -106,6 +106,17 @@ class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals([25], $p->a);
 	}
 	
+	public function test_get_ValueIsNull()
+	{
+		$data = ['n' => LiteSetup::createInt(null)];
+		unset($data['n'][SetupFields::VALUE]);
+		$values = ['n' => null];
+		
+		$p = new PrivateFields($values, $data, $this);
+		
+		$this->assertNull($p->n);
+	}
+	
 	
 	public function test_isset_ValidatedUsingData() 
 	{
