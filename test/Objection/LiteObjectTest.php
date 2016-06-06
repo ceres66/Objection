@@ -157,111 +157,6 @@ class LiteObjectTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	
-	public function test_toArray() 
-	{
-		$o = new TestObject_LiteObject();
-		$this->assertEquals(
-			[
-				'PropInt'		=> $o->PropInt,
-				'PropGetOnly'	=> $o->PropGetOnly,
-				'PropArray'		=> $o->PropArray,
-				'PropString'	=> $o->PropString,
-				'OnSetProperty'	=> $o->OnSetProperty
-			],
-			$o->toArray());
-	}
-	
-	public function test_toArray_WithFiler() 
-	{
-		$o = new TestObject_LiteObject();
-		$this->assertEquals(
-			[
-				'PropString'	=> $o->PropString,
-				'PropInt'		=> $o->PropInt
-			],
-			$o->toArray(['PropString', 'PropInt']));
-	}
-	
-	public function test_toArray_WithFiler_OrderSameAsFilter() 
-	{
-		$o = new TestObject_LiteObject();
-		$this->assertEquals(
-			['PropString', 'PropInt'],
-			array_keys($o->toArray(['PropString', 'PropInt'])));
-	}
-	
-	public function test_toArray_WithExclude() 
-	{
-		$o = new TestObject_LiteObject();
-		$this->assertEquals(
-			[
-				'PropInt'		=> $o->PropInt,
-				'PropGetOnly'	=> $o->PropGetOnly,
-				'PropArray'		=> $o->PropArray
-			],
-			$o->toArray([], ['OnSetProperty', 'PropString']));
-	}
-	
-	/**
-	 * @expectedException \Objection\Exceptions\PropertyNotFoundException
-	 */
-	public function test_toArray_FilterForInvalidProperty_ErrorThrown() 
-	{
-		$o = new TestObject_LiteObject();
-		$o->toArray(['a']);
-	}
-	
-	public function test_toArray_FilterForSetOnlyProperty_PropertyIgnored() 
-	{
-		$o = new TestObject_LiteObject();
-		$d = $o->toArray(['PropSetOnly']);
-		$this->assertFalse(isset($d['PropGetOnly']));
-	}
-	
-	
-	public function test_fromArray() 
-	{
-		$o = new TestObject_LiteObject();
-		$o->fromArray(['PropInt' => "5", 'PropString' => "A"]);
-		
-		$this->assertSame(5, $o->PropInt);
-		$this->assertSame("A", $o->PropString);
-	}
-	
-	public function test_fromArray_ParameterIsObject()
-	{
-		$o = new TestObject_LiteObject();
-		$o->fromArray((object)['PropInt' => "5", 'PropString' => "A"]);
-		
-		$this->assertSame(5, $o->PropInt);
-		$this->assertSame("A", $o->PropString);
-	}
-	
-	/**
-	 * @expectedException \Objection\Exceptions\PropertyNotFoundException
-	 */
-	public function test_fromArray_DoesNotExists_ErrorThrown() 
-	{
-		$o = new TestObject_LiteObject();
-		$o->fromArray(['dd' => "5"]);
-	}
-	
-	public function test_fromArray_GetOnlyPropertyIgnored() 
-	{
-		$o = new TestObject_LiteObject();
-		$o->fromArray(['PropGetOnly' => "5"]);
-	}
-	
-	/**
-	 * @expectedException \Objection\Exceptions\ReadOnlyPropertyException
-	 */
-	public function test_fromArray_IgnoreFlagIsFalse_GetOnlyPropertyNotIgnored()
-	{
-		$o = new TestObject_LiteObject();
-		$o->fromArray(['PropGetOnly' => "5"], false);
-	}
-	
-	
 	public function test_getPropertyNames() 
 	{
 		$o = new TestObject_LiteObject();
@@ -316,68 +211,39 @@ class LiteObjectTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	
-	public function test_allToArray()
+	public function test_toArray_Sanity()
 	{
-		$data = [
-			new TestObject_LiteObject([
-				'PropString'	=> 'str1'
-			]),
-			new TestObject_LiteObject([
-				'PropString'	=> 'str2'
-			])
-		];
-		
-		$result = LiteObject::allToArray($data);
-		
-		$this->assertCount(2, $result);
-		$this->assertEquals([$data[0]->toArray(), $data[1]->toArray()], $result);
+		$o = new TestObject_LiteObject();
+		$this->assertEquals(['PropInt' => $o->PropInt], $o->toArray(['PropInt']));
 	}
 	
-	public function test_allToArray_WithFilters()
+	public function test_fromArray_Sanity()
 	{
-		$data = [
-			new TestObject_LiteObject([
-				'PropString'	=> 'str1'
-			]),
-			new TestObject_LiteObject([
-				'PropString'	=> 'str2'
-			])
-		];
+		$o = new TestObject_LiteObject();
+		$o->fromArray(['PropInt' => "5", 'PropString' => "A"]);
 		
-		$result = LiteObject::allToArray($data, ['PropString']);
-		
-		$this->assertCount(2, $result);
-		$this->assertEquals([$data[0]->toArray(['PropString']), $data[1]->toArray(['PropString'])], $result);
+		$this->assertSame(5, $o->PropInt);
+		$this->assertSame("A", $o->PropString);
 	}
 	
-	public function test_allToArray_WithExclude()
+	public function test_allToArray_Sanity()
 	{
-		$data = [
-			new TestObject_LiteObject([
-				'PropString'	=> 'str1'
-			]),
-			new TestObject_LiteObject([
-				'PropString'	=> 'str2'
-			])
-		];
+		$data = [new TestObject_LiteObject(['PropString' => 'str1'])];
 		
-		$result = LiteObject::allToArray($data, [], ['PropString']);
+		$result = TestObject_LiteObject::allToArray($data, [], ['PropString']);
 		
-		$this->assertCount(2, $result);
-		$this->assertEquals([$data[0]->toArray([], ['PropString']), $data[1]->toArray([], ['PropString'])], $result);
+		$this->assertEquals([$data[0]->toArray([], ['PropString'])], $result);
 	}
 	
-	public function test_allFromArray()
+	public function test_allFromArray_Sanity()
 	{
 		$a = new TestObject_LiteObject(['PropString' => 'str1']);
-		$b = new TestObject_LiteObject(['PropString' => 'str2']);
-		
-		$data = [$a->toArray([], ['PropGetOnly']), $b->toArray([], ['PropInt', 'PropGetOnly'])];
+		$data = [$a->toArray([], ['PropGetOnly'])];
 		
 		$result = TestObject_LiteObject::allFromArray($data);
 		
-		$this->assertCount(2, $result);
+		$this->assertCount(1, $result);
+		$this->assertInstanceOf(TestObject_LiteObject::class, $result[0]);
 		$this->assertEquals($a->toArray(), $result[0]->toArray());
-		$this->assertEquals($b->toArray(), $result[1]->toArray());
 	}
 }

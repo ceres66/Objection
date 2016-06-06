@@ -5,6 +5,7 @@ namespace Objection;
 use Objection\Exceptions;
 use Objection\Enum\SetupFields;
 use Objection\Enum\AccessRestriction;
+use Objection\Utils\ArrayParser;
 use Objection\Utils\PrivateFields;
 use Objection\Setup\Container;
 use Objection\Setup\ValueValidation;
@@ -91,20 +92,13 @@ abstract class LiteObject
 	
 	
 	/**
-	 * @param array|\stdClass $map
+	 * @param array|\stdClass $source
 	 * @param bool $ignoreGetOnly Don't thrown an exception if Get only property found in the array
 	 * @return static
 	 */
-	public function fromArray($map, $ignoreGetOnly = true)
+	public function fromArray($source, $ignoreGetOnly = true)
 	{
-		foreach ($map as $property => $value) 
-		{
-			if ($ignoreGetOnly && isset($this->data[$property][SetupFields::ACCESS][AccessRestriction::NO_SET]))
-				continue;
-			
-			$this->$property = $value;
-		}
-		
+		ArrayParser::fromArray($this, $source, $ignoreGetOnly);
 		return $this;
 	}
 	
@@ -115,28 +109,7 @@ abstract class LiteObject
 	 */
 	public function toArray(array $filter = [], array $exclude = [])
 	{
-		$result = [];
-		
-		if ($exclude) $filter = $this->getPropertyNames($exclude);
-		
-		if ($filter) 
-		{
-			foreach ($filter as $property) 
-			{
-				if (!isset($this->data[$property][SetupFields::ACCESS][AccessRestriction::NO_GET]))
-					$result[$property] = $this->$property;
-			}
-		} 
-		else 
-		{
-			foreach ($this->data as $property => $data) 
-			{
-				if (!isset($this->data[$property][SetupFields::ACCESS][AccessRestriction::NO_GET]))
-					$result[$property] = $this->values[$property];
-			}
-		}
-		
-		return $result;
+		return ArrayParser::toArray($this, $filter, $exclude);
 	}
 	
 	/**
@@ -219,30 +192,15 @@ abstract class LiteObject
 	 */
 	public static function allToArray(array $objects, array $filter = [], array $exclude = [])
 	{
-		array_walk($objects,
-			function(&$object)
-				use ($filter, $exclude)
-			{ 
-				/** @var LiteObject $object */
-				$object = $object->toArray($filter, $exclude);
-			});
-		
-		return $objects;
+		return ArrayParser::allToArray($objects, $filter, $exclude);
 	}
 	
 	/**
-	 * Need to be called using the class name that is expected.
 	 * @param array $mapsSet
 	 * @return LiteObject[]
 	 */
 	public static function allFromArray(array $mapsSet)
 	{
-		array_walk($mapsSet,
-			function(&$map)
-			{
-				$map = (new static())->fromArray($map);
-			});
-		
-		return $mapsSet;
+		return ArrayParser::allFromArray(static::class, $mapsSet);
 	}
 }

@@ -2,9 +2,9 @@
 namespace Objection\Utils;
 
 
+use Objection\LiteSetup;
 use Objection\Enum\SetupFields;
 use Objection\Enum\AccessRestriction;
-use Objection\LiteSetup;
 
 
 class PrivateFieldsTest extends \PHPUnit_Framework_TestCase
