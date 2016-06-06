@@ -4,7 +4,7 @@ namespace Objection;
 
 trait TPrivateCallback 
 {
-	protected function createCallback($method) 
+	private function createCallback($method) 
 	{
 		return function() use ($method) 
 		{

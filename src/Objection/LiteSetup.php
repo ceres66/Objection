@@ -13,6 +13,25 @@ class LiteSetup
 	
 	
 	/**
+	 * @param TConstsClass|array $set
+	 * @return mixed
+	 * @throws InvalidPropertySetupException
+	 */
+	private static function getValuesFromConstsClass($set)
+	{
+		if (is_string($set) && class_exists($set) && in_array(TConstsClass::class, class_uses($set)))
+		{
+			/** @var TConstsClass $set */
+			return $set::getConstValues();
+		}
+		else
+		{
+			throw new InvalidPropertySetupException("createEnum accepts only array of values or TConstsClass class");
+		}
+	}
+	
+	
+	/**
 	 * @param string $type
 	 * @param mixed $default
 	 * @param bool $isNull
@@ -90,12 +109,7 @@ class LiteSetup
 	public static function createEnum($set, $default = false, $isNull = false, $access = false)
 	{
 		if (!is_array($set))
-		{
-			if (is_string($set) && class_exists($set) && in_array(TConstsClass::class, class_uses($set)))
-				$set = $set::getConstValues();
-			else
-				throw new InvalidPropertySetupException("createEnum accepts only array of values or TConstsClass class");
-		}
+			$set = self::getValuesFromConstsClass($set);
 
 		if ($default === false)
 			$default = $set[0];

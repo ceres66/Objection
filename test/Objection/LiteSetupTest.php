@@ -194,12 +194,12 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 		$result = LiteSetup::createEnum(['a', 'b', 'c'], null, false, AccessRestriction::NO_SET);
 		$this->assertTrue(isset($result[SetupFields::ACCESS][AccessRestriction::NO_SET]));
 	}
-
+	
 	public function test_createEnum_CreateUsingTConstsClass()
 	{
 		$enum = ['a', 'b'];
 		$flipped = array_flip($enum);
-
+		
 		$this->assertEquals(
 			[
 				SetupFields::TYPE			=> VarType::ENUM,
