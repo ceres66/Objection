@@ -69,10 +69,7 @@ abstract class LiteObject
 	protected abstract function _setup();
 	
 	
-	/**
-	 * @param array $values Values to give to a new object.
-	 */
-	public function __construct(array $values = []) 
+	public function __construct() 
 	{
 		$className = get_class($this);
 		
@@ -83,11 +80,6 @@ abstract class LiteObject
 		$this->values = Container::instance()->getValues($className);
 		
 		$this->_p = new PrivateFields($this->values, $this->data, $this);
-		
-		foreach ($values as $property => $value) 
-		{
-			$this->_p->$property = $value;
-		}
 	}
 	
 	

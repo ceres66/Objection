@@ -92,13 +92,6 @@ class StateObjectTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	
-	public function test_constructor_FieldsSetInConstructorNotMarkedAsModified() 
-	{
-		$a = new TestObject_StateObject(['PropInt' => 16]);
-		$this->assertFalse($a->isModified('PropInt'));
-	}
-	
-	
 	public function test_getModifiedProperties_None_ReturnEmptyArray() 
 	{
 		$a = new TestObject_StateObject();

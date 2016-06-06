@@ -34,21 +34,6 @@ abstract class StateObject extends LiteObject
 	
 	
 	/**
-	 * @param array $values
-	 */
-	public function __construct(array $values = []) 
-	{
-		parent::__construct();
-		
-		// Constructor values should not be marked as modified.
-		foreach ($values as $property => $value) 
-		{
-			$this->_p->$property = $value;
-		}
-	}
-	
-	
-	/**
 	 * @param string $field
 	 * @return bool
 	 */

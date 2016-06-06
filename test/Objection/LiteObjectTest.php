@@ -35,6 +35,16 @@ class TestObject_LiteObject extends LiteObject
 	
 	
 	/**
+	 * @param array $data
+	 */
+	public function __construct(array $data = [])
+	{
+		parent::__construct();
+		$this->fromArray($data);
+	}
+	
+	
+	/**
 	 * @return static
 	 */
 	public function getPrivateAccess() 
@@ -186,12 +196,6 @@ class LiteObjectTest extends \PHPUnit_Framework_TestCase
 		$o = new TestObject_LiteObject(['PropInt' => 5, 'PropString' => 6]);
 		$this->assertSame(5, $o->PropInt);
 		$this->assertSame("6", $o->PropString);
-	}
-	
-	public function test_constructor_SetForGetOnlyPropertyAllowedInConstructor() 
-	{
-		$o = new TestObject_LiteObject(['PropGetOnly' => 6]);
-		$this->assertSame(6, $o->PropGetOnly);
 	}
 	
 	
