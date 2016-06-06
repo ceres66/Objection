@@ -202,6 +202,14 @@ abstract class LiteObject
 		return isset($this->data[$name]);
 	}
 	
+	/**
+	 * @return array
+	 */
+	public function __debugInfo()
+	{
+		return $this->values;
+	}
+	
 	
 	/**
 	 * @param LiteObject[] $objects
