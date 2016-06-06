@@ -27,7 +27,7 @@ class Container
 		
 		foreach ($this->setup[$className] as $propertyName => $propertySetup)
 		{
-			if (isset($propertySetup[SetupFields::VALUE]))
+			if (key_exists(SetupFields::VALUE, $propertySetup))
 			{
 				$this->values[$className][$propertyName] = $propertySetup[SetupFields::VALUE];
 				unset($this->setup[$className][$propertyName][SetupFields::VALUE]);

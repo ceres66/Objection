@@ -45,7 +45,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
 	public function test_get()
 	{
-		$data = ['a', 'b'];
+		$data = ['a' => [], 'b' => []];
 		Container::instance()->set('b', $data);
 		
 		$this->assertSame($data, Container::instance()->get('b'));
@@ -56,7 +56,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function test_get_UnExistingProperty_ReturnNull()
 	{
-		$data = ['a', 'b'];
+		$data = ['a' => [], 'b' => []];
 		Container::instance()->set('b', $data);
 		
 		$this->assertEquals(null, Container::instance()->get('c'));
@@ -67,7 +67,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function test_get_ValueFieldsAreNotReturned()
 	{
-		$data = ['a' => [SetupFields::VALUE => 1, SetupFields::ACCESS => 2], 'b'];
+		$data = ['a' => [SetupFields::VALUE => 1, SetupFields::ACCESS => 2], 'b' => []];
 		Container::instance()->set('b', $data);
 		
 		unset($data['a'][SetupFields::VALUE]);
@@ -85,6 +85,18 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 		Container::instance()->set('b', $data);
 		
 		$this->assertEquals(['a' => 1, 'b' => 2], Container::instance()->getValues('b'));
+	}
+	
+	
+	/**
+	 * @runInSeparateProcess
+	 */
+	public function test_getValues_ValueIsNull_ValueReturned()
+	{
+		$data = ['a' => [SetupFields::VALUE => null]];
+		Container::instance()->set('b', $data);
+		
+		$this->assertEquals(['a' => null], Container::instance()->getValues('b'));
 	}
 	
 	/**
