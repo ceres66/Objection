@@ -14,4 +14,5 @@ class VarType
 	const MIXED		= 'mixed';
 	const ENUM		= 'enum';
 	const ARR		= 'array';
+	const CUSTOM	= 'custom';
 }

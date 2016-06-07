@@ -5,6 +5,7 @@ namespace Objection;
 use Objection\Enum\VarType;
 use Objection\Enum\SetupFields;
 use Objection\Exceptions\InvalidPropertySetupException;
+use Objection\Extensions\ICustomProperty;
 
 
 class LiteSetup 
@@ -129,5 +130,17 @@ class LiteSetup
 			$data[SetupFields::ACCESS] = [$access => true];
 		
 		return $data;
+	}
+	
+	/**
+	 * @param ICustomProperty $customProperty
+	 * @return array
+	 */
+	public static function createCustomProperty(ICustomProperty $customProperty)
+	{
+		return [
+			SetupFields::TYPE			=> VarType::CUSTOM,
+			SetupFields::CUSTOM_HANDLER	=> $customProperty
+		];
 	}
 }
