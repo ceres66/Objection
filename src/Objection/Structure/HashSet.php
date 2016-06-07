@@ -27,7 +27,7 @@ class HashSet
 	/**
 	 * @param string|int|array $key
 	 */
-	public function delete($key)
+	public function remove($key)
 	{
 		if (!is_array($key))
 		{
@@ -83,5 +83,21 @@ class HashSet
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * @return int
+	 */
+	public function count()
+	{
+		return count($this->set);
+	}
+	
+	/**
+	 * @return bool
+	 */
+	public function isEmpty()
+	{
+		return (bool)$this->set;
 	}
 }
