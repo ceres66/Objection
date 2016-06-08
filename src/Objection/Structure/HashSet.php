@@ -2,7 +2,7 @@
 namespace Objection\Structure;
 
 
-class HashSet implements \IteratorAggregate, \Countable, \Serializable
+class HashSet implements \IteratorAggregate, \Countable, \Serializable, \ArrayAccess
 {
 	private $set = [];
 	
@@ -143,6 +143,49 @@ class HashSet implements \IteratorAggregate, \Countable, \Serializable
 	public function unserialize($serialized)
 	{
 		$keys = unserialize($serialized);
-		$this->set = array_combine($keys, array_fill(0, count($keys), null));;
+		$this->set = array_combine($keys, array_fill(0, count($keys), null));
+	}
+	
+	
+	/**
+	 * @param mixed $offset
+	 * @return bool
+	 */
+	public function offsetExists($offset)
+	{
+		return $this->has($offset);
+	}
+	
+	/**
+	 * @param string|int $offset
+	 * @return bool
+	 */
+	public function offsetGet($offset)
+	{
+		return $this->has($offset);
+	}
+	
+	/**
+	 * @param string|int $offset <p>
+	 * @param bool $value
+	 */
+	public function offsetSet($offset, $value)
+	{
+		if ($value)
+		{
+			$this->add($offset);
+		}
+		else
+		{
+			$this->remove($offset);
+		}
+	}
+	
+	/**
+	 * @param string|int $offset
+	 */
+	public function offsetUnset($offset)
+	{
+		$this->remove($offset);
 	}
 }

@@ -267,4 +267,45 @@ class HashSetTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf(HashSet::class, $object);
 		$this->assertEquals($h->getKeys(), $object->getKeys());
 	}
+	
+	
+	public function test_isset()
+	{
+		$h = new HashSet(['a', 'b', 1]);
+		
+		$this->assertTrue(isset($h['b']));
+		$this->assertFalse(isset($h['c']));
+	}
+	
+	
+	public function test_unset()
+	{
+		$h = new HashSet(['a', 'b', 1]);
+		
+		unset($h['b']);
+		unset($h['c']);
+		
+		$this->assertEquals(['a', 1], $h->getKeys());
+	}
+	
+	
+	public function test_ArrayAccess_GetValue()
+	{
+		$h = new HashSet(['a', 'b', 1]);
+		
+		$this->assertTrue($h['a']);
+		$this->assertFalse($h['c']);
+	}
+	
+	
+	public function test_ArrayAccess_SetValue()
+	{
+		$h = new HashSet(['a', 'b', 1]);
+		
+		$h['d'] = true;
+		$h['a'] = false;
+		
+		$this->assertTrue($h->has('d'));
+		$this->assertFalse($h->has('a'));
+	}
 }
