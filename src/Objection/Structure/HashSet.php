@@ -2,9 +2,18 @@
 namespace Objection\Structure;
 
 
-class HashSet
+class HashSet implements \IteratorAggregate
 {
 	private $set = [];
+	
+	
+	/**
+	 * @param int|string|array $keys
+	 */
+	public function __construct($keys = []) 
+	{
+		$this->add($keys);
+	}
 	
 	
 	/**
@@ -21,7 +30,7 @@ class HashSet
 			$keys = array_combine($key, array_fill(0, count($key), null));
 		}
 		
-		$this->set = array_merge($this->set, $keys);
+		$this->set += $keys;
 	}
 	
 	/**
@@ -98,6 +107,23 @@ class HashSet
 	 */
 	public function isEmpty()
 	{
-		return (bool)$this->set;
+		return !((bool)$this->set);
+	}
+	
+	/**
+	 * @return array
+	 */
+	public function getKeys()
+	{
+		return array_keys($this->set);
+	}
+	
+	/**
+	 * @link http://php.net/manual/en/iteratoraggregate.getiterator.php
+	 * @return \Traversable
+	 */
+	public function getIterator()
+	{
+		return new \ArrayIterator($this->getKeys());
 	}
 }
