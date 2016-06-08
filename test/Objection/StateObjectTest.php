@@ -35,15 +35,6 @@ class TestObject_StateObject extends StateObject
 	
 	
 	/**
-	 * @param array $values
-	 */
-	public function __construct(array $values = [])
-	{
-		parent::__construct($values);
-	}
-	
-	
-	/**
 	 * @return static
 	 */
 	public function getPrivateAccess() 

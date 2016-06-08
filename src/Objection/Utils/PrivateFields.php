@@ -2,7 +2,6 @@
 namespace Objection\Utils;
 
 
-use Objection\Enum\SetupFields;
 use Objection\Setup\ValueValidation;
 use Objection\Exceptions\PropertyNotFoundException;
 
