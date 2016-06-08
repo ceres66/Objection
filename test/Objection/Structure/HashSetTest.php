@@ -241,4 +241,30 @@ class HashSetTest extends \PHPUnit_Framework_TestCase
 		
 		$this->assertEquals(['a', 'b', 1], $d);
 	}
+	
+	
+	public function test_externalCount_Empty()
+	{
+		$h = new HashSet();
+		$this->assertEquals(0, count($h));
+	}
+	
+	public function test_externalCount_Full()
+	{
+		$h = new HashSet(['a', 'b', 1]);
+		$this->assertEquals(3, count($h));
+	}
+	
+	
+	public function test_serialize()
+	{
+		$h = new HashSet(['a', 'b', 1]);
+		$data = serialize($h);
+		
+		/** @var HashSet $object */
+		$object = unserialize($data);
+		
+		$this->assertInstanceOf(HashSet::class, $object);
+		$this->assertEquals($h->getKeys(), $object->getKeys());
+	}
 }

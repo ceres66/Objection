@@ -2,7 +2,7 @@
 namespace Objection\Structure;
 
 
-class HashSet implements \IteratorAggregate
+class HashSet implements \IteratorAggregate, \Countable, \Serializable
 {
 	private $set = [];
 	
@@ -125,5 +125,24 @@ class HashSet implements \IteratorAggregate
 	public function getIterator()
 	{
 		return new \ArrayIterator($this->getKeys());
+	}
+	
+	/**
+	 * @link http://php.net/manual/en/serializable.serialize.php
+	 * @return string
+	 */
+	public function serialize()
+	{
+		return serialize(array_keys($this->set));
+	}
+	
+	/**
+	 * @link http://php.net/manual/en/serializable.unserialize.php
+	 * @param string $serialized
+	 */
+	public function unserialize($serialized)
+	{
+		$keys = unserialize($serialized);
+		$this->set = array_combine($keys, array_fill(0, count($keys), null));;
 	}
 }
