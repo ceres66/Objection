@@ -20,15 +20,24 @@ class LiteSetup
 	 */
 	private static function getValuesFromConstsClass($set)
 	{
-		if (is_string($set) && class_exists($set) && in_array(TConstsClass::class, class_uses($set)))
+		if (is_string($set) && class_exists($set))
 		{
-			/** @var TConstsClass $set */
-			return $set::getConstValues();
+			$traits = class_uses($set);
+			
+			if (in_array(TConstsClass::class, $traits))
+			{
+				/** @var TConstsClass $set */
+				return $set::getConstValues();
+			}
+			else if (in_array(TEnum::class, $traits))
+			{
+				/** @var TEnum $set */
+				return $set::getAll();
+			}
 		}
-		else
-		{
-			throw new InvalidPropertySetupException("createEnum accepts only array of values or TConstsClass class");
-		}
+		
+		throw new InvalidPropertySetupException(
+			'createEnum accepts only array of values, TConstsClass class or TEnum class');
 	}
 	
 	

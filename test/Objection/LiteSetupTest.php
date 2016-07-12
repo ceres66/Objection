@@ -6,13 +6,24 @@ use Objection\Enum\AccessRestriction;
 use Objection\Enum\VarType;
 use Objection\Enum\SetupFields;
 
-class Test_LiteSetup_CreateEnum_Class
+
+class Test_LiteSetup_CreateEnum_ConstsClass
 {
 	use TConstsClass;
 
 	const A = 'a';
 	const B = 'b';
 }
+
+
+class Test_LiteSetup_CreateEnum_EnumClass
+{
+	use TEnum;
+	
+	const A = 'a';
+	const B = 'b';
+}
+
 
 class LiteSetupTest extends \PHPUnit_Framework_TestCase
 {
@@ -206,7 +217,21 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 				SetupFields::VALUE			=> 'a',
 				SetupFields::VALUES_SET		=> $flipped,
 			],
-			LiteSetup::createEnum(Test_LiteSetup_CreateEnum_Class::class));
+			LiteSetup::createEnum(Test_LiteSetup_CreateEnum_ConstsClass::class));
+	}
+	
+	public function test_createEnum_CreateUsingTEnumClass()
+	{
+		$enum = ['a', 'b'];
+		$flipped = array_flip($enum);
+		
+		$this->assertEquals(
+			[
+				SetupFields::TYPE			=> VarType::ENUM,
+				SetupFields::VALUE			=> 'a',
+				SetupFields::VALUES_SET		=> $flipped,
+			],
+			LiteSetup::createEnum(Test_LiteSetup_CreateEnum_EnumClass::class));
 	}
 
 	/**
