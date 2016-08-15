@@ -33,6 +33,49 @@ class ValueValidationTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame('a', ValueValidation::fixValue(LiteSetup::createEnum(['a', 'b']), 'a'));
 	}
 	
+	
+	public function test_fixValue_DateTime_DatePassed()
+	{
+		$d = new \DateTime('2015-03-06 00:01:02');
+		$this->assertEquals($d, ValueValidation::fixValue(LiteSetup::createDateTime(), $d));
+	}
+	
+	public function test_fixValue_DateTime_ObjectIsCloned()
+	{
+		$d = new \DateTime('2015-03-06 00:01:02');
+		$this->assertNotSame($d, ValueValidation::fixValue(LiteSetup::createDateTime(), $d));
+	}
+	
+	public function test_fixValue_DateTime_StringPassedAndConvertedToDateObject()
+	{
+		$d = new \DateTime('2015-03-06 00:01:02');
+		$this->assertEquals($d, ValueValidation::fixValue(LiteSetup::createDateTime(), '2015-03-06 00:01:02'));
+	}
+	
+	public function test_fixValue_DateTime_IntPassedAndUsedAsUnixtimestmap()
+	{
+		$timestamp = strtotime('2015-03-06 00:01:02');
+		$d = new \DateTime('2015-03-06 00:01:02');
+		$this->assertEquals($d, ValueValidation::fixValue(LiteSetup::createDateTime(), $timestamp));
+	}
+	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidDatetimeValueTypeException
+	 */
+	public function test_fixValue_DateTime_InvalidTypePassed_ErrorThrown()
+	{
+		ValueValidation::fixValue(LiteSetup::createDateTime(), 0.4);
+	}
+	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidDatetimeValueTypeException
+	 */
+	public function test_fixValue_DateTime_InvalidObjectPassed_ErrorThrown()
+	{
+		ValueValidation::fixValue(LiteSetup::createDateTime(), new \stdClass());
+	}
+	
+	
 	/**
 	 * @expectedException \Objection\Exceptions\InvalidEnumValueTypeException
 	 */

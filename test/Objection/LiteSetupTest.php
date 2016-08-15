@@ -249,4 +249,58 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 	{
 		LiteSetup::createEnum(\stdClass::class);
 	}
+	
+	
+	public function test_createDateTime_UsingDateTimeObject()
+	{
+		$d = new \DateTime();
+		
+		$result = LiteSetup::createDateTime($d);
+		
+		$this->assertEquals(VarType::DATE_TIME, $result[SetupFields::TYPE]);
+		$this->assertEquals($d,					$result[SetupFields::VALUE]);
+	}
+	
+	public function test_createDateTime_UsingString()
+	{
+		$d = new \DateTime('2015-03-06 00:01:02');
+		
+		$result = LiteSetup::createDateTime('2015-03-06 00:01:02');
+		
+		$this->assertEquals(VarType::DATE_TIME, $result[SetupFields::TYPE]);
+		$this->assertEquals($d,					$result[SetupFields::VALUE]);
+	}
+	
+	public function test_createDateTime_UsingInt()
+	{
+		$time = time() - 1000;
+		$d = (new \DateTime())->setTimestamp($time);
+		
+		$result = LiteSetup::createDateTime($time);
+		
+		$this->assertEquals(VarType::DATE_TIME, $result[SetupFields::TYPE]);
+		$this->assertEquals($d,					$result[SetupFields::VALUE]);
+	}
+	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidDatetimeValueTypeException
+	 */
+	public function test_createDateTime_InvalidType_ErrorThrown()
+	{
+		LiteSetup::createDateTime(0.5);
+	}
+	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidDatetimeValueTypeException
+	 */
+	public function test_createDateTime_InvalidObject_ErrorThrown()
+	{
+		LiteSetup::createDateTime(new \stdClass());
+	}
+	
+	public function test_createDateTime_SetAsNull_NullFlagIsActive()
+	{
+		$result = LiteSetup::createDateTime('now', true);
+		$this->assertTrue($result[SetupFields::IS_NULL]);
+	}
 }

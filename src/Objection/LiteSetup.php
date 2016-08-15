@@ -2,21 +2,20 @@
 namespace Objection;
 
 
+use Objection\Extensions;
 use Objection\Enum\VarType;
 use Objection\Enum\SetupFields;
-use Objection\Exceptions\InvalidPropertySetupException;
-use Objection\Extensions\ICustomProperty;
 
 
 class LiteSetup 
 {
-	use \Objection\TSingleton;
+	use \Objection\TStaticClass;
 	
 	
 	/**
 	 * @param TConstsClass|array $set
 	 * @return mixed
-	 * @throws InvalidPropertySetupException
+	 * @throws Exceptions\InvalidPropertySetupException
 	 */
 	private static function getValuesFromConstsClass($set)
 	{
@@ -36,7 +35,7 @@ class LiteSetup
 			}
 		}
 		
-		throw new InvalidPropertySetupException(
+		throw new Exceptions\InvalidPropertySetupException(
 			'createEnum accepts only array of values, TConstsClass class or TEnum class');
 	}
 	
@@ -141,11 +140,29 @@ class LiteSetup
 		return $data;
 	}
 	
+	public static function createDateTime($default = 'now', $isNull = false, $access = false)
+	{
+		if (is_int($default))
+		{
+			$default = (new \DateTime())->setTimestamp($default);
+		}
+		else if (is_string($default))
+		{
+			$default = new \DateTime((string)$default);
+		}
+		else if (!$default instanceof \DateTime)
+		{
+			throw new Exceptions\InvalidDatetimeValueTypeException($default);
+		}
+		
+		return self::create(VarType::DATE_TIME, $default, $isNull, $access);
+	}
+	
 	/**
-	 * @param ICustomProperty $customProperty
+	 * @param Exceptions\ICustomProperty $customProperty
 	 * @return array
 	 */
-	public static function createCustomProperty(ICustomProperty $customProperty)
+	public static function createCustomProperty(Exceptions\ICustomProperty $customProperty)
 	{
 		return [
 			SetupFields::TYPE			=> VarType::CUSTOM,

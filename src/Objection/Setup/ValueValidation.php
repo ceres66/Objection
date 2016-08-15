@@ -55,6 +55,26 @@ class ValueValidation
 				
 				break;
 			
+			case VarType::DATE_TIME:
+				if ($value instanceof \DateTime)
+				{
+					$value = clone $value;
+				}
+				else if (is_string($value))
+				{
+					$value = new \DateTime($value);
+				}
+				else if (is_int($value))
+				{
+					$value = (new \DateTime())->setTimestamp($value);
+				}
+				else
+				{
+					throw new Exceptions\InvalidDatetimeValueTypeException($value);
+				}
+					
+				break;	
+			
 			default:
 				if (!$value instanceof $fieldData[SetupFields::TYPE])
 					throw new Exceptions\InvalidValueTypeException($fieldData[SetupFields::TYPE], $value);
