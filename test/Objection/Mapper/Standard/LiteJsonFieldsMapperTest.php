@@ -10,19 +10,19 @@ class LiteJsonFieldsMapperTest extends \PHPUnit_Framework_TestCase
 {
 	public function test_passFieldsAsArray()
 	{
-		$obj = new LiteJsonFieldsMapper(['A', 'B']);
+		$obj = new JsonFieldsMapper(['A', 'B']);
 		$this->assertEquals('A', $obj->mapToObjectField('a'));
 	}
 	
 	public function test_passFieldsAsObject()
 	{
-		$obj = new LiteJsonFieldsMapper(new Test_LiteJsonMapperTest_Helper());
+		$obj = new JsonFieldsMapper(new Test_LiteJsonMapperTest_Helper());
 		$this->assertEquals('A', $obj->mapToObjectField('a'));
 	}
 	
 	public function test_sanity()
 	{
-		$obj = new LiteJsonFieldsMapper(['ABcdE', 'efgh']);
+		$obj = new JsonFieldsMapper(['ABcdE', 'efgh']);
 		
 		$this->assertEquals('ABcdE', $obj->mapToObjectField('aBcdE'));
 		$this->assertEquals('aBcdE', $obj->mapFromObjectField('ABcdE'));

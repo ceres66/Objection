@@ -8,7 +8,7 @@ use Objection\Mapper\FieldMappers\CaseInsensitiveMatch;
 use Objection\Mapper\FieldMappers\BidirectionalCombinedMapper;
 
 
-class LiteJsonFieldsMapper extends BidirectionalCombinedMapper
+class JsonFieldsMapper extends BidirectionalCombinedMapper
 {
 	/**
 	 * @param array|LiteObject $objectFields
