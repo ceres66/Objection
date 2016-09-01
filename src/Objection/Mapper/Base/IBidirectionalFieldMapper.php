@@ -2,7 +2,7 @@
 namespace Objection\Mapper\Base;
 
 
-interface IBidirectionalMapper
+interface IBidirectionalFieldMapper
 {
 	/**
 	 * @param string $rowField
