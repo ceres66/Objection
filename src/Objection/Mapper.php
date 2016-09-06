@@ -8,6 +8,7 @@ use Objection\Mapper\Base\IObjectToTargetBuilder;
 use Objection\Mapper\DataBuilders\ArrayTargetBuilder;
 use Objection\Mapper\DataBuilders\StdClassTargetBuilder;
 use Objection\Exceptions\LiteObjectException;
+use Objection\Mapper\ObjectMapper;
 
 
 class Mapper
@@ -22,8 +23,8 @@ class Mapper
 	
 	
 	/**
-	 * @param $className
-	 * @throws LiteObjectException
+	 * @param string $className
+	 * @return string
 	 */
 	private function validateClassNameSet($className)
 	{
@@ -34,6 +35,8 @@ class Mapper
 		
 		if (!class_exists($className))
 			throw new LiteObjectException("Class $className does not exists");
+		
+		return $className;
 	}
 	
 	/**
@@ -70,9 +73,7 @@ class Mapper
 		
 		$this->validateCollection(get_class($object));
 		
-		// TODO:
-		
-		return [];
+		return ObjectMapper::fromObject($object, $this->collection, $builder);
 	}
 	
 	/**
@@ -141,10 +142,10 @@ class Mapper
 	 */
 	public function getObject($data, $className = false)
 	{
-		$this->validateClassNameSet($className);
+		$className = $this->validateClassNameSet($className);
 		$this->validateCollection($this->className);
 		
-		// TODO:
+		return ObjectMapper::toObject($className, $data, $this->collection);
 	}
 	
 	/**

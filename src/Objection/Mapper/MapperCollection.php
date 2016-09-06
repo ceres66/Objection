@@ -17,6 +17,18 @@ class MapperCollection implements IMapperCollection
 	
 	
 	/**
+	 * @param string $class
+	 * @return string
+	 */
+	private function getClassName($class)
+	{
+		return (is_string($class) ?
+			$class :
+			get_class($class));
+	}
+	
+	
+	/**
 	 * @param IBidirectionalMapper|null $default
 	 */
 	public function __construct(IBidirectionalMapper $default = null)
@@ -49,6 +61,8 @@ class MapperCollection implements IMapperCollection
 	 */
 	public function has($className)
 	{
+		$className = $this->getClassName($className);
+		
 		return isset($this->mappers[$className]);
 	}
 	
@@ -58,6 +72,8 @@ class MapperCollection implements IMapperCollection
 	 */
 	public function get($className)
 	{
+		$className = $this->getClassName($className);
+		
 		return (isset($this->mappers[$className]) ?
 			$this->mappers[$className] : 
 			null);
@@ -65,10 +81,12 @@ class MapperCollection implements IMapperCollection
 	
 	/**
 	 * @param string $className
-	 * @return IBidirectionalMapper|null
+	 * @return IBidirectionalMapper
 	 */
 	public function getOrDefault($className)
 	{
+		$className = $this->getClassName($className);
+		
 		if (isset($this->mappers[$className]))
 		{
 			return $this->mappers[$className];
@@ -90,6 +108,8 @@ class MapperCollection implements IMapperCollection
 	 */
 	public function set($className, IBidirectionalMapper $mapper)
 	{
+		$className = $this->getClassName($className);
+		
 		$this->mappers[$className] = $mapper;
 		return $this;
 	}

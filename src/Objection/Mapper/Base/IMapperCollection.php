@@ -2,6 +2,7 @@
 namespace Objection\Mapper\Base;
 
 
+use Objection\LiteObject;
 use Objection\Mapper\Base\Fields\IBidirectionalMapper;
 
 
@@ -19,25 +20,25 @@ interface IMapperCollection
 	public function setDefault(IBidirectionalMapper $mapper);
 	
 	/**
-	 * @param string $className
+	 * @param string|LiteObject $className
 	 * @return bool
 	 */
 	public function has($className);
 	
 	/**
-	 * @param string $className
+	 * @param string|LiteObject $className
 	 * @return IBidirectionalMapper|null
 	 */
 	public function get($className);
 	
 	/**
-	 * @param string $className
-	 * @return IBidirectionalMapper|null
+	 * @param string|LiteObject $className
+	 * @return IBidirectionalMapper
 	 */
 	public function getOrDefault($className);
 	
 	/**
-	 * @param string $className
+	 * @param string|LiteObject $className
 	 * @param IBidirectionalMapper $mapper
 	 * @return static
 	 */
