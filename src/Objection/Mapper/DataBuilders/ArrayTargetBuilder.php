@@ -10,6 +10,13 @@ class ArrayTargetBuilder implements IObjectToTargetBuilder
 	/** @var array */
 	private $data = [];
 	
+	/**
+	 * @return IObjectToTargetBuilder
+	 */
+	public function createBuilder()
+	{
+		return new ArrayTargetBuilder();
+	}
 	
 	/**
 	 * @param string $key
@@ -26,10 +33,12 @@ class ArrayTargetBuilder implements IObjectToTargetBuilder
 	 * @param string $key
 	 * @return IObjectToTargetBuilder
 	 */
-	public function add($key)
+	public function addChild($key)
 	{
 		$object = new ArrayTargetBuilder();
-		$this->data[$key] = $object;
+		$this->data[$key] = [];
+		$object->data = &$this->data[$key];
+		
 		return $object;
 	}
 	

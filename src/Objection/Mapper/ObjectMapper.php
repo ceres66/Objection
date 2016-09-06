@@ -50,6 +50,60 @@ class ObjectMapper
 	}
 	
 	
+	private static function getDataFromLiteObject(IMapperCollection $collection, IObjectToTargetBuilder $builder, LiteObject $value)
+	{
+		$fieldMapper = $collection->getOrDefault($value);
+		$fields = self::getFields($value);
+		
+		foreach ($fields as $fieldName => $fieldValue)
+		{
+			$dataField = $fieldMapper->mapFromObjectField($fieldName);
+			
+			if (!is_object($fieldValue) && !is_array($fieldValue))
+			{
+				$builder->set($dataField, $fieldValue);
+			}
+			else 
+			{
+				$builder->set($dataField, self::getDataFromValue($collection, $builder, $fieldValue));
+			}
+		}
+		
+		return $builder->get();
+	}
+	
+	private static function getDataFromValue(IMapperCollection $collection, IObjectToTargetBuilder $builder, $value)
+	{
+		if (is_array($value))
+		{
+			return self::getDataFromArray($collection, $builder, $value);
+		}
+		else if (!is_object($value))
+		{
+			return $value;
+		}
+		else if ($value instanceof LiteObject)
+		{
+			$childBuilder = $builder->createBuilder();
+			return self::getDataFromLiteObject($collection, $childBuilder, $value);
+		}
+		
+		throw new LiteObjectException("Unsupported object in map: " . get_class($value));
+	}
+	
+	private static function getDataFromArray(IMapperCollection $collection, IObjectToTargetBuilder $builder, array $value)
+	{
+		$result = [];
+		
+		foreach ($value as $key => $item)
+		{
+			$result[$key] = self::getDataFromValue($collection, $builder, $item);
+		}
+		
+		return $result;
+	}
+	
+	
 	/**
 	 * @param LiteObject|LiteObject[] $object
 	 * @param IMapperCollection $collection
@@ -58,30 +112,7 @@ class ObjectMapper
 	 */
 	public static function fromObject($object, IMapperCollection $collection, IObjectToTargetBuilder $builder)
 	{
-		if (is_array($object))
-		{
-			$result = [];
-			
-			foreach ($object as $item)
-			{
-				$itemBuilder = clone $builder;
-				self::fromObject($item, $collection, $itemBuilder);
-				$result[] = $builder->get();
-			}
-			
-			return $result;
-		}
-		
-		$fieldMapper = $collection->getOrDefault($object);
-		$fields = self::getFields($object);
-		
-		foreach ($fields as $fieldName => $value)
-		{
-			$dataField = $fieldMapper->mapFromObjectField($fieldName);
-			$builder->set($dataField, $value);
-		}
-		
-		return $builder->get();
+		return self::getDataFromValue($collection, $builder, $object);
 	}
 	
 	/**

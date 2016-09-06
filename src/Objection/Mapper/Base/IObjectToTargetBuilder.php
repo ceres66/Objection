@@ -5,6 +5,11 @@ namespace Objection\Mapper\Base;
 interface IObjectToTargetBuilder
 {
 	/**
+	 * @return IObjectToTargetBuilder
+	 */
+	public function createBuilder();
+	
+	/**
 	 * @param string $key
 	 * @param mixed $value
 	 * @return static
@@ -16,7 +21,7 @@ interface IObjectToTargetBuilder
 	 * @param string $key
 	 * @return IObjectToTargetBuilder
 	 */
-	public function add($key);
+	public function addChild($key);
 	
 	/**
 	 * @return mixed The built target.

@@ -18,6 +18,14 @@ class StdClassTargetBuilder implements IObjectToTargetBuilder
 	
 	
 	/**
+	 * @return IObjectToTargetBuilder
+	 */
+	public function createBuilder()
+	{
+		return new StdClassTargetBuilder();
+	}
+	
+	/**
 	 * @param string $key
 	 * @param mixed $value
 	 * @return static
@@ -32,10 +40,11 @@ class StdClassTargetBuilder implements IObjectToTargetBuilder
 	 * @param string $key
 	 * @return IObjectToTargetBuilder
 	 */
-	public function add($key)
+	public function addChild($key)
 	{
 		$object = new StdClassTargetBuilder();
-		$this->data->$key = $object;
+		$this->data->$key = new \stdClass();
+		$object->data = $this->data->$key;
 		return $object;
 	}
 	

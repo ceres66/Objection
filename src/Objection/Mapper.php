@@ -145,7 +145,7 @@ class Mapper
 		$className = $this->validateClassNameSet($className);
 		$this->validateCollection($this->className);
 		
-		return ObjectMapper::toObject($className, $data, $this->collection);
+		ObjectMapper::toObject($className, $data, $this->collection);
 	}
 	
 	/**
@@ -200,7 +200,7 @@ class Mapper
 	 */
 	public static function getArrayFor($object, ...$mappersData)
 	{
-		return self::createWith(...$mappersData)->getArray($object);
+		return self::create(...$mappersData)->getArray($object);
 	}
 	
 	/**
@@ -210,7 +210,7 @@ class Mapper
 	 */
 	public static function getStdClassFor($object, ...$mappersData)
 	{
-		return self::createWith(...$mappersData)->getJson($object);
+		return self::create(...$mappersData)->getJson($object);
 	}
 	
 	/**
@@ -220,7 +220,7 @@ class Mapper
 	 */
 	public static function getJsonFor($object, ...$mappersData)
 	{
-		return self::createWith(...$mappersData)->getJson($object);
+		return self::create(...$mappersData)->getJson($object);
 	}
 	
 	/**
@@ -252,14 +252,14 @@ class Mapper
 	 */
 	public static function createFor($className, ...$mappersData)
 	{
-		return self::createWith(...$mappersData)->setDefaultClassName(self::getClassName($className));
+		return self::create(...$mappersData)->setDefaultClassName(self::getClassName($className));
 	}
 	
 	/**
 	 * @param array ...$mappersData
 	 * @return Mapper
 	 */
-	public static function createWith(...$mappersData)
+	public static function create(...$mappersData)
 	{
 		return (new Mapper())->setMappersCollection(MapperCollectionBuilder::createFrom(...$mappersData));
 	}
