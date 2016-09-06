@@ -1,5 +1,5 @@
 <?php
-namespace Objection\Mapper\Utils\TargetBuilders;
+namespace Objection\Mapper\DataBuilders;
 
 
 use Objection\Mapper\Base\IObjectToTargetBuilder;

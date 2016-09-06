@@ -1,8 +1,8 @@
 <?php
-namespace Objection\Mapper\FieldMappers;
+namespace Objection\Mapper\Fields;
 
 
-use Objection\Mapper\Base\IFieldMapper;
+use Objection\Mapper\Base\Fields\IFieldMapper;
 
 
 class CaseInsensitiveMatch implements IFieldMapper

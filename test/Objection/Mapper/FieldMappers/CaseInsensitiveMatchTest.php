@@ -2,6 +2,9 @@
 namespace Objection\Mapper\FieldMappers;
 
 
+use Objection\Mapper\Fields\CaseInsensitiveMatch;
+
+
 class CaseInsensitiveMatchTest extends \PHPUnit_Framework_TestCase
 {
 	public function test_map_NotFound_ReturnEmptyString()

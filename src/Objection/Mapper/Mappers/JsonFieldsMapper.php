@@ -1,14 +1,13 @@
 <?php
-namespace Objection\Mapper\Standard;
+namespace Objection\Mapper\Mappers;
 
 
 use Objection\LiteObject;
-use Objection\Mapper\FieldMappers\FirstToLower;
-use Objection\Mapper\FieldMappers\CaseInsensitiveMatch;
-use Objection\Mapper\FieldMappers\BidirectionalCombinedMapper;
+use Objection\Mapper\Fields\FirstToLower;
+use Objection\Mapper\Fields\CaseInsensitiveMatch;
 
 
-class JsonFieldsMapper extends BidirectionalCombinedMapper
+class JsonFieldsMapper extends CombinedMapper
 {
 	/**
 	 * @param array|LiteObject $objectFields

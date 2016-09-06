@@ -2,7 +2,8 @@
 namespace Objection\Mapper\FieldMappers;
 
 
-use Objection\Mapper\Base\IFieldMapper;
+use Objection\Mapper\Base\Fields\IFieldMapper;
+use Objection\Mapper\Fields\FirstToLower;
 
 
 class FirstToLowerTest extends \PHPUnit_Framework_TestCase

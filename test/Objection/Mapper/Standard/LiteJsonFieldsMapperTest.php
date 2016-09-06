@@ -1,5 +1,5 @@
 <?php
-namespace Objection\Mapper\Standard;
+namespace Objection\Mapper\Mappers;
 
 
 use Objection\LiteSetup;

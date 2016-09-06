@@ -1,5 +1,5 @@
 <?php
-namespace Objection\Mapper\Base;
+namespace Objection\Mapper\Base\Fields;
 
 
 interface IFieldMapper

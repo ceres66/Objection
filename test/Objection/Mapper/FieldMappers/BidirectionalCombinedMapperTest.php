@@ -2,7 +2,8 @@
 namespace Objection\Mapper\FieldMappers;
 
 
-use Objection\Mapper\Base\IFieldMapper;
+use Objection\Mapper\Base\Fields\IFieldMapper;
+use Objection\Mapper\Mappers\CombinedMapper;
 
 
 class BidirectionalCombinedMapperTest extends \PHPUnit_Framework_TestCase
@@ -23,7 +24,7 @@ class BidirectionalCombinedMapperTest extends \PHPUnit_Framework_TestCase
 		
 		$to->expects($this->once())->method('map')->with('abcd')->willReturn('123');
 		
-		$this->assertEquals('123', (new BidirectionalCombinedMapper($from, $to))->mapToObjectField('abcd'));
+		$this->assertEquals('123', (new CombinedMapper($from, $to))->mapToObjectField('abcd'));
 	}
 	
 	public function test_mapFromObjectField_FromObjectMapperCalled()
@@ -33,6 +34,6 @@ class BidirectionalCombinedMapperTest extends \PHPUnit_Framework_TestCase
 		
 		$from->expects($this->once())->method('map')->with('abcd')->willReturn('123');
 		
-		$this->assertEquals('123', (new BidirectionalCombinedMapper($from, $to))->mapFromObjectField('abcd'));
+		$this->assertEquals('123', (new CombinedMapper($from, $to))->mapFromObjectField('abcd'));
 	}
 }
