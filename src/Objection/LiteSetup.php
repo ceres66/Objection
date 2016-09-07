@@ -187,10 +187,10 @@ class LiteSetup
 	}
 	
 	/**
-	 * @param Exceptions\ICustomProperty $customProperty
+	 * @param Extensions\ICustomProperty $customProperty
 	 * @return array
 	 */
-	public static function createCustomProperty(Exceptions\ICustomProperty $customProperty)
+	public static function createCustomProperty(Extensions\ICustomProperty $customProperty)
 	{
 		return [
 			SetupFields::TYPE			=> VarType::CUSTOM,
