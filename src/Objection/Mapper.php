@@ -167,11 +167,12 @@ class Mapper
 	
 	/**
 	 * @param LiteObject|LiteObject[] $object
+	 * @param int $flags Optional JSON_* flags.
 	 * @return string
 	 */
-	public function getJson($object)
+	public function getJson($object, $flags = 0)
 	{
-		return json_encode($this->getData($object, new StdClassTargetBuilder()));
+		return json_encode($this->getData($object, new StdClassTargetBuilder()), $flags);
 	}
 	
 	/**

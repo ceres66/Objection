@@ -1,12 +1,11 @@
 <?php
-namespace Objection\Mapper\FieldMappers;
+namespace Objection\Mapper\Mappers;
 
 
 use Objection\Mapper\Base\Fields\IFieldMapper;
-use Objection\Mapper\Mappers\CombinedMapper;
 
 
-class BidirectionalCombinedMapperTest extends \PHPUnit_Framework_TestCase
+class CombinedMapperTest extends \PHPUnit_Framework_TestCase
 {
 	/**
 	 * @return \PHPUnit_Framework_MockObject_MockObject|IFieldMapper

@@ -146,15 +146,17 @@ class LiteObjectTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals([5, "6"], $o->PropArray);
 	}
 	
-	/**
-	 * @expectedException \PHPUnit_Framework_Error_Notice
-	 */
 	public function test_GetOnlyProperty_NotReturnedByReference() 
 	{
 		$o = new TestObject_LiteObject();
 		
-		/** @noinspection PhpUnusedLocalVariableInspection */
+		$startValue = $o->PropGetOnly;
+		
 		$a =& $o->PropGetOnly;
+		$a++;
+		
+		$this->assertEquals($startValue, $o->PropGetOnly);
+		
 	}
 	
 	public function test_PrivateModifier() 

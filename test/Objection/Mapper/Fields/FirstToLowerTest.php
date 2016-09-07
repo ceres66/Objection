@@ -1,9 +1,5 @@
 <?php
-namespace Objection\Mapper\FieldMappers;
-
-
-use Objection\Mapper\Base\Fields\IFieldMapper;
-use Objection\Mapper\Fields\FirstToLower;
+namespace Objection\Mapper\Fields;
 
 
 class FirstToLowerTest extends \PHPUnit_Framework_TestCase

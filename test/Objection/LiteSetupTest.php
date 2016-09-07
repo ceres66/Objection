@@ -303,4 +303,29 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 		$result = LiteSetup::createDateTime('now', true);
 		$this->assertTrue($result[SetupFields::IS_NULL]);
 	}
+	
+	public function set_createInstanceArray()
+	{
+		$this->assertEquals(
+			[
+				SetupFields::TYPE			=> VarType::INSTANCE_ARRAY,
+				SetupFields::VALUE			=> [],
+				SetupFields::INSTANCE_TYPE	=> self::class
+			],
+			LiteSetup::createInstanceArray(self::class));
+	}
+	
+	public function set_createInstanceArray_RestrictedAccess_NoGet()
+	{
+		$this->assertHasAccessRestriction(
+			AccessRestriction::NO_GET,
+			LiteSetup::createInstanceArray(self::class, AccessRestriction::NO_GET));
+	}
+	
+	public function set_createInstanceArray_RestrictedAccess_NoSet()
+	{
+		$this->assertHasAccessRestriction(
+			AccessRestriction::NO_SET,
+			LiteSetup::createInstanceArray(self::class, AccessRestriction::NO_SET));
+	}
 }

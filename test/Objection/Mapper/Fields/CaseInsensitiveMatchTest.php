@@ -1,8 +1,6 @@
 <?php
-namespace Objection\Mapper\FieldMappers;
+namespace Objection\Mapper\Fields;
 
-
-use Objection\Mapper\Fields\CaseInsensitiveMatch;
 
 
 class CaseInsensitiveMatchTest extends \PHPUnit_Framework_TestCase

@@ -85,6 +85,70 @@ class ValueValidationTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	
+	public function test_fixValue_InstanceArray_FalsePassed_EmptyArrayReturned()
+	{
+		$setup = LiteSetup::createInstanceArray(self::class);
+		
+		$this->assertEquals([], ValueValidation::fixValue($setup, false));
+		$this->assertEquals([], ValueValidation::fixValue($setup, null));
+	}
+	
+	public function test_fixValue_InstanceArray_EmptyArray_EmptyArrayReturned()
+	{
+		$setup = LiteSetup::createInstanceArray(self::class);
+		$this->assertEquals([], ValueValidation::fixValue($setup, []));
+	}
+	
+	public function test_fixValue_InstanceArray_InstancePassed_ArrayWithInstanceReturned()
+	{
+		$setup = LiteSetup::createInstanceArray(self::class);
+		$this->assertEquals([$this], ValueValidation::fixValue($setup, $this));
+	}
+	
+	public function test_fixValue_InstanceArray_ArrayOfInstancesPassed_ArrayOfInstancesReturned()
+	{
+		$setup = LiteSetup::createInstanceArray(self::class);
+		$this->assertEquals([$this, $this], ValueValidation::fixValue($setup, [$this, $this]));
+	}
+	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidValueTypeException
+	 */
+	public function test_fixValue_InstanceArray_InvalidInstanceType_ExceptionThrown()
+	{
+		$setup = LiteSetup::createInstanceArray(self::class);
+		ValueValidation::fixValue($setup, new \stdClass());
+	}
+	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidValueTypeException
+	 */
+	public function test_fixValue_InstanceArray_ScalarType_ExceptionThrown()
+	{
+		$setup = LiteSetup::createInstanceArray(self::class);
+		ValueValidation::fixValue($setup, true);
+	}
+	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidValueTypeException
+	 */
+	public function test_fixValue_InstanceArray_ArrayWithOneInvalidInstanceType_ExceptionThrown()
+	{
+		$setup = LiteSetup::createInstanceArray(self::class);
+		ValueValidation::fixValue($setup, [$this, new \stdClass(), $this]);
+	}
+	
+	/**
+	 * @expectedException \Objection\Exceptions\InvalidValueTypeException
+	 */
+	public function test_fixValue_InstanceArray_ArrayWithOneScalar_ExceptionThrown()
+	{
+		$setup = LiteSetup::createInstanceArray(self::class);
+		ValueValidation::fixValue($setup, [$this, "hello", $this]);
+	}
+	
+	
+	
 	public function test_fixValue_Null() 
 	{
 		$this->assertNull(ValueValidation::fixValue(LiteSetup::create(VarType::BOOL, true, true), null));

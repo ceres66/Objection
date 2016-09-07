@@ -13,4 +13,5 @@ class SetupFields
 	const VALUES_SET		= 'values_set';
 	const ACCESS			= 'access';
 	const CUSTOM_HANDLER	= 'custom_handler';
+	const INSTANCE_TYPE		= 'instance_type';
 }

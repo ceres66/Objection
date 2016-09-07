@@ -13,6 +13,77 @@ class ValueValidation
 	
 	
 	/**
+	 * @param string $instanceType
+	 * @param mixed $value
+	 * @throws Exceptions\InvalidValueTypeException
+	 */
+	private static function throwInvalidValueForInstanceArray($instanceType, $value)
+	{
+		throw new Exceptions\InvalidValueTypeException(
+			$instanceType . '[]',
+			$value);
+	}
+	
+	/**
+	 * @param array $fieldData
+	 * @param string $value
+	 * @return array
+	 */
+	private static function fixInstanceArray($fieldData, $value)
+	{
+		$type = $fieldData[SetupFields::INSTANCE_TYPE];
+		
+		if (!$value)
+		{
+			return [];
+		}
+		else if ($value instanceof $type)
+		{
+			return [$value];
+		}
+		else if (!is_array($value))
+		{
+			self::throwInvalidValueForInstanceArray($type, $value);
+		}
+			
+		foreach ($value as $element)
+		{
+			if (!($element instanceof $type))
+			{
+				self::throwInvalidValueForInstanceArray($type, $value);
+			}
+		}
+		
+		return $value;
+	}
+	
+	/**
+	 * @param string $value
+	 * @return array
+	 */
+	private static function fixDateTime($value)
+	{
+		if ($value instanceof \DateTime)
+		{
+			$value = clone $value;
+		}
+		else if (is_string($value))
+		{
+			$value = new \DateTime($value);
+		}
+		else if (is_int($value))
+		{
+			$value = (new \DateTime())->setTimestamp($value);
+		}
+		else
+		{
+			throw new Exceptions\InvalidDatetimeValueTypeException($value);
+		}
+		
+		return $value;
+	}
+	
+	/**
 	 * @param array $fieldData
 	 * @param mixed $value
 	 * @return mixed
@@ -56,24 +127,13 @@ class ValueValidation
 				break;
 			
 			case VarType::DATE_TIME:
-				if ($value instanceof \DateTime)
-				{
-					$value = clone $value;
-				}
-				else if (is_string($value))
-				{
-					$value = new \DateTime($value);
-				}
-				else if (is_int($value))
-				{
-					$value = (new \DateTime())->setTimestamp($value);
-				}
-				else
-				{
-					throw new Exceptions\InvalidDatetimeValueTypeException($value);
-				}
+				$value = self::fixDateTime($value);
 					
 				break;	
+			
+			case VarType::INSTANCE_ARRAY:
+				$value = self::fixInstanceArray($fieldData, $value);
+				break;
 			
 			default:
 				if (!$value instanceof $fieldData[SetupFields::TYPE])
