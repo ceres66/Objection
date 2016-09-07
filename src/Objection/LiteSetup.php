@@ -105,7 +105,19 @@ class LiteSetup
 			$class = get_class($class);
 		}
 		
-		return self::create($class, $default, true, $access);
+		$data = [
+			SetupFields::TYPE			=> VarType::INSTANCE,
+			SetupFields::VALUE 			=> $default,
+			SetupFields::IS_NULL		=> true,
+			SetupFields::INSTANCE_TYPE	=> $class
+		];
+		
+		if ($access !== false)
+		{
+			$data[SetupFields::ACCESS] = [$access => true];
+		}
+		
+		return $data;
 	}
 	
 	public static function createInstanceArray($class, $access = false)
@@ -114,7 +126,6 @@ class LiteSetup
 			SetupFields::TYPE			=> VarType::INSTANCE_ARRAY,
 			SetupFields::VALUE 			=> [],
 			SetupFields::INSTANCE_TYPE	=> $class
-			
 		];
 		
 		if ($access !== false)

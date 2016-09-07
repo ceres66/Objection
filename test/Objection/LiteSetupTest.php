@@ -110,14 +110,39 @@ class LiteSetupTest extends \PHPUnit_Framework_TestCase
 			LiteSetup::createMixed(null, AccessRestriction::NO_GET));
 	}
 	
-	public function test_createInstanceOf()
+	public function test_createInstanceOf_UsingClassName()
 	{
-		$this->assertCreateOfType(\stdClass::class, null, true, LiteSetup::createInstanceOf(\stdClass::class));
-		$this->assertCreateOfType(get_class($this), $this, true, LiteSetup::createInstanceOf($this));
-		
+		$this->assertEquals(
+			[
+				SetupFields::TYPE			=> VarType::INSTANCE,
+				SetupFields::VALUE			=> null,
+				SetupFields::INSTANCE_TYPE	=> \stdClass::class,
+				SetupFields::IS_NULL		=> true
+			],
+			LiteSetup::createInstanceOf(\stdClass::class));
+	}
+	
+	public function test_createInstanceOf_UsingInstance()
+	{
+		$this->assertEquals(
+			[
+				SetupFields::TYPE			=> VarType::INSTANCE,
+				SetupFields::VALUE			=> $this,
+				SetupFields::INSTANCE_TYPE	=> self::class,
+				SetupFields::IS_NULL		=> true
+			],
+			LiteSetup::createInstanceOf($this));
+	}
+	
+	public function test_createInstanceOf_AccessRestrictionSet()
+	{
 		$this->assertHasAccessRestriction(
 			AccessRestriction::NO_GET, 
 			LiteSetup::createInstanceOf($this, AccessRestriction::NO_GET));
+		
+		$this->assertHasAccessRestriction(
+			AccessRestriction::NO_SET,
+			LiteSetup::createInstanceOf($this, AccessRestriction::NO_SET));
 	}
 	
 	public function test_create()

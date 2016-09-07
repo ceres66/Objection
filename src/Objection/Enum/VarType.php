@@ -16,5 +16,6 @@ class VarType
 	const ARR				= 'array';
 	const DATE_TIME			= 'DateTime';
 	const CUSTOM			= 'custom';
+	const INSTANCE			= 'instance';
 	const INSTANCE_ARRAY	= 'instance_array';
 }
