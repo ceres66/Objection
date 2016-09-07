@@ -14,12 +14,18 @@ class HashMapMapper implements IBidirectionalMapper
 	
 	/**
 	 * @param array $objectToDataMap Object field name as key, Data field name as value.
+	 * @param array $dataToObjectMap Data field name as key, Object field name as value.
 	 */
-	public function __construct(array $objectToDataMap = []) 
+	public function __construct(array $objectToDataMap = [], array $dataToObjectMap = []) 
 	{
 		if ($objectToDataMap) 
 		{
 			$this->setObjectToDataMap($objectToDataMap);
+		}
+		
+		if ($dataToObjectMap)
+		{
+			$this->setDataToObjectMap($dataToObjectMap);
 		}
 	}
 	
@@ -31,7 +37,7 @@ class HashMapMapper implements IBidirectionalMapper
 	public function setObjectToDataMap(array $objectToDataMap)
 	{
 		$this->objectToData = $objectToDataMap;
-		$this->dataToObject = array_flip($objectToDataMap);
+		$this->dataToObject = array_merge(array_flip($objectToDataMap), $this->dataToObject);
 		return $this;
 	}
 	
@@ -42,7 +48,7 @@ class HashMapMapper implements IBidirectionalMapper
 	public function setDataToObjectMap(array $dataToObjectMap)
 	{
 		$this->dataToObject = $dataToObjectMap;
-		$this->objectToData = array_flip($dataToObjectMap);
+		$this->objectToData = array_merge(array_flip($dataToObjectMap), $this->objectToData);
 		return $this;
 	}
 	

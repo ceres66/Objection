@@ -121,7 +121,7 @@ class Mapper
 	 * @param IMapperCollection $collection
 	 * @return static
 	 */
-	public function setMappersCollection(IMapperCollection $collection)
+	public function setFieldMappers(IMapperCollection $collection)
 	{
 		$this->collection = $collection;
 		return $this;
@@ -130,7 +130,7 @@ class Mapper
 	/**
 	 * @return IMapperCollection
 	 */
-	public function getMappersCollection()
+	public function getFieldMappers()
 	{
 		return $this->collection;
 	}
@@ -145,7 +145,7 @@ class Mapper
 		$className = $this->validateClassNameSet($className);
 		$this->validateCollection($this->className);
 		
-		ObjectMapper::toObject($className, $data, $this->collection);
+		return ObjectMapper::toObject($className, $data, $this->collection);
 	}
 	
 	/**
@@ -262,6 +262,7 @@ class Mapper
 	 */
 	public static function create(...$mappersData)
 	{
-		return (new Mapper())->setMappersCollection(MapperCollectionBuilder::createFrom(...$mappersData));
+		$mappersCollection = MapperCollectionBuilder::createFrom(...$mappersData);
+		return (new Mapper())->setFieldMappers($mappersCollection);
 	}
 }

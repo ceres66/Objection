@@ -9,6 +9,10 @@ use Objection\Mapper\Fields\CaseInsensitiveMatch;
 
 class JsonFieldsMapper extends CombinedMapper
 {
+	/** @var JsonFieldsMapper */
+	private static $instance = null;
+	
+	
 	/**
 	 * @param array|LiteObject $objectFields
 	 */
@@ -20,5 +24,18 @@ class JsonFieldsMapper extends CombinedMapper
 		parent::__construct(
 			new FirstToLower(), 
 			new CaseInsensitiveMatch($objectFields));
+	}
+	
+	
+	/**
+	 * @param array|LiteObject $objectFields
+	 * @return JsonFieldsMapper
+	 */
+	public static function instance($objectFields)
+	{
+		if (!self::$instance)
+			self::$instance = new JsonFieldsMapper($objectFields);
+		
+		return self::$instance;
 	}
 }

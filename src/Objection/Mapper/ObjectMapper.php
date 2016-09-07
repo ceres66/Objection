@@ -2,11 +2,14 @@
 namespace Objection\Mapper;
 
 
-use Objection\Exceptions\LiteObjectException;
+use Objection\Enum\VarType;
 use Objection\LiteObject;
+use Objection\Enum\SetupFields;
+use Objection\Setup\Container;
 use Objection\Mapper\Base\IMapperCollection;
 use Objection\Mapper\Base\IObjectToTargetBuilder;
 use Objection\Mapper\Base\Extensions\IMappedObject;
+use Objection\Exceptions\LiteObjectException;
 
 
 class ObjectMapper
@@ -15,7 +18,7 @@ class ObjectMapper
 	
 	
 	/**
-	 * @param LiteObject $object
+	 * @param LiteObject|IMappedObject $object
 	 * @return array
 	 */
 	private static function getFields(LiteObject $object)
@@ -43,12 +46,69 @@ class ObjectMapper
 		}
 		else
 		{
+			$data = array_intersect_key($data, array_flip($object->getPropertyNames()));
 			$object->fromArray($data);
 		}
 		
 		return $object;
 	}
 	
+	
+	/**
+	 * @param LiteObject $object
+	 * @param IMapperCollection $collection
+	 * @param \stdClass|array|null $value
+	 * @return mixed
+	 * @throws LiteObjectException
+	 */
+	private static function getObjectFromData(LiteObject $object, IMapperCollection $collection, $value)
+	{
+		$data = [];
+		$fieldMapper = $collection->getOrDefault($object);
+		$setup = Container::instance()->get(get_class($object));
+		
+		foreach ($value as $dataName => $dataValue)
+		{
+			$fieldName = $fieldMapper->mapFromObjectField($dataName);
+			
+			if (!isset($setup[$fieldName]))
+			{
+				throw new LiteObjectException("Property $fieldName is not defined in " . get_class($object));
+			}
+			
+			$fieldSetup = $setup[$fieldName];
+			
+			if (isset($fieldSetup[SetupFields::INSTANCE_TYPE]))
+			{
+				$instanceType = $fieldSetup[SetupFields::INSTANCE_TYPE];
+				
+				if ($fieldSetup[SetupFields::TYPE] == VarType::INSTANCE)
+				{
+					$fieldValue = new $instanceType;
+					self::getObjectFromData($fieldValue, $collection, $dataValue);
+				}
+				else
+				{
+					$fieldValue = [];
+					
+					foreach ($dataValue as $itemKey => $item)
+					{
+						$instance = new $instanceType;
+						self::getObjectFromData($instance, $collection, $item);
+						$fieldValue[$itemKey] = $instance;
+					}
+				}
+			}
+			else
+			{
+				$fieldValue = $dataValue;
+			}
+			
+			$data[$fieldName] = $fieldValue;
+		}
+		
+		return self::setFields($object, $data);
+	}
 	
 	private static function getDataFromLiteObject(IMapperCollection $collection, IObjectToTargetBuilder $builder, LiteObject $value)
 	{
@@ -72,6 +132,18 @@ class ObjectMapper
 		return $builder->get();
 	}
 	
+	private static function getDataFromArray(IMapperCollection $collection, IObjectToTargetBuilder $builder, array $value)
+	{
+		$result = [];
+		
+		foreach ($value as $key => $item)
+		{
+			$result[$key] = self::getDataFromValue($collection, $builder, $item);
+		}
+		
+		return $result;
+	}
+	
 	private static function getDataFromValue(IMapperCollection $collection, IObjectToTargetBuilder $builder, $value)
 	{
 		if (is_array($value))
@@ -89,18 +161,6 @@ class ObjectMapper
 		}
 		
 		throw new LiteObjectException("Unsupported object in map: " . get_class($value));
-	}
-	
-	private static function getDataFromArray(IMapperCollection $collection, IObjectToTargetBuilder $builder, array $value)
-	{
-		$result = [];
-		
-		foreach ($value as $key => $item)
-		{
-			$result[$key] = self::getDataFromValue($collection, $builder, $item);
-		}
-		
-		return $result;
 	}
 	
 	
@@ -123,9 +183,6 @@ class ObjectMapper
 	 */
 	public static function toObject($className, $data, IMapperCollection $collection)
 	{
-		$objectData		= [];
-		$fieldMapper	= $collection->getOrDefault($className);
-		
 		if (is_string($data))
 		{
 			$decodedData = json_decode($data);
@@ -140,12 +197,6 @@ class ObjectMapper
 			}
 		}
 		
-		foreach ($data as $dataField => $value)
-		{
-			$objectField = $fieldMapper->mapToObjectField($dataField);
-			$objectData[$objectField] = $value; 
-		}
-		
-		return self::setFields(new $className(), $objectData);
+		return self::getObjectFromData(new $className(), $collection, $data);
 	}
 }
