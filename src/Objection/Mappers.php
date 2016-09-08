@@ -3,6 +3,7 @@ namespace Objection;
 
 
 use Objection\Mapper\Mappers\HashMapMapper;
+use Objection\Mapper\Mappers\SnakeCaseMapper;
 
 
 class Mappers
@@ -27,5 +28,14 @@ class Mappers
 	public static function mapped(array $objectFieldsToDataFields, array $dataFieldsToObjectFields = [])
 	{
 		return Mapper::create(new HashMapMapper($objectFieldsToDataFields, $dataFieldsToObjectFields));
+	}
+	
+	/**
+	 * Object "SomeID" to data "some_id"
+	 * @return Mapper
+	 */
+	public static function snakeCase()
+	{
+		return Mapper::create(new SnakeCaseMapper());
 	}
 }
