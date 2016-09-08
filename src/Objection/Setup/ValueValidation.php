@@ -132,8 +132,8 @@ class ValueValidation
 				break;	
 			
 			case VarType::INSTANCE:
-				if (!$value instanceof $fieldData[SetupFields::TYPE])
-					throw new Exceptions\InvalidValueTypeException($fieldData[SetupFields::TYPE], $value);
+				if (!$value instanceof $fieldData[SetupFields::INSTANCE_TYPE])
+					throw new Exceptions\InvalidValueTypeException($fieldData[SetupFields::INSTANCE_TYPE], $value);
 				
 				break;
 			

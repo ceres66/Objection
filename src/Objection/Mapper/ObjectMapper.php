@@ -69,7 +69,7 @@ class ObjectMapper
 		
 		foreach ($value as $dataName => $dataValue)
 		{
-			$fieldName = $fieldMapper->mapFromObjectField($dataName);
+			$fieldName = $fieldMapper->mapToObjectField($dataName, get_class($object));
 			
 			if (!isset($setup[$fieldName]))
 			{
@@ -195,6 +195,8 @@ class ObjectMapper
 				
 				throw new LiteObjectException("Data is not a json string: '$errorData'");
 			}
+			
+			$data = $decodedData;
 		}
 		
 		return self::getObjectFromData(new $className(), $collection, $data);

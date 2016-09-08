@@ -55,9 +55,10 @@ class HashMapMapper implements IBidirectionalMapper
 	
 	/**
 	 * @param string $rowField
+	 * @param string $className
 	 * @return string
 	 */
-	public function mapToObjectField($rowField)
+	public function mapToObjectField($rowField, $className)
 	{
 		if (!isset($this->dataToObject[$rowField]))
 			throw new LiteObjectException("Data field $rowField is undefined");

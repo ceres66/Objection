@@ -9,9 +9,10 @@ class DummyMapper implements IBidirectionalMapper
 {
 	/**
 	 * @param string $rowField
+	 * @param string $className
 	 * @return string
 	 */
-	public function mapToObjectField($rowField)
+	public function mapToObjectField($rowField, $className)
 	{
 		return $rowField;
 	}

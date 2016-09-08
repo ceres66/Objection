@@ -7,6 +7,9 @@ use Objection\Mapper\Base\Fields\IFieldMapper;
 
 class SnakeCase implements IFieldMapper
 {
+	use \Objection\TSingleton;
+	
+	
 	/**
 	 * @param string $field
 	 * @return string|bool

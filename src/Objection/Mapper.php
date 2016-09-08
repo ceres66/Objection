@@ -2,13 +2,13 @@
 namespace Objection;
 
 
+use Objection\Mapper\ObjectMapper;
 use Objection\Mapper\MapperCollectionBuilder;
 use Objection\Mapper\Base\IMapperCollection;
 use Objection\Mapper\Base\IObjectToTargetBuilder;
 use Objection\Mapper\DataBuilders\ArrayTargetBuilder;
 use Objection\Mapper\DataBuilders\StdClassTargetBuilder;
 use Objection\Exceptions\LiteObjectException;
-use Objection\Mapper\ObjectMapper;
 
 
 class Mapper
@@ -19,7 +19,7 @@ class Mapper
 	private $collection = null;
 	
 	
-	private function __constructor() {}
+	private function __construct() {}
 	
 	
 	/**

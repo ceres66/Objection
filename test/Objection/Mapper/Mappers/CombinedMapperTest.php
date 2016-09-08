@@ -23,7 +23,7 @@ class CombinedMapperTest extends \PHPUnit_Framework_TestCase
 		
 		$to->expects($this->once())->method('map')->with('abcd')->willReturn('123');
 		
-		$this->assertEquals('123', (new CombinedMapper($from, $to))->mapToObjectField('abcd'));
+		$this->assertEquals('123', (new CombinedMapper($from, $to))->mapToObjectField('abcd', \stdClass::class));
 	}
 	
 	public function test_mapFromObjectField_FromObjectMapperCalled()

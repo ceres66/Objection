@@ -60,9 +60,10 @@ class CombinedMapper implements IBidirectionalMapper
 	
 	/**
 	 * @param string $rowField
+	 * @param string $className
 	 * @return string
 	 */
-	public function mapToObjectField($rowField)
+	public function mapToObjectField($rowField, $className)
 	{
 		if (!$this->toObject)
 			throw new LiteObjectException('There is no data field to object field mapper set');
