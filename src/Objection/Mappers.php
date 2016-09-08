@@ -3,7 +3,6 @@ namespace Objection;
 
 
 use Objection\Mapper\Mappers\HashMapMapper;
-use Objection\Mapper\Mappers\JsonFieldsMapper;
 
 
 class Mappers
