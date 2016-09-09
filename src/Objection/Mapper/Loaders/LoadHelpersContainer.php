@@ -50,7 +50,7 @@ class LoadHelpersContainer implements ILoadHelpersContainer
 	 */
 	public function get($className)
 	{
-		if (isset($this->loadersPerConcreteClass[$className]))
+		if (!isset($this->loadersPerConcreteClass[$className]))
 		{
 			$this->loadLoadersForConcreteClass($className);
 		}	

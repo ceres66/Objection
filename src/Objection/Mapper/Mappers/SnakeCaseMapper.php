@@ -32,6 +32,11 @@ class SnakeCaseMapper extends AbstractByObjectPropertiesMapper
 		return $snakeCase->map($objectField);
 	}
 	
+	/**
+	 * @param string $rowField
+	 * @param string $className
+	 * @return string
+	 */
 	public function mapToObjectField($rowField, $className)
 	{
 		$rowField = str_replace('_', '', $rowField);

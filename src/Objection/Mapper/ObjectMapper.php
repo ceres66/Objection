@@ -2,10 +2,12 @@
 namespace Objection\Mapper;
 
 
-use Objection\Enum\VarType;
 use Objection\LiteObject;
+use Objection\Enum\VarType;
 use Objection\Enum\SetupFields;
 use Objection\Setup\Container;
+use Objection\Mapper\Loaders\LoadHelpersProcessor;
+use Objection\Mapper\Loaders\MapperLoadHelpers;
 use Objection\Mapper\Base\IMapperCollection;
 use Objection\Mapper\Base\IObjectToTargetBuilder;
 use Objection\Mapper\Base\Extensions\IMappedObject;
@@ -58,14 +60,21 @@ class ObjectMapper
 	 * @param LiteObject $object
 	 * @param IMapperCollection $collection
 	 * @param \stdClass|array|null $value
+	 * @param MapperLoadHelpers $loaders
 	 * @return mixed
-	 * @throws LiteObjectException
 	 */
-	private static function getObjectFromData(LiteObject $object, IMapperCollection $collection, $value)
+	private static function getObjectFromData(LiteObject $object, 
+		IMapperCollection $collection, $value, MapperLoadHelpers $loaders)
 	{
 		$data = [];
+		$className = get_class($object);
 		$fieldMapper = $collection->getOrDefault($object);
 		$setup = Container::instance()->get(get_class($object));
+	
+		$processor = new LoadHelpersProcessor();
+		$processor->setLoadersContainer($loaders);
+		
+		$value = $processor->preMapProcess($className, $value);
 		
 		foreach ($value as $dataName => $dataValue)
 		{
@@ -85,7 +94,7 @@ class ObjectMapper
 				if ($fieldSetup[SetupFields::TYPE] == VarType::INSTANCE)
 				{
 					$fieldValue = new $instanceType;
-					self::getObjectFromData($fieldValue, $collection, $dataValue);
+					self::getObjectFromData($fieldValue, $collection, $dataValue, $loaders);
 				}
 				else
 				{
@@ -94,7 +103,7 @@ class ObjectMapper
 					foreach ($dataValue as $itemKey => $item)
 					{
 						$instance = new $instanceType;
-						self::getObjectFromData($instance, $collection, $item);
+						self::getObjectFromData($instance, $collection, $item, $loaders);
 						$fieldValue[$itemKey] = $instance;
 					}
 				}
@@ -106,6 +115,8 @@ class ObjectMapper
 			
 			$data[$fieldName] = $fieldValue;
 		}
+		
+		$data = $processor->postMapProcess($className, $data);
 		
 		return self::setFields($object, $data);
 	}
@@ -179,9 +190,10 @@ class ObjectMapper
 	 * @param string $className
 	 * @param array|\stdClass|string $data
 	 * @param IMapperCollection $collection
+	 * @param MapperLoadHelpers $loaders
 	 * @return LiteObject
 	 */
-	public static function toObject($className, $data, IMapperCollection $collection)
+	public static function toObject($className, $data, IMapperCollection $collection, MapperLoadHelpers $loaders)
 	{
 		if (is_string($data))
 		{
@@ -199,6 +211,6 @@ class ObjectMapper
 			$data = $decodedData;
 		}
 		
-		return self::getObjectFromData(new $className(), $collection, $data);
+		return self::getObjectFromData(new $className(), $collection, $data, $loaders);
 	}
 }

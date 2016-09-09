@@ -6,6 +6,7 @@ use Objection\Mapper\ObjectMapper;
 use Objection\Mapper\MapperCollectionBuilder;
 use Objection\Mapper\Base\IMapperCollection;
 use Objection\Mapper\Base\IObjectToTargetBuilder;
+use Objection\Mapper\Loaders\MapperLoadHelpers;
 use Objection\Mapper\DataBuilders\ArrayTargetBuilder;
 use Objection\Mapper\DataBuilders\StdClassTargetBuilder;
 use Objection\Exceptions\LiteObjectException;
@@ -18,8 +19,14 @@ class Mapper
 	/** @var IMapperCollection */
 	private $collection = null;
 	
+	/** @var MapperLoadHelpers */
+	private $loaders;
 	
-	private function __construct() {}
+	
+	private function __construct() 
+	{
+		$this->loaders = new MapperLoadHelpers();
+	}
 	
 	
 	/**
@@ -145,7 +152,7 @@ class Mapper
 		$className = $this->validateClassNameSet($className);
 		$this->validateCollection($this->className);
 		
-		return ObjectMapper::toObject($className, $data, $this->collection);
+		return ObjectMapper::toObject($className, $data, $this->collection, $this->loaders);
 	}
 	
 	/**
@@ -191,6 +198,22 @@ class Mapper
 	public function getArray($object)
 	{
 		return $this->getData($object, new ArrayTargetBuilder());
+	}
+	
+	/**
+	 * @return Mapper\Base\Loaders\ILoadHelpersContainer
+	 */
+	public function pre()
+	{
+		return $this->loaders->pre();
+	}
+	
+	/**
+	 * @return Mapper\Base\Loaders\ILoadHelpersContainer
+	 */
+	public function post()
+	{
+		return $this->loaders->post();
 	}
 	
 	

@@ -28,7 +28,7 @@ class LoadHelpersProcessor
 				$data = array_intersect_key($data, array_flip($fields));
 			}
 			
-			$helper->mapFields($data);
+			$data = $helper->mapFields($data);
 		}
 		
 		return $data;
