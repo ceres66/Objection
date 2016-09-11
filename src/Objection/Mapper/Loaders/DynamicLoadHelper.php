@@ -22,12 +22,12 @@ class DynamicLoadHelper implements ILoadHelper, ILoadHelperBuilder
 	{
 		if ($this->include)
 		{
-			return array_intersect_key($fields, $this->include);
+			return array_keys(array_intersect_key($data, $this->include));
 		}
 		
 		if ($this->exclude)
 		{
-			return array_diff_key($fields, $this->exclude); 
+			return array_keys(array_diff_key($data, $this->exclude));
 		}
 		
 		return null;
