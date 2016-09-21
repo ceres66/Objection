@@ -28,6 +28,13 @@ class TEnumTest extends \PHPUnit_Framework_TestCase
 		);
 	}
 	
+	public function test_implodeAll()
+	{
+		$this->assertEquals(
+			'a,2', TestObject_TEnumTest::implodeAll(',')
+		);
+	}
+	
 	
 	public function test_isExists()
 	{

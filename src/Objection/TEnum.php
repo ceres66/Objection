@@ -35,6 +35,15 @@ trait TEnum
 	}
 	
 	/**
+	 * @param string $glue
+	 * @return string
+	 */
+	public static function implodeAll($glue = ',')
+	{
+		return implode($glue, self::getAll());
+	}
+	
+	/**
 	 * @param string|int $value
 	 * @return bool
 	 */
