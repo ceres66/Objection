@@ -6,6 +6,9 @@ use Objection\Mapper\ObjectMapper;
 use Objection\Mapper\MapperCollectionBuilder;
 use Objection\Mapper\Base\IMapperCollection;
 use Objection\Mapper\Base\IObjectToTargetBuilder;
+use Objection\Mapper\Base\Values\IValuesProcessorContainer;
+use Objection\Mapper\Utils\ValuesProcessorCreator;
+use Objection\Mapper\Values\ValuesProcessorContainer;
 use Objection\Mapper\Loaders\MapperLoadHelpers;
 use Objection\Mapper\DataBuilders\ArrayTargetBuilder;
 use Objection\Mapper\DataBuilders\StdClassTargetBuilder;
@@ -22,9 +25,13 @@ class Mapper
 	/** @var MapperLoadHelpers */
 	private $loaders;
 	
+	/** @var IValuesProcessorContainer */
+	private $valuesProcessor;
+	
 	
 	private function __construct() 
 	{
+		$this->valuesProcessor = new ValuesProcessorContainer();
 		$this->loaders = new MapperLoadHelpers();
 	}
 	
@@ -80,7 +87,7 @@ class Mapper
 		
 		$this->validateCollection(get_class($object));
 		
-		return ObjectMapper::fromObject($object, $this->collection, $builder);
+		return ObjectMapper::fromObject($object, $this->collection, $builder, $this->valuesProcessor);
 	}
 	
 	/**
@@ -152,7 +159,7 @@ class Mapper
 		$className = $this->validateClassNameSet($className);
 		$this->validateCollection($this->className);
 		
-		return ObjectMapper::toObject($className, $data, $this->collection, $this->loaders);
+		return ObjectMapper::toObject($className, $data, $this->collection, $this->loaders, $this->valuesProcessor);
 	}
 	
 	/**
@@ -214,6 +221,27 @@ class Mapper
 	public function post()
 	{
 		return $this->loaders->post();
+	}
+	
+	/**
+	 * @return ValuesProcessorCreator
+	 */
+	public function values()
+	{
+		if (!$this->className)
+			throw new LiteObjectException("Default class name not set. See method Mapper::setDefaultClassName.");
+		
+		return $this->valuesOf($this->className); 
+	}
+	
+	/**
+	 * @param string $className
+	 * @return ValuesProcessorCreator
+	 */
+	public function valuesOf($className)
+	{
+		$processor = $this->valuesProcessor->getOrCreate($className);
+		return new ValuesProcessorCreator($processor);
 	}
 	
 	

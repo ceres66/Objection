@@ -17,6 +17,12 @@ interface IObjectToTargetBuilder
 	public function set($key, $value);
 	
 	/**
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function getValue($key);
+	
+	/**
 	 * Add a new sub set of values under the key. The returned values will be a new builder.
 	 * @param string $key
 	 * @return IObjectToTargetBuilder

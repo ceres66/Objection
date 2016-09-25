@@ -29,6 +29,15 @@ class ArrayTargetBuilder implements IObjectToTargetBuilder
 	}
 	
 	/**
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function getValue($key)
+	{
+		return $this->data[$key];
+	}
+	
+	/**
 	 * Add a new sub set of values under the key. The returned values will be a new builder.
 	 * @param string $key
 	 * @return IObjectToTargetBuilder
