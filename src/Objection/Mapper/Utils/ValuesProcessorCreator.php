@@ -2,9 +2,9 @@
 namespace Objection\Mapper\Utils;
 
 
-use Objection\Mapper\Base\Values\IObjectValuesProcessor;
-use Objection\Mapper\Base\Values\IValueProcessor;
 use Objection\Mapper\ValuesProcessor;
+use Objection\Mapper\Base\Values\IValueProcessor;
+use Objection\Mapper\Base\Values\IObjectValuesProcessor;
 
 
 class ValuesProcessorCreator
