@@ -2,6 +2,7 @@
 namespace Objection\Mapper\Utils;
 
 
+use Objection\Mapper;
 use Objection\Mapper\ValuesProcessor;
 use Objection\Mapper\Base\Values\IValueProcessor;
 use Objection\Mapper\Base\Values\IObjectValuesProcessor;
@@ -42,6 +43,18 @@ class ValuesProcessorCreator
 	public function callback($field, $toObject, $toRawData)
 	{
 		$this->objectValuesProcessor->add($field, new ValuesProcessor\CallbackValueProcessor($toObject, $toRawData));
+		return $this;
+	}
+	
+	/**
+	 * @param string $field
+	 * @param Mapper $mapper
+	 * @param string $className
+	 * @return static
+	 */
+	public function jsonMapper($field, Mapper $mapper, $className)
+	{
+		$this->objectValuesProcessor->add($field, new ValuesProcessor\JsonMapperValueProcessor($mapper, $className));
 		return $this;
 	}
 	
