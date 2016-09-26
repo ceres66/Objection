@@ -39,7 +39,7 @@ class SnakeCaseMapper extends AbstractByObjectPropertiesMapper
 	 */
 	public function mapToObjectField($rowField, $className)
 	{
-		$rowField = str_replace('_', '', $rowField);
+		$rowField = strtolower(str_replace('_', '', $rowField));
 		return parent::mapToObjectField($rowField, $className);
 	}
 }

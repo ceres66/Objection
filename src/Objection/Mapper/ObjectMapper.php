@@ -87,6 +87,9 @@ class ObjectMapper
 		IMapperCollection $collection, $value, MapperLoadHelpers $loaders, 
 		IValuesProcessorContainer $container)
 	{
+		if (is_string($value))
+			$value = json_decode($value);
+		
 		$data = [];
 		$className = get_class($object);
 		$fieldMapper = $collection->getOrDefault($object);
