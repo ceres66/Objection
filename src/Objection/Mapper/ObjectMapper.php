@@ -104,9 +104,9 @@ class ObjectMapper
 		{
 			$fieldName = $fieldMapper->mapToObjectField($dataName, get_class($object));
 			
-			if (!isset($setup[$fieldName]))
+			if (!$fieldName || !isset($setup[$fieldName]))
 			{
-				throw new LiteObjectException("Property $fieldName is not defined in " . get_class($object));
+				continue;
 			}
 			
 			$fieldSetup = $setup[$fieldName];
