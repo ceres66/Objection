@@ -165,7 +165,7 @@ class Mapper
 	/**
 	 * @param string[]|array[]|\stdClass[] $data
 	 * @param string|bool $className
-	 * @return LiteObject
+	 * @return LiteObject[]
 	 */
 	public function getObjects(array $data, $className = false)
 	{
