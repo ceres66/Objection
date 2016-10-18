@@ -197,6 +197,10 @@ class ObjectMapper
 			$childBuilder = $builder->createBuilder();
 			return self::getDataFromLiteObject($collection, $childBuilder, $value, $container);
 		}
+		else if ($value instanceof \DateTime)
+		{
+			return $value->format('Y-m-d H:i:s');
+		}
 		
 		throw new LiteObjectException("Unsupported object in map: " . get_class($value));
 	}
