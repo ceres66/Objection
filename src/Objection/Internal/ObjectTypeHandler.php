@@ -2,18 +2,18 @@
 namespace Objection\Internal;
 
 
-class LiteObjectType
+class ObjectTypeHandler
 {
 	/** @var \ReflectionProperty[] */
 	private $properties = [];
-
+	
 	/** @var \ReflectionMethod */
 	private $methods = [];
-
+	
 	/** @var \ReflectionClass */
 	private $class;
-
-
+	
+	
 	/**
 	 * @param string $name
 	 * @return \ReflectionProperty
@@ -48,7 +48,7 @@ class LiteObjectType
 		return $this->methods[$name];
 	}
 	
-
+	
 	/**
 	 * @param mixed $instance
 	 * @param string $name
@@ -68,7 +68,7 @@ class LiteObjectType
 	{
 		return $this->getProperty($name)->getValue($instance);
 	}
-
+	
 	/**
 	 * @param mixed $instance
 	 * @param string $name
