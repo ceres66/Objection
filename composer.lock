@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Oktopost/PHPCoder.git",
-                "reference": "605eb27d787aa0652527ddbec7ae0e4215a2965c"
+                "reference": "d3ea0ea603807acc38040e9962d867619ee02b2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Oktopost/PHPCoder/zipball/605eb27d787aa0652527ddbec7ae0e4215a2965c",
-                "reference": "605eb27d787aa0652527ddbec7ae0e4215a2965c",
+                "url": "https://api.github.com/repos/Oktopost/PHPCoder/zipball/d3ea0ea603807acc38040e9962d867619ee02b2d",
+                "reference": "d3ea0ea603807acc38040e9962d867619ee02b2d",
                 "shasum": ""
             },
             "type": "lib",
@@ -37,7 +37,7 @@
                     "email": "alexey@oktopost.com"
                 }
             ],
-            "time": "2016-10-23 05:10:21"
+            "time": "2016-10-23 16:51:02"
         }
     ],
     "packages-dev": [],
