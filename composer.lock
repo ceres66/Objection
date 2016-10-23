@@ -4,13 +4,48 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c68f3299804a4c355e912b73d2f3301a",
-    "content-hash": "12ead30a23d1a7c12e7499dbc3e28106",
-    "packages": [],
+    "hash": "eb59074fafa126fd60b268852e20f882",
+    "content-hash": "ba379294cfe1ebf5b62f40f71110833b",
+    "packages": [
+        {
+            "name": "oktopost/phpcoder",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Oktopost/PHPCoder.git",
+                "reference": "605eb27d787aa0652527ddbec7ae0e4215a2965c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Oktopost/PHPCoder/zipball/605eb27d787aa0652527ddbec7ae0e4215a2965c",
+                "reference": "605eb27d787aa0652527ddbec7ae0e4215a2965c",
+                "shasum": ""
+            },
+            "type": "lib",
+            "autoload": {
+                "psr-0": {
+                    "PHPCoder": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexey Puchkov",
+                    "email": "alexey@oktopost.com"
+                }
+            ],
+            "time": "2016-10-23 05:10:21"
+        }
+    ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "oktopost/phpcoder": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

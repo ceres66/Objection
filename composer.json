@@ -23,10 +23,11 @@
         }
     ],
 	
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
 	
     "require": {
-		"php" : ">=5.5-stable"
+		"php" : ">=5.5-stable",
+        "oktopost/phpcoder": "dev-master"
 	},
 	
 	"autoload": {

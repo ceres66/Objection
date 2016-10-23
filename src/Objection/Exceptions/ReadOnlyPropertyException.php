@@ -9,7 +9,7 @@ class ReadOnlyPropertyException extends LiteObjectException
 {
 	/**
 	 * @param string|LiteObject $object Instance or class name.
-	 * @param int   			$property
+	 * @param string $property
 	 */
 	public function __construct($object, $property)
 	{
