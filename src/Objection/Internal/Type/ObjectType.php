@@ -1,5 +1,5 @@
 <?php
-namespace Objection\Internal;
+namespace Objection\Internal\Type;
 
 
 use Objection\Exceptions\PropertyNotFoundException;
@@ -7,10 +7,11 @@ use Objection\Exceptions\ReadOnlyPropertyException;
 use Objection\Exceptions\WriteOnlyPropertyException;
 
 
-class ObjectTypeHandler
+abstract class ObjectType
 {
-	private $setProperties = [];
-	private $getProperties = [];
+	public $setProperties = [];
+	public $getProperties = [];
+	public $allProperties = [];
 	
 	
 	/** @var \ReflectionProperty[] */
@@ -98,9 +99,10 @@ class ObjectTypeHandler
 		$property = $this->getProperty($name);
 		$property->setValue($instance, $value);
 	}
-	
+
 	/**
 	 * @param mixed $instance
+	 * @param string $name
 	 * @return mixed
 	 */
 	protected function getPropertyValue($instance, $name)
@@ -138,48 +140,6 @@ class ObjectTypeHandler
 		
 		$this->getProperties = array_combine($get, array_fill(0, count($get), true));
 		$this->setProperties = array_combine($set, array_fill(0, count($set), true));
-	}
-
-
-	/**
-	 * @param mixed $instance
-	 * @param string $name
-	 * @param mixed $value
-	 */
-	public function set($instance, $name, $value)
-	{
-		if (!isset($this->setProperties[$name]))
-			$this->throwSetPropertyNotFoundException($name);
-		
-		call_user_func([$this, "set_prop_$name"], $instance, $value);
-	}
-	
-	/**
-	 * @param mixed $instance
-	 * @param string $name
-	 * @return mixed
-	 */
-	public function get($instance, $name)
-	{
-		if (!isset($this->getProperties[$name]))
-			$this->throwGetPropertyNotFoundException($name);
-		
-		return call_user_func([$this, "get_prop_$name"], $instance);
-	}
-
-	/**
-	 * @param mixed $instance
-	 * @return array
-	 */
-	public function debugInfo($instance)
-	{
-		$data = [];
-		
-		foreach ($this->getProperties as $property)
-		{
-			$data[$property] = $this->get($instance, $property);
-		}
-		
-		return $data;
+		$this->allProperties = array_merge($this->getProperties, $this->setProperties);
 	}
 }
