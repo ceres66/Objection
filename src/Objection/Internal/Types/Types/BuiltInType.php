@@ -1,8 +1,8 @@
 <?php
-namespace Objection\Internal\Properties\PropertyMethodParameters\Types;
+namespace Objection\Internal\Types\Types;
 
 
-use Objection\Internal\Properties\PropertyMethodParameters\Base\AbstractParameterType;
+use Objection\Internal\Types\Base\AbstractParameterType;
 
 
 class BuiltInType extends AbstractParameterType

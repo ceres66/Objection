@@ -2,8 +2,8 @@
 namespace Objection\Internal\Properties;
 
 
-use Objection\Internal\Properties\PropertyMethodParameters\Base\IParameterType;
-use Objection\Internal\Properties\PropertyMethodParameters\TypeFactory;
+use Objection\Internal\Types\Base\IParameterType;
+use Objection\Internal\Types\TypeFactory;
 
 class PropertyMethod 
 {

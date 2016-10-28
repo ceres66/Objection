@@ -2,8 +2,9 @@
 namespace Objection\Internal;
 
 
-use Objection\Internal\Properties\PropertyMethod;
+use Objection\Internal\Type\ObjectType;
 use Objection\Internal\Properties\MethodsSet;
+use Objection\Internal\Properties\PropertyMethod;
 use Objection\Internal\Properties\ReferenceMember;
 
 
@@ -20,6 +21,9 @@ class Property
 	
 	/** @var ReferenceMember */
 	private $member;
+	
+	/** @var ObjectType */
+	private $types;
 
 
 	/**

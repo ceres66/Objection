@@ -1,5 +1,5 @@
 <?php
-namespace Objection\Internal\Properties\PropertyMethodParameters\Base;
+namespace Objection\Internal\Types\Base;
 
 
 interface ITypeFactory
