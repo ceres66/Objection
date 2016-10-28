@@ -1,9 +1,9 @@
 <?php
-namespace Objection\Internal\Properties\MutatorParameters\Types;
+namespace Objection\Internal\Properties\PropertyMethodParameters\Types;
 
 
-use Objection\Internal\Properties\MutatorParameters\Base\IParameterType;
-use Objection\Internal\Properties\MutatorParameters\Base\AbstractParameterType;
+use Objection\Internal\Properties\PropertyMethodParameters\Base\IParameterType;
+use Objection\Internal\Properties\PropertyMethodParameters\Base\AbstractParameterType;
 
 
 class ArrayType extends AbstractParameterType

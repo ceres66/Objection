@@ -1,5 +1,5 @@
 <?php
-namespace Objection\Internal\Properties\MutatorParameters\Base;
+namespace Objection\Internal\Properties\PropertyMethodParameters\Base;
 
 
 abstract class AbstractParameterType implements IParameterType

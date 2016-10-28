@@ -2,11 +2,11 @@
 namespace Objection\Internal\Properties;
 
 
-class MutatorType
+class PropertyMethodType
 {
 	use \Objection\TEnum;
 	
 	
-	const GET = 0;
-	const SET = 1;
+	const ACCESSOR	= 0;
+	const MUTATOR	= 1;
 }

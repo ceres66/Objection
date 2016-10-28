@@ -2,23 +2,23 @@
 namespace Objection\Internal\Properties;
 
 
-use Objection\Internal\Properties\MutatorParameters\Base\IParameterType;
-use Objection\Internal\Properties\MutatorParameters\TypeFactory;
+use Objection\Internal\Properties\PropertyMethodParameters\Base\IParameterType;
+use Objection\Internal\Properties\PropertyMethodParameters\TypeFactory;
 
-class Mutator 
+class PropertyMethod 
 {
-	private $mutatorType;
+	private $type;
 	
 	/** @var IParameterType[] */
 	private $handledTypes = [];
 	
 	/** @var \ReflectionMethod */
-	private $mutatorMethod;
+	private $method;
 
 	
 	private function parseParameter()
 	{
-		$parameter = $this->mutatorMethod->getParameters();
+		$parameter = $this->method->getParameters();
 		$parameter = $parameter[0];
 		
 		if ($parameter->getClass())
@@ -42,10 +42,10 @@ class Mutator
 		$paramsCount = $method->getNumberOfParameters();
 		
 		if ($paramsCount > 1)
-			throw new \Exception("Mutator can't have more then 1 parameter!");
+			throw new \Exception("Property method can't have more then 1 parameter!");
 		
-		$this->mutatorMethod = $method;
-		$this->mutatorType = ($paramsCount ? MutatorType::SET : MutatorType::GET);
+		$this->method = $method;
+		$this->type = ($paramsCount ? PropertyMethodType::MUTATOR : PropertyMethodType::ACCESSOR);
 		
 		if ($paramsCount == 1)
 		{
@@ -57,33 +57,33 @@ class Mutator
 	/**
 	 * @return \ReflectionMethod
 	 */
-	public function getMutatorMethod()
+	public function getMethod()
 	{
-		return $this->mutatorMethod;
+		return $this->method;
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function isSetter()
+	public function isMutator()
 	{
-		return $this->mutatorType == MutatorType::SET;
+		return $this->type == PropertyMethodType::MUTATOR;
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function isGetter()
+	public function isAccessor()
 	{
-		return $this->mutatorType == MutatorType::GET;
+		return $this->type == PropertyMethodType::ACCESSOR;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getMutatorType()
+	public function getType()
 	{
-		return $this->mutatorType;
+		return $this->type;
 	}
 
 	/**
