@@ -4,7 +4,7 @@ namespace Objection\Internal\Types;
 
 use Objection\Internal\Types\Types;
 use Objection\Internal\Types\Base\ITypeFactory;
-use Objection\Internal\Types\Base\IParameterType;
+use Objection\Internal\Types\Base\IDataType;
 
 use Objection\Exceptions\Build\MultiDimensionalArrayParameterNotSupportedException;
 
@@ -28,7 +28,7 @@ class TypeFactory implements ITypeFactory
 
 	/**
 	 * @param string $type
-	 * @return IParameterType
+	 * @return IDataType
 	 */
 	private function getArrayType($type)
 	{
@@ -54,7 +54,7 @@ class TypeFactory implements ITypeFactory
 	
 	/**
 	 * @param string $type
-	 * @return IParameterType
+	 * @return IDataType
 	 */
 	public function get($type)
 	{
@@ -77,11 +77,20 @@ class TypeFactory implements ITypeFactory
 			case 'mixed':
 				return new Types\MixedType();
 			
-			case 'double':
-			case 'string':
+			case 'bool':
 			case 'boolean':
+				return Types\BuiltInType::boolean();
+			
+			case 'float':
+			case 'double':
+				return Types\BuiltInType::double();
+			
+			case 'int':
 			case 'integer':
-				return Types\BuiltInType::create($type);
+				return Types\BuiltInType::integer();
+				
+			case 'string':
+				return Types\BuiltInType::string();
 			
 			case '[]':
 			case 'array':

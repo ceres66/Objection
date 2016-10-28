@@ -2,17 +2,17 @@
 namespace Objection\Internal\Types\Types;
 
 
-use Objection\Internal\Types\Base\IParameterType;
-use Objection\Internal\Types\Base\AbstractParameterType;
+use Objection\Internal\Types\Base\IDataType;
+use Objection\Internal\Types\Base\AbstractDataType;
 
 
-class ArrayType extends AbstractParameterType
+class ArrayType extends AbstractDataType
 {
-	/** @var IParameterType */
+	/** @var IDataType */
 	private $subType;
 	
 	
-	public function __construct(IParameterType $subType = null)
+	public function __construct(IDataType $subType = null)
 	{
 		parent::__construct(false, false, 'array');
 		$this->subType = $subType ?: new MixedType();
@@ -28,7 +28,7 @@ class ArrayType extends AbstractParameterType
 	}
 
 	/**
-	 * @return IParameterType
+	 * @return IDataType
 	 */
 	public function getSubType()
 	{

@@ -2,7 +2,7 @@
 namespace Objection\Internal\Types\Base;
 
 
-interface IParameterType
+interface IDataType
 {
 	/**
 	 * @return string

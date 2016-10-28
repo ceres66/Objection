@@ -2,10 +2,10 @@
 namespace Objection\Internal\Types\Types;
 
 
-use Objection\Internal\Types\Base\AbstractParameterType;
+use Objection\Internal\Types\Base\AbstractDataType;
 
 
-class BuiltInType extends AbstractParameterType
+class BuiltInType extends AbstractDataType
 {
 	/**
 	 * @param string $name

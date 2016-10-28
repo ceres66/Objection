@@ -2,14 +2,14 @@
 namespace Objection\Internal\Properties;
 
 
-use Objection\Internal\Types\Base\IParameterType;
+use Objection\Internal\Types\Base\IDataType;
 use Objection\Internal\Types\TypeFactory;
 
 class PropertyMethod 
 {
 	private $type;
 	
-	/** @var IParameterType[] */
+	/** @var IDataType[] */
 	private $handledTypes = [];
 	
 	/** @var \ReflectionMethod */
@@ -87,7 +87,7 @@ class PropertyMethod
 	}
 
 	/**
-	 * @param IParameterType[] $types
+	 * @param IDataType[] $types
 	 */
 	public function setHandledTypes(array $types)
 	{
@@ -111,7 +111,7 @@ class PropertyMethod
 	}
 
 	/**
-	 * @return IParameterType[]
+	 * @return IDataType[]
 	 */
 	public function getHandledTypes()
 	{

@@ -2,7 +2,7 @@
 namespace Objection\Internal;
 
 
-use Objection\Internal\Type\ObjectType;
+use Objection\Internal\Types\Base\IDataType;
 use Objection\Internal\Properties\MethodsSet;
 use Objection\Internal\Properties\PropertyMethod;
 use Objection\Internal\Properties\ReferenceMember;
@@ -13,17 +13,18 @@ class Property
 	private $name;
 	private $flags = null;
 	
+	
+	/** @var IDataType */
+	private $types;
+	
+	/** @var ReferenceMember */
+	private $member;
+	
 	/** @var MethodsSet */
 	private $accessor;
 	
 	/** @var MethodsSet */
 	private $mutators;
-	
-	/** @var ReferenceMember */
-	private $member;
-	
-	/** @var ObjectType */
-	private $types;
 
 
 	/**
@@ -62,6 +63,30 @@ class Property
 		return !is_null($this->flags);
 	}
 
+	/**
+	 * @return IDataType
+	 */
+	public function getTypes()
+	{
+		return $this->types;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasTypes()
+	{
+		return (bool)$this->types; 
+	}
+
+	/**
+	 * @param IDataType $type
+	 */
+	public function addType(IDataType $type)
+	{
+		$this->types[] = $type; 
+	}
+	
 	/**
 	 * @return MethodsSet
 	 */

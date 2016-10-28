@@ -2,10 +2,10 @@
 namespace Objection\Internal\Types\Types;
 
 
-use Objection\Internal\Types\Base\AbstractParameterType;
+use Objection\Internal\Types\Base\AbstractDataType;
 
 
-class MixedType extends AbstractParameterType
+class MixedType extends AbstractDataType
 {
 	public function __construct()
 	{

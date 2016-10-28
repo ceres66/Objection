@@ -6,7 +6,7 @@ interface ITypeFactory
 {
 	/**
 	 * @param string $type
-	 * @return IParameterType
+	 * @return IDataType
 	 */
 	public function get($type);
 }

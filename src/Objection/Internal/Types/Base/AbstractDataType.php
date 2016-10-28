@@ -2,7 +2,7 @@
 namespace Objection\Internal\Types\Base;
 
 
-abstract class AbstractParameterType implements IParameterType
+abstract class AbstractDataType implements IDataType
 {
 	private $name;
 	private $isArray;
