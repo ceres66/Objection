@@ -84,6 +84,61 @@ class NumberOfProperties
 }
 
 
+/**
+ * @anot
+ */
+class HasTest_AnnotationExists
+{
+	
+}
+
+/**
+ * abc @anot
+ */
+class HasTest_InvalidAnnotation
+{
+	
+}
+
+/**
+ * @anot abc	d
+ */
+class HasTest_AnnotationWithComment
+{
+	
+}
+
+/**
+ * @AnOt
+ */
+class HasTest_AnnotationCaseIgnored
+{
+	
+}
+
+/**
+ * @A
+ * @property 
+ * @anot
+ * @b
+ */
+class HasTest_NumberOfOtherAnnotationsExist
+{
+	
+}
+
+/**
+ * @A
+ * @property
+ * @b
+ */
+class HasTest_OtherAnnotationsOnly
+{
+	
+}
+
+
+
 class AnnotationExtractorTest extends \PHPUnit_Framework_TestCase
 {
 	public function test_getProperties_EmptyClass_EmptyArrayReturned()
@@ -182,5 +237,41 @@ class AnnotationExtractorTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf(PropertyAnnotation::class, $result[1]);
 		$this->assertSame(NumberOfProperties::$prop_2_name, $result[1]->getName());
 		$this->assertSame(NumberOfProperties::$prop_2_types, $result[1]->getTypes());
+	}
+	
+	
+	public function test_has_AnnotationMissing_ReturnFalse()
+	{
+		$this->assertFalse(AnnotationExtractor::has(new \ReflectionClass(EmptyClass::class), 'anot'));
+	}
+	
+	public function test_has_AnnotationExists_ReturnTrue()
+	{
+		$this->assertTrue(AnnotationExtractor::has(new \ReflectionClass(HasTest_AnnotationExists::class), 'anot'));
+	}
+	
+	public function test_has_AnnotationIncorrect_ReturnFalse()
+	{
+		$this->assertFalse(AnnotationExtractor::has(new \ReflectionClass(HasTest_InvalidAnnotation::class), 'anot'));
+	}
+	
+	public function test_has_AnnotationWithComment_ReturnTrue()
+	{
+		$this->assertTrue(AnnotationExtractor::has(new \ReflectionClass(HasTest_AnnotationWithComment::class), 'anot'));
+	}
+	
+	public function test_has_AnnotationCaseIgnored_ReturnTrue()
+	{
+		$this->assertTrue(AnnotationExtractor::has(new \ReflectionClass(HasTest_AnnotationCaseIgnored::class), 'anot'));
+	}
+	
+	public function test_has_OtherAnnotationsExistAlso_ReturnTrue()
+	{
+		$this->assertTrue(AnnotationExtractor::has(new \ReflectionClass(HasTest_NumberOfOtherAnnotationsExist::class), 'anot'));
+	}
+	
+	public function test_has_OnlyOtherAnnotationsExist_ReturnFalse()
+	{
+		$this->assertFalse(AnnotationExtractor::has(new \ReflectionClass(HasTest_OtherAnnotationsOnly::class), 'anot'));
 	}
 }

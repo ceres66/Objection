@@ -78,4 +78,15 @@ class AnnotationExtractor
 		
 		return $result;
 	}
+
+	/**
+	 * @param \ReflectionClass|\ReflectionMethod|\ReflectionProperty $source
+	 * @param string $annotation
+	 * @return bool
+	 */
+	public static function has($source, $annotation)
+	{
+		$regex = "/^[ \\t]*\\*[ \\t]*@{$annotation}([ \\t]+(.*))?$/mi";
+		return (1 === preg_match($regex, $source->getDocComment()));
+	}
 }
