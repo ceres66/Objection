@@ -59,6 +59,14 @@ class PropertyList
 	}
 	
 	/**
+	 * @return Property[]
+	 */
+	public function all()
+	{
+		return array_values($this->properties);
+	}
+	
+	/**
 	 * @param string $name
 	 * @return Property
 	 */

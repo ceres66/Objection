@@ -133,6 +133,25 @@ class PropertyListTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	
+	public function test_all_Empty_ReturnEmptyArray()
+	{
+		$list = new PropertyList();
+		$this->assertSame([], $list->all());
+	}
+	
+	public function test_all_ItemsExists_ArrayOfItemsReturned()
+	{
+		$list = new PropertyList();
+		$a = new Property('a');
+		$b = new Property('b');
+		
+		$list->add($a);
+		$list->add($b);
+		
+		$this->assertSame([$a, $b], $list->all());
+	}
+	
+	
 	public function test_getOrCreate_EmptyList_NewItemReturned()
 	{
 		$list = new PropertyList();
