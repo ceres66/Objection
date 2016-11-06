@@ -64,5 +64,5 @@ class MyClass
 // Because PHP is case insensitive, this code will modifed the $id data member 
 // directly without calling objection's handlers.
 $a = new MyClass();
-$a->ID
+$a->ID = "Somthing invalid"
 ```
