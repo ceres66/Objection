@@ -1,9 +1,10 @@
 <?php
-namespace Objection\Internal\Properties;
+namespace Objection\Internal\Build\Properties;
 
 
-use Objection\Internal\Types\Base\IDataType;
-use Objection\Internal\Types\TypeFactory;
+use Objection\Internal\Build\DataTypes\Base\IDataType;
+use Objection\Internal\Build\DataTypes\TypeFactory;
+
 
 class PropertyMethod 
 {

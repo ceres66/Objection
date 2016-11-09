@@ -1,9 +1,9 @@
 <?php
-namespace Objection\Internal\Base\Parsing;
+namespace Objection\Internal\Build\Base\Parsing;
 
 
 use Objection\Internal\Property;
-use Objection\Internal\Properties\PropertyList;
+use Objection\Internal\Build\Properties\PropertyList;
 
 
 abstract class AbstractPropertyParser implements IPropertyParser

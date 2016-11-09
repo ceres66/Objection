@@ -1,10 +1,10 @@
 <?php
-namespace Objection\Internal\Types;
+namespace Objection\Internal\Build\DataTypes;
 
 
-use Objection\Internal\Types\Types;
-use Objection\Internal\Types\Base\ITypeFactory;
-use Objection\Internal\Types\Base\IDataType;
+use Objection\Internal\Build\DataTypes\Types;
+use Objection\Internal\Build\DataTypes\Base\ITypeFactory;
+use Objection\Internal\Build\DataTypes\Base\IDataType;
 
 use Objection\Exceptions\Build\MultiDimensionalArrayParameterNotSupportedException;
 

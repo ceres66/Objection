@@ -2,10 +2,10 @@
 namespace Objection\Internal;
 
 
-use Objection\Internal\Types\Base\IDataType;
-use Objection\Internal\Properties\MethodsSet;
-use Objection\Internal\Properties\PropertyMethod;
-use Objection\Internal\Properties\ReferenceMember;
+use Objection\Internal\Build\DataTypes\Base\IDataType;
+use Objection\Internal\Build\Properties\MethodsSet;
+use Objection\Internal\Build\Properties\PropertyMethod;
+use Objection\Internal\Build\Properties\ReferenceMember;
 
 
 class Property
@@ -14,7 +14,7 @@ class Property
 	private $flags = null;
 	
 	
-	/** @var IDataType */
+	/** @var IDataType[] */
 	private $types;
 	
 	/** @var ReferenceMember */
@@ -72,7 +72,7 @@ class Property
 	}
 
 	/**
-	 * @return IDataType
+	 * @return IDataType[]
 	 */
 	public function getTypes()
 	{
@@ -92,6 +92,20 @@ class Property
 	 */
 	public function addType(IDataType $type)
 	{
+		if ($type->isMixed())
+		{
+			$this->types = [$type];
+			return;
+		}
+		
+		foreach ($this->types as $dataType)
+		{
+			if ($dataType->isMixed() || $type->isEquals($dataType))
+			{
+				return;
+			}
+		}
+		
 		$this->types[] = $type; 
 	}
 	

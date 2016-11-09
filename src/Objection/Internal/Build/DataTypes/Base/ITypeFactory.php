@@ -1,5 +1,5 @@
 <?php
-namespace Objection\Internal\Types\Base;
+namespace Objection\Internal\Build\DataTypes\Base;
 
 
 interface ITypeFactory

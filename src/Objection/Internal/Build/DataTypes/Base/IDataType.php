@@ -1,5 +1,5 @@
 <?php
-namespace Objection\Internal\Types\Base;
+namespace Objection\Internal\Build\DataTypes\Base;
 
 
 interface IDataType
@@ -28,4 +28,15 @@ interface IDataType
 	 * @return bool
 	 */
 	public function isNullable();
+	
+	/**
+	 * @return bool
+	 */
+	public function isMixed();
+	
+	/**
+	 * @param IDataType $type
+	 * @return bool
+	 */
+	public function isEquals(IDataType $type);
 }

@@ -1,9 +1,9 @@
 <?php
-namespace Objection\Internal\Types\Types;
+namespace Objection\Internal\Build\DataTypes\Types;
 
 
-use Objection\Internal\Types\Base\IDataType;
-use Objection\Internal\Types\Base\AbstractDataType;
+use Objection\Internal\Build\DataTypes\Base\IDataType;
+use Objection\Internal\Build\DataTypes\Base\AbstractDataType;
 
 
 class ArrayType extends AbstractDataType

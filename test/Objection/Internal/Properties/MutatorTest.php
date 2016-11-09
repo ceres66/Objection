@@ -1,5 +1,5 @@
 <?php
-namespace Objection\Internal\Properties;
+namespace Objection\Internal\Build\Properties;
 
 
 class MutatorTest extends \PHPUnit_Framework_TestCase

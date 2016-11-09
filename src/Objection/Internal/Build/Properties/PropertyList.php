@@ -1,5 +1,5 @@
 <?php
-namespace Objection\Internal\Properties;
+namespace Objection\Internal\Build\Properties;
 
 
 use Objection\Internal\Property;

@@ -2,8 +2,9 @@
 namespace Objection\Internal\Build\Parsing\Parsers;
 
 
-use Objection\Internal\Base\Parsing\AbstractPropertyParser;
+use Objection\Internal\Build\Base\Parsing\AbstractPropertyParser;
 use Objection\Internal\Build\Parsing\AnnotationExtractor;
+use Objection\Internal\Build\DataTypes\TypeFactory;
 
 
 class ClassCommentParser extends AbstractPropertyParser
@@ -18,7 +19,8 @@ class ClassCommentParser extends AbstractPropertyParser
 			
 			foreach ($annotation->getTypes() as $type)
 			{
-				
+				$typeObject = TypeFactory::instance()->get($type);
+				$property->addType($typeObject);
 			}
 		}
 	}

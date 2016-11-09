@@ -1,5 +1,5 @@
 <?php
-namespace Objection\Internal\Types\Base;
+namespace Objection\Internal\Build\DataTypes\Base;
 
 
 abstract class AbstractDataType implements IDataType
@@ -70,5 +70,22 @@ abstract class AbstractDataType implements IDataType
 	public function isNullable()
 	{
 		return $this->isNullable;
+	}
+	
+	/**
+	 * @return bool
+	 */
+	public function isMixed()
+	{
+		return false;
+	}
+	
+	/**
+	 * @param IDataType $type
+	 * @return bool
+	 */
+	public function isEquals(IDataType $type)
+	{
+		return (get_class($type) == get_class() && $type->name() == $this->name());
 	}
 }

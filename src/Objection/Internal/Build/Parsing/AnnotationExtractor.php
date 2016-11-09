@@ -2,7 +2,7 @@
 namespace Objection\Internal\Build\Parsing;
 
 
-use Objection\Internal\Build\Annotations\PropertyAnnotation;
+use Objection\Internal\Build\Parsing\Annotations\PropertyAnnotation;
 
 
 class AnnotationExtractor
@@ -63,12 +63,12 @@ class AnnotationExtractor
 	
 
 	/**
-	 * @param \ReflectionClass $source
+	 * @param \ReflectionClass|\ReflectionProperty|\ReflectionMethod|string $source
 	 * @return PropertyAnnotation[]
 	 */
-	public static function getProperties(\ReflectionClass $source)
+	public static function getProperties($source)
 	{
-		$comment = $source->getDocComment();
+		$comment = (is_string($source) ? $source : $source->getDocComment());
 		$result = [];
 		
 		foreach (self::extract('property', $comment) as $item)
@@ -80,13 +80,13 @@ class AnnotationExtractor
 	}
 
 	/**
-	 * @param \ReflectionClass|\ReflectionMethod|\ReflectionProperty $source
+	 * @param \ReflectionClass|\ReflectionMethod|\ReflectionProperty|string $source
 	 * @param string $annotation
 	 * @return bool
 	 */
 	public static function has($source, $annotation)
 	{
 		$regex = "/^[ \\t]*\\*[ \\t]*@{$annotation}([ \\t]+(.*))?$/mi";
-		return (1 === preg_match($regex, $source->getDocComment()));
+		return (1 === preg_match($regex, (is_string($source) ? $source : $source->getDocComment())));
 	}
 }

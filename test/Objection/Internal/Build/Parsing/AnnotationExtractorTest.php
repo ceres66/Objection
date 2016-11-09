@@ -3,7 +3,7 @@ namespace Objection\Internal\Build\Parsing;
 
 
 
-use Objection\Internal\Build\Annotations\PropertyAnnotation;
+use Objection\Internal\Build\Parsing\Annotations\PropertyAnnotation;
 
 class EmptyClass
 {

@@ -2,8 +2,8 @@
 namespace Objection\Internal\Build\Parsing;
 
 
-use Objection\Internal\Base\Parsing\IPropertyParser;
-use Objection\Internal\Properties\PropertyList;
+use Objection\Internal\Build\Base\Parsing\IPropertyParser;
+use Objection\Internal\Build\Properties\PropertyList;
 use Objection\Exceptions\LiteObjectException;
 
 class Parsers

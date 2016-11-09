@@ -1,5 +1,5 @@
 <?php
-namespace Objection\Internal\Properties;
+namespace Objection\Internal\Build\Properties;
 
 
 class ReferenceMember
@@ -31,5 +31,10 @@ class ReferenceMember
 	public function getMemberName()
 	{
 		return $this->member->getName();
-	} 
+	}
+	
+	public function getFullName()
+	{
+		return $this->member->getDeclaringClass()->getName() . "::" . $this->member->getName();
+	}
 }

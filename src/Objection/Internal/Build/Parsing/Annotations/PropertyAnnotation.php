@@ -1,5 +1,5 @@
 <?php
-namespace Objection\Internal\Build\Annotations;
+namespace Objection\Internal\Build\Parsing\Annotations;
 
 
 class PropertyAnnotation
