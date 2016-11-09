@@ -48,6 +48,14 @@ class Property
 	}
 	
 	/**
+	 * @param int $flags
+	 */
+	public function addFlags($flags)
+	{
+		$this->flags = ($this->flags | $flags);
+	}
+	
+	/**
 	 * @return null|int
 	 */
 	public function getFlags()
