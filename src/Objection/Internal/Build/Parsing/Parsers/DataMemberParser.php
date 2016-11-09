@@ -2,15 +2,18 @@
 namespace Objection\Internal\Build\Parsing\Parsers;
 
 
-use Objection\Exceptions\LiteObjectException;
 use Objection\Internal\Build\Base\Parsing\AbstractPropertyParser;
 use Objection\Internal\Build\DataTypes\TypeFactory;
 use Objection\Internal\Build\Parsing\AnnotationExtractor;
 use Objection\Internal\PropertyAccessFlags;
+use Objection\Exceptions\LiteObjectException;
 
 
 class DataMemberParser extends AbstractPropertyParser
 {
+	/**
+	 * @param \ReflectionProperty $reflectionProperty
+	 */
 	private function parseReflectionProperty(\ReflectionProperty $reflectionProperty)
 	{
 		$comment = $reflectionProperty->getDocComment();
