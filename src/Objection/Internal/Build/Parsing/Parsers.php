@@ -55,7 +55,7 @@ class Parsers
 		foreach ($this->set as $item)
 		{
 			$item->setPropertyList($this->propertyList);
-			$item->setDefinitionClass($class);
+			$item->setTargetClass($class);
 			$item->parse();
 		}
 		

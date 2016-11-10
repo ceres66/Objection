@@ -11,7 +11,7 @@ class ClassCommentParser extends AbstractPropertyParser
 {
 	public function parse()
 	{
-		$propertyAnnotations = AnnotationExtractor::getProperties($this->getClass());
+		$propertyAnnotations = AnnotationExtractor::getProperties($this->getReflectionClass());
 		
 		foreach ($propertyAnnotations as $annotation)
 		{

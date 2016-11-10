@@ -1,5 +1,5 @@
 <?php
-namespace Objection\Internal\Build;
+namespace Objection\Internal\Build\Descriptors;
 
 
 class ObjectifiedClass
@@ -67,10 +67,13 @@ class ObjectifiedClass
 		
 		return $methods;
 	}
-	
+
+	/**
+	 * @return SourceFile
+	 */
 	public function getSourceFile()
 	{
-		return $this->class->getFileName();
+		return new SourceFile($this->class->getFileName());
 	}
 	
 	/**
