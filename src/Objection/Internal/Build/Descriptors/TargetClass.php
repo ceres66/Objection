@@ -2,10 +2,13 @@
 namespace Objection\Internal\Build\Descriptors;
 
 
-class ObjectifiedClass
+class TargetClass
 {
 	/** @var \ReflectionClass */
 	private $class;
+	
+	/** @var SourceFile */
+	private $sourceFile;
 	
 	
 	/**
@@ -73,7 +76,10 @@ class ObjectifiedClass
 	 */
 	public function getSourceFile()
 	{
-		return new SourceFile($this->class->getFileName());
+		if (!$this->sourceFile)
+			$this->sourceFile = new SourceFile($this->class->getFileName());
+		
+		return $this->sourceFile;
 	}
 	
 	/**

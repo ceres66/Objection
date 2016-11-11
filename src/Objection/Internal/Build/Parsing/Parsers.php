@@ -2,21 +2,22 @@
 namespace Objection\Internal\Build\Parsing;
 
 
+use Objection\Internal\Build\Base\IParserRegistry;
 use Objection\Internal\Build\Base\Parsing\IPropertyParser;
-use Objection\Internal\Build\Properties\PropertyList;
+use Objection\Internal\Build\Descriptors\TargetClass;
+use Objection\Internal\Build\Descriptors\PropertyList;
 use Objection\Exceptions\LiteObjectException;
 
-class Parsers
+
+class Parsers implements IParserRegistry
 {
 	/** @var IPropertyParser[] */
-	private $set;
+	private $set = [];
 	
-	/** @var PropertyList */
-	private $propertyList;
-
 
 	/**
 	 * @param IPropertyParser|string $parser
+	 * @return static
 	 */
 	public function register($parser)
 	{
@@ -36,29 +37,25 @@ class Parsers
 		}
 		
 		$this->set[] = $parser;
-	}
-
-	/**
-	 * @param PropertyList $list
-	 */
-	public function setPropertyList(PropertyList $list)
-	{
-		$this->propertyList = $list;
+		
+		return $this;
 	}
 	
 	/**
-	 * @param \ReflectionClass $class
+	 * @param TargetClass $class
 	 * @return PropertyList
 	 */
-	public function parse(\ReflectionClass $class)
+	public function parse(TargetClass $class)
 	{
+		$propertyList = new PropertyList();
+		
 		foreach ($this->set as $item)
 		{
-			$item->setPropertyList($this->propertyList);
+			$item->setPropertyList($propertyList);
 			$item->setTargetClass($class);
 			$item->parse();
 		}
 		
-		return $this->propertyList;
+		return $propertyList;
 	}
 }

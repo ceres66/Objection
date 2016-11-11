@@ -3,15 +3,17 @@ namespace Objection\Internal\Build\DataTypes;
 
 
 use Objection\Internal\Build\DataTypes\Types;
-use Objection\Internal\Build\DataTypes\Base\ITypeFactory;
 use Objection\Internal\Build\DataTypes\Base\IDataType;
+use Objection\Internal\Build\DataTypes\Base\ITypeFactory;
+use Objection\Internal\Build\DataTypes\Base\INamespaceParser;
 
 use Objection\Exceptions\Build\MultiDimensionalArrayParameterNotSupportedException;
 
 
 class TypeFactory implements ITypeFactory
 {
-	use \Objection\TSingleton;
+	/** @var INamespaceParser|null */
+	private $namespaceParser = null;
 	
 	
 	/**
@@ -50,27 +52,13 @@ class TypeFactory implements ITypeFactory
 		
 		return new Types\ArrayType($subType);
 	}
-	
-	
+
 	/**
 	 * @param string $type
-	 * @return IDataType
+	 * @return IDataType|null
 	 */
-	public function get($type)
+	private function tryGetGeneric($type)
 	{
-		if (is_callable($type))
-		{
-			return new Types\CallableType();
-		}
-		else if (class_exists($type))
-		{
-			return new Types\ClassType($type);
-		}
-		else if ($this->isArraySubType($type))
-		{
-			return $this->getArrayType($type);
-		}
-		
 		switch ($type)
 		{
 			case '*':
@@ -95,8 +83,71 @@ class TypeFactory implements ITypeFactory
 			case '[]':
 			case 'array':
 				return new Types\ArrayType();
+			
+			case 'callable':
+				return new Types\CallableType();
+			
+			default:
+				return null;
+		}
+	}
+
+	/**
+	 * @param string $type
+	 * @return Types\ClassType|null
+	 */
+	private function tryGetFullClassName($type)
+	{
+		if (!$this->namespaceParser)
+			return null;
+		
+		$className = $this->namespaceParser->resolveNamespaceFor($type);
+			
+		if (!$className && !class_exists($className))
+		{
+			return null;
 		}
 		
-		throw new \Exception("Could not resolve the type '$type'");
+		return new Types\ClassType($className);
+	}
+
+
+	/**
+	 * @param INamespaceParser|null $namespaceParser
+	 */
+	public function __construct(INamespaceParser $namespaceParser = null)
+	{
+		$this->namespaceParser = $namespaceParser;
+	}
+
+
+	/**
+	 * @param string $type
+	 * @return IDataType
+	 */
+	public function get($type)
+	{
+		if (class_exists($type))
+		{
+			return new Types\ClassType($type);
+		}
+		else if ($this->isArraySubType($type))
+		{
+			return $this->getArrayType($type);
+		}
+		
+		$dataType = $this->tryGetGeneric($type);
+		
+		if (!$dataType)
+		{
+			$dataType = $this->tryGetFullClassName($type);;
+		}
+		
+		if (!$dataType)
+		{
+			throw new \Exception("Could not resolve the type '$type'");
+		}
+		
+		return $dataType;
 	}
 }

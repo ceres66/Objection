@@ -4,13 +4,13 @@ namespace Objection\Internal\Build\Parsing\Parsers;
 
 use Objection\Internal\Build\Base\Parsing\AbstractPropertyParser;
 use Objection\Internal\Build\Parsing\AnnotationExtractor;
-use Objection\Internal\Build\DataTypes\TypeFactory;
 
 
 class ClassCommentParser extends AbstractPropertyParser
 {
 	public function parse()
 	{
+		$typeFactory = $this->getTypeFactory();
 		$propertyAnnotations = AnnotationExtractor::getProperties($this->getReflectionClass());
 		
 		foreach ($propertyAnnotations as $annotation)
@@ -19,7 +19,7 @@ class ClassCommentParser extends AbstractPropertyParser
 			
 			foreach ($annotation->getTypes() as $type)
 			{
-				$typeObject = TypeFactory::instance()->get($type);
+				$typeObject = $typeFactory->get($type);
 				$property->addType($typeObject);
 			}
 		}

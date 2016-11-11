@@ -2,16 +2,16 @@
 namespace Objection\Internal\Build\Base\Parsing;
 
 
-use Objection\Internal\Build\Descriptors\ObjectifiedClass;
+use Objection\Internal\Build\Descriptors\TargetClass;
 use Objection\Internal\Build\Descriptors\PropertyList;
 
 
 interface IPropertyParser
 {
 	/**
-	 * @param ObjectifiedClass $class
+	 * @param TargetClass $class
 	 */
-	public function setTargetClass(ObjectifiedClass $class);
+	public function setTargetClass(TargetClass $class);
 
 	/**
 	 * @param PropertyList $list

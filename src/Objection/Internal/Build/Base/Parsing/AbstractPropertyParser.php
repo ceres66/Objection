@@ -3,13 +3,14 @@ namespace Objection\Internal\Build\Base\Parsing;
 
 
 use Objection\Internal\Property;
+use Objection\Internal\Build\DataTypes\TypeFactory;
+use Objection\Internal\Build\Descriptors\TargetClass;
 use Objection\Internal\Build\Descriptors\PropertyList;
-use Objection\Internal\Build\Descriptors\ObjectifiedClass;
 
 
 abstract class AbstractPropertyParser implements IPropertyParser
 {
-	/** @var ObjectifiedClass */
+	/** @var TargetClass */
 	private $class;
 	
 	/** @var PropertyList */
@@ -17,7 +18,7 @@ abstract class AbstractPropertyParser implements IPropertyParser
 
 
 	/**
-	 * @return ObjectifiedClass
+	 * @return TargetClass
 	 */
 	protected function getClass()
 	{
@@ -30,6 +31,14 @@ abstract class AbstractPropertyParser implements IPropertyParser
 	protected function getReflectionClass()
 	{
 		return $this->class->getReflection();
+	}
+
+	/**
+	 * @return TypeFactory
+	 */
+	protected function getTypeFactory()
+	{
+		return $this->class->getSourceFile()->getTypeFactory();
 	}
 
 	/**
@@ -51,9 +60,9 @@ abstract class AbstractPropertyParser implements IPropertyParser
 	
 
 	/**
-	 * @param ObjectifiedClass $class
+	 * @param TargetClass $class
 	 */
-	public function setTargetClass(ObjectifiedClass $class)
+	public function setTargetClass(TargetClass $class)
 	{
 		$this->class = $class;
 	}
