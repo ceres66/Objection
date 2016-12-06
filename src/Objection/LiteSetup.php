@@ -178,6 +178,10 @@ class LiteSetup
 		{
 			$default = new \DateTime((string)$default);
 		}
+		else if (is_null($default))
+		{
+			$isNull = true;
+		}
 		else if (!$default instanceof \DateTime)
 		{
 			throw new Exceptions\InvalidDatetimeValueTypeException($default);
