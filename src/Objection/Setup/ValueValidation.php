@@ -59,7 +59,7 @@ class ValueValidation
 	
 	/**
 	 * @param string $value
-	 * @return array
+	 * @return \DateTime
 	 */
 	private static function fixDateTime($value)
 	{
