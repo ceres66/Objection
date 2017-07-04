@@ -132,6 +132,10 @@ class ObjectMapper
 					}
 				}
 			}
+			else if ($fieldSetup[SetupFields::TYPE] == VarType::ARR && $dataValue instanceof \stdClass)
+			{
+				$fieldValue = (array)$dataValue;
+			}
 			else
 			{
 				$fieldValue = $dataValue;
