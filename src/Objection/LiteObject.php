@@ -19,6 +19,8 @@ abstract class LiteObject
 	/** @var array */
 	private $values;
 	
+	private $ignoreSet;
+	
 	
 	/** @var static */
 	protected $_p;
@@ -150,6 +152,12 @@ abstract class LiteObject
 	 */
 	public function __set($name, $value) 
 	{
+		if ($this->ignoreSet)
+		{
+			$this->$name = $value;
+			return;
+		}
+		
 		$this->validateFieldAccess($name, AccessRestriction::NO_SET);
 		
 		$value = ValueValidation::fixValue($this->data[$name], $value);
@@ -175,7 +183,20 @@ abstract class LiteObject
 		return $this->values;
 	}
 	
-	
+	public function __clone()
+	{
+		$values = $this->values;
+		
+		unset($this->values);
+		unset($this->_p);
+		
+		$this->ignoreSet = true;
+		$this->values = unserialize(serialize($values));
+		$this->_p = new PrivateFields($this->values, $this->data, $this);
+		$this->ignoreSet = false;
+	}
+
+
 	/**
 	 * @param LiteObject[] $objects
 	 * @param array $filter
