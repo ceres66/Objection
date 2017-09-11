@@ -49,18 +49,10 @@ class ObjectMapper
 	/**
 	 * @param LiteObject $object
 	 * @param array $data
-	 * @param IValuesProcessorContainer $container
 	 * @return LiteObject
 	 */
-	private static function setFields(LiteObject $object, $data, IValuesProcessorContainer $container)
+	private static function setFields(LiteObject $object, $data)
 	{
-		$className = get_class($object);
-		
-		if ($container->has($className))
-		{
-			$data = $container->get($className)->toObjectValues($data);
-		}
-		
 		if ($object instanceof IMappedObject)
 		{
 			$object->setObjectData($data);
@@ -146,7 +138,7 @@ class ObjectMapper
 		
 		$data = $processor->postMapProcess($className, $data);
 		
-		return self::setFields($object, $data, $container);
+		return self::setFields($object, $data);
 	}
 	
 	private static function getDataFromLiteObject(IMapperCollection $collection, 
