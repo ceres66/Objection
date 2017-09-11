@@ -31,7 +31,10 @@ class ObjectValuesProcessor implements IObjectValuesProcessor
 	{
 		foreach ($this->processors as $field => $processor)
 		{
-			$rawDataByObjectFields[$field] = $processor->toObjectValue($rawDataByObjectFields[$field]);
+			if (array_key_exists($field, $rawDataByObjectFields))
+			{
+				$rawDataByObjectFields[$field] = $processor->toObjectValue($rawDataByObjectFields[$field]);
+			}
 		}
 		
 		return $rawDataByObjectFields;
@@ -45,7 +48,10 @@ class ObjectValuesProcessor implements IObjectValuesProcessor
 	{
 		foreach ($this->processors as $field => $processor)
 		{
-			$objectDataByObjectFields[$field] = $processor->toRawValue($objectDataByObjectFields[$field]);
+			if (array_key_exists($field, $objectDataByObjectFields))
+			{
+				$objectDataByObjectFields[$field] = $processor->toRawValue($objectDataByObjectFields[$field]);
+			}
 		}
 		
 		return $objectDataByObjectFields;

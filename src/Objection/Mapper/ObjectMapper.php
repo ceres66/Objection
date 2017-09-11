@@ -5,11 +5,11 @@ namespace Objection\Mapper;
 use Objection\LiteObject;
 use Objection\Enum\VarType;
 use Objection\Enum\SetupFields;
-use Objection\Mapper\Base\Values\IValuesProcessorContainer;
 use Objection\Setup\Container;
 use Objection\Mapper\Base\IMapperCollection;
 use Objection\Mapper\Base\IObjectToTargetBuilder;
 use Objection\Mapper\Base\Extensions\IMappedObject;
+use Objection\Mapper\Base\Values\IValuesProcessorContainer;
 use Objection\Mapper\Loaders\MapperLoadHelpers;
 use Objection\Mapper\Loaders\LoadHelpersProcessor;
 use Objection\Exceptions\LiteObjectException;
@@ -92,6 +92,8 @@ class ObjectMapper
 		
 		$value = $processor->preMapProcess($className, $value);
 		
+		$containerHasClassName = $container->has($className);
+		
 		foreach ($value as $dataName => $dataValue)
 		{
 			$fieldName = $fieldMapper->mapToObjectField($dataName, get_class($object));
@@ -103,7 +105,12 @@ class ObjectMapper
 			
 			$fieldSetup = $setup[$fieldName];
 			
-			if (isset($fieldSetup[SetupFields::INSTANCE_TYPE]))
+			if ($containerHasClassName)
+			{
+				$dataValue = $container->get($className)->toObjectValues([$fieldName => $dataValue]);
+				$fieldValue = $dataValue[$fieldName];
+			}
+			else if (isset($fieldSetup[SetupFields::INSTANCE_TYPE]))
 			{
 				$instanceType = $fieldSetup[SetupFields::INSTANCE_TYPE];
 				
