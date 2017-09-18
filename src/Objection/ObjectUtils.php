@@ -40,4 +40,33 @@ class ObjectUtils
 		
 		return $result;
 	}
+
+
+	/**
+	 * @param LiteObject[] $source
+	 * @param string[] $propertiesMap
+	 * @param string $targetClassName
+	 * @return array|LiteObject[]
+	 */
+	public static function map(array $source, array $propertiesMap, string $targetClassName): array
+	{
+		$fields		= LiteObject::allToArray($source, array_keys($propertiesMap));
+		$result		= [];
+		
+		foreach ($fields as $singleObjectFields)
+		{
+			/** @var LiteObject $object */
+			$object = new $targetClassName;
+			$result[] = $object;
+			
+			$object->fromArray(
+				array_combine(
+					$propertiesMap, 
+					$singleObjectFields
+				)
+			);
+		}
+		
+		return $result;
+	}
 }
