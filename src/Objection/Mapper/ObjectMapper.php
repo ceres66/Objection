@@ -116,8 +116,15 @@ class ObjectMapper
 				
 				if ($fieldSetup[SetupFields::TYPE] == VarType::INSTANCE)
 				{
-					$fieldValue = new $instanceType;
-					self::getObjectFromData($fieldValue, $collection, $dataValue, $loaders, $container);
+					if (is_null($dataValue))
+					{
+						$fieldValue = null;
+					}
+					else
+					{
+						$fieldValue = new $instanceType;
+						self::getObjectFromData($fieldValue, $collection, $dataValue, $loaders, $container);
+					}
 				}
 				else
 				{
