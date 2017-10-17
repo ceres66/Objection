@@ -2,6 +2,9 @@
 namespace Objection;
 
 
+/**
+ * @deprecated use Traitor::TPrivateCallback instead
+ */
 trait TPrivateCallback 
 {
 	private function createCallback($method) 

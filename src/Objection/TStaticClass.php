@@ -2,6 +2,9 @@
 namespace Objection;
 
 
+/**
+ * @deprecated use Traitor::TStaticClass instead
+ */
 trait TStaticClass
 {
 	private function __construct() {}
